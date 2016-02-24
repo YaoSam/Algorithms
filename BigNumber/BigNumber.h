@@ -10,6 +10,7 @@ class R
 	unsigned int length;	//数字的位数
 	int point;					//起始位的位数。也就是*10^point
 	int *data;					//数据段。
+	unsigned int datasize;
 	R(unsigned int L, int P, bool S, int *D) :
 		length(L), sign(S), point(P), data(D){}
 	unsigned int CheckLen(unsigned int max);

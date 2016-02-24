@@ -47,18 +47,19 @@ R::R(std::string num):sign(num[0]=='-'){
 	temp = temp.substr(left, right - left + 1);//因为right也不为0。所以要加一。
 	//录入数据
 	length = right - left + 1;
-	data = new int[(length-1) / 4 + 1];
-	memset(data, 0, sizeof(int)*((length-1) / 4 + 1));
+	datasize = length / 4 + (!length % 4 == 0);
+	data = new int[datasize];
+	memset(data, 0, sizeof(int)*(datasize));
 	re(i,length)
 		if (temp[length - i -1] != '0'){
 			data[i / 4] += ten[(i) % 4 + 1] * (temp[length - i -  1] - '0');
 		}
-	//printArray(data, (length)/4+(length%4!=0));
+	//printArray(data,datasize);
 	//std::cout << point << std::endl;
 }
 std::ostream& operator<<(std::ostream &out, R const &other)
 {
-	unsigned int DataLen = (other.length) / 4 + (other.length%4!=0), temp, digit,pointLocation;
+	unsigned int DataLen = other.datasize, temp, digit,pointLocation;
 	int status=0;
 	if (other.point < 0){
 		if (abs(other.point) >= other.length)
