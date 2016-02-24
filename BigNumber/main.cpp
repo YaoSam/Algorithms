@@ -46,10 +46,11 @@ int main()
 	//	cout << i << ": " << a[i] << endl;
 	//cout << a.substr(0, 5)<<endl;
 	//R one("-000123.123000");
-
+	R one;
 	while (cin >> a){
 		cout << a << endl;
-		cout << R(a) << endl;
+		one = R(a);
+		cout << one << endl;
 	}
 	//int point = a.find(".");
 	//cout << a.substr(0, point)<<" "<<a.substr(point+1, a.length())<<endl;

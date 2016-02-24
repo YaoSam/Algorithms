@@ -1,14 +1,6 @@
 #pragma once
 #include "BigNumber.h"
 #include <math.h>
-unsigned int R::CheckLen(unsigned int max){
-	length = 0;
-	re(i, max)
-		if (data[max - i - 1] > 0)
-			return length = max - i - 1;
-	return length;
-}
-
 unsigned int R::getDigit(int num)const{
 	unsigned int count = 0;
 	while (num > 0)
@@ -57,6 +49,28 @@ R::R(std::string num):sign(num[0]=='-'){
 	//printArray(data,datasize);
 	//std::cout << point << std::endl;
 }
+
+R::R(const R & other):
+sign(other.sign),
+length(other.length),
+point(other.point), 
+datasize(other.datasize){
+	data = new int[datasize];
+	memcpy(data, other.data, sizeof(int)*datasize);
+}
+
+R& R::operator=(const R & other){
+	if (this == &other)return *this;
+	delete[] data;
+	sign = other.sign;
+	length = other.length;
+	point = other.point;
+	datasize = other.datasize;
+	data = new int[datasize];
+	memcpy(data, other.data, sizeof(int)*datasize);
+	return *this;
+}
+
 std::ostream& operator<<(std::ostream &out, R const &other)
 {
 	unsigned int DataLen = other.datasize, temp, digit,pointLocation;
@@ -73,8 +87,7 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 	{
 		case 0:{//小数点在数字前面
 			out << "0."<< std::string().assign(abs(other.point) - other.length, '0');
-			re(i, DataLen)
-			{
+			re(i, DataLen){//前面补零即可正常输出
 				temp = other.data[DataLen - i - 1];
 				digit = other.getDigit(temp);
 				if (i != 0 && digit < 4)
@@ -84,28 +97,24 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 			break;
 		}
 		case 1:{//小数点在数字中间
-			int count = 0;
-			pointLocation = other.length - abs(other.point);
+			pointLocation = other.length - abs(other.point);//记录离小数点还有多远
 			re(i, DataLen){
 				temp = other.data[DataLen - i - 1];
 				int digit = other.getDigit(temp);
 				if ((i==0&&pointLocation<=digit)||pointLocation<=4) {
-					re(j, 4){
-						if (!(temp < ten[4 - j] && i == 0))
-						{
+					re(j, 4){//逐位输出
+						if (!(temp < ten[4 - j] && i == 0)){//排除首位的特殊情况
 							out << (temp / ten[(4 - j)]) % 10;
 							pointLocation -= 1;
 						}
-						if (pointLocation == 0)
-						{
+						if (pointLocation == 0){
 							out << ".";
-							pointLocation--;
+							pointLocation--;//然后再也不会输出小数点
 						}
 					}
 				}
-				else{
-					if (i != 0 && digit < 4)
-					{
+				else{//正常输出
+					if (i != 0 && digit < 4){
 						out << zero[4 - digit];
 						pointLocation-= 4;
 					}
@@ -116,7 +125,7 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 			break;
 		}
 		case 2:{//小数点在数字后面。也就是>10的情况。
-			re(i, DataLen){
+			re(i, DataLen){//后面补零即可正常输出
 				temp = other.data[DataLen - i - 1];
 				int digit = other.getDigit(temp);
 				if (i != 0 && digit < 4)
@@ -141,4 +150,3 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 	//	out << std::string().assign(other.point, '0');
 	return out << std::endl;
 }
-

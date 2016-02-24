@@ -21,7 +21,7 @@ public:
 	R(double const &d);
 	R(const R & other);
 	R& operator=(const R &other);
-	virtual ~R(){}
+	virtual ~R(){ delete[] data; }
 	friend std::ostream& operator<<(std::ostream &out, R const &other);
 };
 
