@@ -10,9 +10,17 @@ unsigned int R::getDigit(int num)const{
 	}
 	return count;
 }
-R::R(std::string num):sign(num[0]=='-'){
+int *R::EmptyIntSpace(unsigned int size)const
+{
+	int *ans = new int[size];
+	memset(ans, 0, sizeof(int)*size);
+	return ans;
+}
+
+void R::Create(std::string num){
+	sign=(num[0] == '-');
 	std::string temp = num;
-	int strLen,left=0,right=num.length();
+	int strLen, left = 0, right = num.length();
 	//调整符号
 	if (sign)
 		temp = temp.substr(1, temp.length());
@@ -21,7 +29,7 @@ R::R(std::string num):sign(num[0]=='-'){
 	point = temp.find('.');
 	if (point >= 0){
 		temp = temp.substr(0, point) + temp.substr(point + 1, temp.length());
-			strLen--;
+		strLen--;
 	}
 	else point = temp.length();
 	//查找数字段
@@ -39,17 +47,59 @@ R::R(std::string num):sign(num[0]=='-'){
 	temp = temp.substr(left, right - left + 1);//因为right也不为0。所以要加一。
 	//录入数据
 	length = right - left + 1;
-	datasize = length / 4 + (!length % 4 == 0);
+	datasize = getSize(length);
 	data = new int[datasize];
 	memset(data, 0, sizeof(int)*(datasize));
-	re(i,length)
-		if (temp[length - i -1] != '0'){
-			data[i / 4] += ten[(i) % 4 + 1] * (temp[length - i -  1] - '0');
+	re(i, length)
+		if (temp[length - i - 1] != '0'){
+			data[i / 4] += ten[(i) % 4 + 1] * (temp[length - i - 1] - '0');
 		}
 	//printArray(data,datasize);
 	//std::cout << point << std::endl;
 }
+R& R::LeftMove(unsigned int movement){
+	if (movement == 0)return *this;
+	unsigned int a = movement / 4, b = movement % 4;//分为两个部分来做
+	unsigned int NewSize = getSize(length + movement);
+	int *TempData = EmptyIntSpace(NewSize);
+	if (b > 0){
+		re(i, datasize){//模仿乘法的进位，将每个数拆分为两个部分
+			TempData[a + i] += data[i] * ten[b+1] % 10000;//后面部分
+			TempData[a + i + 1] += data[i] * ten[b + 1] / 10000;//前面部分
+		}
+	}
+	else{
+		memcpy(TempData, data, sizeof(int)*datasize);
+	}
+	point -= movement;//数字增大。point减少。
+	length += movement;
+	datasize = NewSize;
+	delete[] data;
+	data = TempData;
+	return *this;
+}
+void R::AlignPoint(R &other){
+	if (point > other.point)
+		this->LeftMove(point - other.point);
+	else if (other.point > point)
+		other.LeftMove(other.point - point);
+	if (other.point != point)
+		throw "调整小数点失败\n";
+}
+R::R(std::string num):sign(num[0]=='-'){
+	Create(num);
+}
 
+R::R(double const &d){
+	char str[50];//浮点数应该不会太大吧？
+	sprintf_s(str, "%f", d);
+	Create(str);
+}
+R::R(int const & one){
+	char str[30];
+	sprintf_s(str, "%d", one);
+	Create(str);
+}
 R::R(const R & other):
 sign(other.sign),
 length(other.length),
@@ -59,6 +109,68 @@ datasize(other.datasize){
 	memcpy(data, other.data, sizeof(int)*datasize);
 }
 
+R& R::plus(const R &other){
+	if (sign != other.sign)
+		throw "plus()错误用法\n";
+	R temp = other;
+	int size = Max(temp.datasize, datasize);
+	int *TempData = EmptyIntSpace(size + 1);
+	//调整位数。
+	AlignPoint(temp);
+	//整数的加法。
+	memcpy(TempData, data, sizeof(int)*datasize);
+	re(i,other.datasize){
+		TempData[i] += temp.data[i];
+		i++;
+	}
+	re(j, size + 1){//进位
+		TempData[j + 1] += TempData[j] / 10000;
+		TempData[j] %= 10000;
+	}
+	//维护变量
+	if (TempData[size] > 0){
+		length = size * 4 + getDigit(TempData[size]);
+		size += 1;
+	}
+	else{
+		length = (size - 1) * 4 + getDigit(TempData[size-1]);
+	}
+	delete[] data;
+	data = TempData;
+	datasize = size;
+	return *this;
+}
+
+R& R::substract(const R& other){
+	if (sign != other.sign)
+		throw "subtract()，错误用法\n";
+	R temp = other;
+	int size = Max(temp.datasize, datasize);
+	int *TempData = EmptyIntSpace(size);//减法肯定不会增加位数
+	AlignPoint(temp);
+	memcpy(TempData, data, sizeof(int)*datasize);
+	re(i, other.datasize){
+		TempData[i] -= other.data[i];
+	}
+	re(j, size + 1){//退位
+		TempData[j + 1] += TempData[j] / 10000;
+		TempData[j] %= 10000;
+	}
+	//维护变量
+	if (TempData[size] > 0){
+		length = size * 4 + getDigit(TempData[size]);
+		size += 1;
+	}
+	else{
+		length = (size - 1) * 4 + getDigit(TempData[size - 1]);
+	}
+	delete[] data;
+	data = TempData;
+	datasize = size;
+	return *this;
+
+}
+
 R& R::operator=(const R & other){
 	if (this == &other)return *this;
 	delete[] data;
@@ -66,7 +178,7 @@ R& R::operator=(const R & other){
 	length = other.length;
 	point = other.point;
 	datasize = other.datasize;
-	data = new int[datasize];
+	data = EmptyIntSpace(datasize);
 	memcpy(data, other.data, sizeof(int)*datasize);
 	return *this;
 }
@@ -74,6 +186,7 @@ R& R::operator=(const R & other){
 std::ostream& operator<<(std::ostream &out, R const &other)
 {
 	unsigned int DataLen = other.datasize, temp, digit,pointLocation;
+	//判断情况
 	int status=0;
 	if (other.point < 0){
 		if (abs(other.point) >= other.length)
@@ -81,6 +194,7 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 		else status = 1;
 	}
 	else status = 2;
+	//看情况输出
 	if (other.sign)
 		out << '-';
 	switch (status)
@@ -136,17 +250,5 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 			break;
 		}
 	}
-	//if (abs(other.point) >= other.length)
-	//	out << std::string().assign(abs(other.point) - other.length+1, '0');
-	//re(i, DataLen)
-	//{
-	//	temp = other.data[DataLen - i - 1];
-	//	int digit = other.getDigit(temp);
-	//	if (i != 0 && digit < 4)
-	//		out << zero[4 - digit];
-	//	out << temp;
-	//}
-	//if (other.point>0)
-	//	out << std::string().assign(other.point, '0');
 	return out << std::endl;
 }

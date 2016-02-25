@@ -42,15 +42,19 @@ int main()
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
 	string a = "000,123,000";
-	//re(i, a.length())
-	//	cout << i << ": " << a[i] << endl;
-	//cout << a.substr(0, 5)<<endl;
-	//R one("-000123.123000");
-	R one;
+
+	double dou = 123.123123123;
+	int num = 1231231300;
+	R one(dou),two(num);
+	cout << dou<<endl<<two << endl;
 	while (cin >> a){
 		cout << a << endl;
 		one = R(a);
+		//one.LeftMove(3);
 		cout << one << endl;
+	}
+	one = 1, two = 2; R temp1 = 0, temp2 = 0;
+	re(i, 10000){
 	}
 	//int point = a.find(".");
 	//cout << a.substr(0, point)<<" "<<a.substr(point+1, a.length())<<endl;
