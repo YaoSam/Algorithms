@@ -113,17 +113,17 @@ R& R::plus(const R &other){
 	if (sign != other.sign)
 		throw "plus()错误用法\n";
 	R temp = other;
-	int size = Max(temp.datasize, datasize);
-	int *TempData = EmptyIntSpace(size + 1);
 	//调整位数。
 	AlignPoint(temp);
+	int size = Max(temp.datasize, datasize);
+	int *TempData = EmptyIntSpace(size + 1);
+	std::cout << *this << temp;
 	//整数的加法。
 	memcpy(TempData, data, sizeof(int)*datasize);
-	re(i,other.datasize){
+	re(i,temp.datasize){
 		TempData[i] += temp.data[i];
-		i++;
 	}
-	re(j, size + 1){//进位
+	re(j, size){//进位
 		TempData[j + 1] += TempData[j] / 10000;
 		TempData[j] %= 10000;
 	}
@@ -148,13 +148,27 @@ R& R::substract(const R& other){
 	int size = Max(temp.datasize, datasize);
 	int *TempData = EmptyIntSpace(size);//减法肯定不会增加位数
 	AlignPoint(temp);
+	//相减
 	memcpy(TempData, data, sizeof(int)*datasize);
 	re(i, other.datasize){
 		TempData[i] -= other.data[i];
 	}
-	re(j, size + 1){//退位
-		TempData[j + 1] += TempData[j] / 10000;
-		TempData[j] %= 10000;
+	//调整符号
+	re(i, size){
+		if (TempData[size - i - 1] > 0)	break;
+		if (TempData[size - i - 1] < 0){//第一个为负
+			sign = !sign;
+			re(j,i)//全部取负
+				TempData[j]*=-1;
+			size = size - i;//更新数组大小
+			break;
+		}
+	}
+	re(j, size-1){//首位肯定为正。全部数都属于[-9999,9999]
+		if (TempData[j] < 0){//退位
+			TempData[j] += 10000;
+			TempData[j + 1]--;
+		}
 	}
 	//维护变量
 	if (TempData[size] > 0){
@@ -171,9 +185,17 @@ R& R::substract(const R& other){
 
 }
 
+R& R::operator+=(const R& other){
+	return this->plus(other);
+}
+
+R& R::operator-=(const R& other){
+	return this->substract(other);
+}
+
 R& R::operator=(const R & other){
 	if (this == &other)return *this;
-	delete[] data;
+	//delete[] data;
 	sign = other.sign;
 	length = other.length;
 	point = other.point;
@@ -232,8 +254,9 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 						out << zero[4 - digit];
 						pointLocation-= 4;
 					}
-					else pointLocation-=digit;
-					out << temp;
+					else if(i==0)pointLocation-=digit;
+					else pointLocation -= 4;
+					if (temp != 0)out << temp;
 				}
 			}
 			break;

@@ -31,7 +31,7 @@ public:
 	R(int const & n);
 	R(const R & other);
 	R& operator=(const R &other);
-	virtual ~R(){ delete[] data; }
+	//virtual ~R(){ delete[] data; }
 	friend std::ostream& operator<<(std::ostream &out, R const &other);//这玩意太TM烦了！！！
 	//数学运算符
 	R& operator+=(const R & other);
