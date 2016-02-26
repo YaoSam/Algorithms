@@ -45,7 +45,7 @@ int main()
 		string a, b;
 		while (cin >> a >> b){
 			R one(a), two(b);
-			cout << (one += two) << endl;
+			cout << (one -= two) << endl;
 		}
 	}
 	catch (const char * a){ cout << a << endl; }

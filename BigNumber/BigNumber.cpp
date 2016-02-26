@@ -10,8 +10,7 @@ unsigned int R::getDigit(int num)const{
 	}
 	return count;
 }
-int *R::EmptyIntSpace(unsigned int size)const
-{
+int *R::EmptyIntSpace(unsigned int size)const{
 	int *ans = new int[size];
 	memset(ans, 0, sizeof(int)*size);
 	return ans;
@@ -145,22 +144,23 @@ R& R::substract(const R& other){
 	if (sign != other.sign)
 		throw "subtract()，错误用法\n";
 	R temp = other;
+	AlignPoint(temp);
+	std::cout << *this << temp;
+	//相减
 	int size = Max(temp.datasize, datasize);
 	int *TempData = EmptyIntSpace(size);//减法肯定不会增加位数
-	AlignPoint(temp);
-	//相减
 	memcpy(TempData, data, sizeof(int)*datasize);
-	re(i, other.datasize){
-		TempData[i] -= other.data[i];
+	re(i, temp.datasize){
+		TempData[i] -= temp.data[i];
 	}
 	//调整符号
 	re(i, size){
 		if (TempData[size - i - 1] > 0)	break;
 		if (TempData[size - i - 1] < 0){//第一个为负
 			sign = !sign;
-			re(j,i)//全部取负
+			re(j,size-i)//全部取负
 				TempData[j]*=-1;
-			size = size - i;//更新数组大小
+			size = size - i+1;//更新数组大小
 			break;
 		}
 	}
@@ -171,12 +171,12 @@ R& R::substract(const R& other){
 		}
 	}
 	//维护变量
-	if (TempData[size] > 0){
-		length = size * 4 + getDigit(TempData[size]);
-		size += 1;
-	}
-	else{
-		length = (size - 1) * 4 + getDigit(TempData[size - 1]);
+	re(i, size){
+		if (TempData[size-i-1] > 0){
+			length = (size - i - 1) * 4 + getDigit(TempData[size - i - 1]);
+			size = size-i;
+			break;
+		}
 	}
 	delete[] data;
 	data = TempData;
