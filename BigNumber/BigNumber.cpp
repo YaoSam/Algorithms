@@ -3,8 +3,7 @@
 #include <math.h>
 unsigned int R::getDigit(int num)const{
 	unsigned int count = 0;
-	while (num > 0)
-	{
+	while (num > 0){
 		count++;
 		num /= 10;
 	}
@@ -19,7 +18,7 @@ int *R::EmptyIntSpace(unsigned int size)const{
 void R::Create(std::string num){
 	sign=(num[0] == '-');
 	std::string temp = num;
-	int strLen, left = 0, right = num.length();
+	unsigned int strLen, left = 0, right = num.length();
 	//调整符号
 	if (sign)
 		temp = temp.substr(1, temp.length());
@@ -85,7 +84,14 @@ void R::AlignPoint(R &other){
 	if (other.point != point)
 		throw "调整小数点失败\n";
 }
-R::R(std::string num):sign(num[0]=='-'){
+void R::clear(){
+	sign = false;
+	datasize = length = point = 0;
+	delete[]data;
+	data = NULL;
+}
+
+R::R(std::string num){
 	Create(num);
 }
 
@@ -108,19 +114,17 @@ datasize(other.datasize){
 	memcpy(data, other.data, sizeof(int)*datasize);
 }
 
-R& R::plus(const R &other){
+R& R::plus(R &other){
 	if (sign != other.sign)
 		throw "plus()错误用法\n";
-	R temp = other;
 	//调整位数。
-	AlignPoint(temp);
-	int size = Max(temp.datasize, datasize);
+	AlignPoint(other);
+	unsigned int size = Max(other.datasize, datasize);
 	int *TempData = EmptyIntSpace(size + 1);
-	std::cout << *this << temp;
 	//整数的加法。
 	memcpy(TempData, data, sizeof(int)*datasize);
-	re(i,temp.datasize){
-		TempData[i] += temp.data[i];
+	re(i,other.datasize){
+		TempData[i] += other.data[i];
 	}
 	re(j, size){//进位
 		TempData[j + 1] += TempData[j] / 10000;
@@ -140,18 +144,17 @@ R& R::plus(const R &other){
 	return *this;
 }
 
-R& R::substract(const R& other){
+R& R::substract(R& other){
 	if (sign != other.sign)
 		throw "subtract()，错误用法\n";
-	R temp = other;
-	AlignPoint(temp);
-	std::cout << *this << temp;
+	AlignPoint(other);
 	//相减
-	int size = Max(temp.datasize, datasize);
+	unsigned int size = Max(other.datasize, datasize);
 	int *TempData = EmptyIntSpace(size);//减法肯定不会增加位数
 	memcpy(TempData, data, sizeof(int)*datasize);
-	re(i, temp.datasize){
-		TempData[i] -= temp.data[i];
+	//整数减法
+	re(i, other.datasize){
+		TempData[i] -= other.data[i];
 	}
 	//调整符号
 	re(i, size){
@@ -164,6 +167,7 @@ R& R::substract(const R& other){
 			break;
 		}
 	}
+	//退位
 	re(j, size-1){//首位肯定为正。全部数都属于[-9999,9999]
 		if (TempData[j] < 0){//退位
 			TempData[j] += 10000;
@@ -182,20 +186,33 @@ R& R::substract(const R& other){
 	data = TempData;
 	datasize = size;
 	return *this;
-
 }
 
 R& R::operator+=(const R& other){
-	return this->plus(other);
+	R temp(other);//因为要调整正负以及位移。所以要改成局部变量
+	if (other.sign == sign){
+		return this->plus(temp);
+	}
+	else{
+		temp.sign = sign;
+		return this->substract(temp);
+	}
 }
 
 R& R::operator-=(const R& other){
-	return this->substract(other);
+	R temp(other);
+	if (other.sign == sign){
+		return this->substract(temp);
+	}
+	else{
+		temp.sign = sign;
+		return this->plus(temp);
+	}
 }
 
 R& R::operator=(const R & other){
 	if (this == &other)return *this;
-	//delete[] data;
+	delete[] data;
 	sign = other.sign;
 	length = other.length;
 	point = other.point;
@@ -205,24 +222,16 @@ R& R::operator=(const R & other){
 	return *this;
 }
 
-std::ostream& operator<<(std::ostream &out, R const &other)
-{
-	unsigned int DataLen = other.datasize, temp, digit,pointLocation;
-	//判断情况
-	int status=0;
-	if (other.point < 0){
-		if (abs(other.point) >= other.length)
-			status = 0;
-		else status = 1;
-	}
-	else status = 2;
-	//看情况输出
+std::ostream& operator<<(std::ostream &out, R const &other){
+	unsigned int DataLen = other.datasize, digit, pointLocation;
+	int temp;
 	if (other.sign)
 		out << '-';
-	switch (status)
-	{
-		case 0:{//小数点在数字前面
-			out << "0."<< std::string().assign(abs(other.point) - other.length, '0');
+	//判断情况
+	if (other.point < 0){
+		//////////////////////////////////////////////////////////////////////////
+		if (unsigned int(abs(other.point)) >= other.length){//小数点在数字前面
+			out << "0." << std::string().assign(abs(other.point) - other.length, '0');
 			re(i, DataLen){//前面补零即可正常输出
 				temp = other.data[DataLen - i - 1];
 				digit = other.getDigit(temp);
@@ -230,14 +239,14 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 					out << zero[4 - digit];
 				if (temp != 0)out << temp;
 			}
-			break;
 		}
-		case 1:{//小数点在数字中间
+		//////////////////////////////////////////////////////////////////////////
+		else{//小数点在数字中间
 			pointLocation = other.length - abs(other.point);//记录离小数点还有多远
 			re(i, DataLen){
 				temp = other.data[DataLen - i - 1];
-				int digit = other.getDigit(temp);
-				if ((i==0&&pointLocation<=digit)||pointLocation<=4) {
+				digit = other.getDigit(temp);
+				if ((i == 0 && pointLocation <= digit) || pointLocation <= 4) {
 					re(j, 4){//逐位输出
 						if (!(temp < ten[4 - j] && i == 0)){//排除首位的特殊情况
 							out << (temp / ten[(4 - j)]) % 10;
@@ -252,16 +261,17 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 				else{//正常输出
 					if (i != 0 && digit < 4){
 						out << zero[4 - digit];
-						pointLocation-= 4;
+						pointLocation -= 4;
 					}
-					else if(i==0)pointLocation-=digit;
+					else if (i == 0)pointLocation -= digit;
 					else pointLocation -= 4;
 					if (temp != 0)out << temp;
 				}
 			}
-			break;
 		}
-		case 2:{//小数点在数字后面。也就是>10的情况。
+	}
+	//////////////////////////////////////////////////////////////////////////
+	else{//小数点在数字后面。也就是>10的情况。
 			re(i, DataLen){//后面补零即可正常输出
 				temp = other.data[DataLen - i - 1];
 				int digit = other.getDigit(temp);
@@ -270,8 +280,12 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 				if (temp != 0)out << temp;
 			}
 			out << std::string().assign(other.point, '0');
-			break;
-		}
 	}
 	return out << std::endl;
+}
+std::istream& operator>>(std::istream &in, R & other){
+	std::string str;
+	in >> str;
+	other.Create(str);
+	return in;
 }

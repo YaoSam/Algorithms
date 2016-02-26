@@ -45,10 +45,10 @@ int main()
 		string a, b;
 		while (cin >> a >> b){
 			R one(a), two(b);
-			cout << (one -= two) << endl;
+			cout << (one+two) << endl;
 		}
 	}
-	catch (const char * a){ cout << a << endl; }
+	catch (const char * error){ cout << error << endl; }
 	//int point = a.find(".");
 	//cout << a.substr(0, point)<<" "<<a.substr(point+1, a.length())<<endl;
 	//cout<<a.length()<<"    "<<point;

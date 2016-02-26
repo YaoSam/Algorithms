@@ -6,6 +6,15 @@ TEMP bool operator>=	(T const & a, T const &b)	{ return	a > b || !(b > a); }
 TEMP bool operator<=	(T const & a, T const &b)	{ return	!(a > b); }
 TEMP bool operator!=	(T const & a, T const &b)	{ return	!(a == b); }
 
+TEMP T operator+(T const &a, T const &b){
+	T ans(a);
+	return ans += b;
+}
+TEMP T operator-(T const &a, T const &b){
+	T ans(a);
+	return ans -= b;
+}
+
 TEMP void Swap(T & a, T &b)
 {
 	T temp = a; a = b; b = temp;
