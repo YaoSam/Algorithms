@@ -69,7 +69,7 @@ R& R::LeftMove(unsigned int movement){
 		}
 	}
 	else{
-		memcpy(TempData, data, sizeof(int)*datasize);
+		memcpy(TempData+a, data, sizeof(int)*datasize);
 	}
 	point -= movement;//数字增大。point减少。
 	length += movement;
@@ -228,7 +228,7 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 				digit = other.getDigit(temp);
 				if (i != 0 && digit < 4)
 					out << zero[4 - digit];
-				out << temp;
+				if (temp != 0)out << temp;
 			}
 			break;
 		}
@@ -267,7 +267,7 @@ std::ostream& operator<<(std::ostream &out, R const &other)
 				int digit = other.getDigit(temp);
 				if (i != 0 && digit < 4)
 					out << zero[4 - digit];
-				out << temp;
+				if (temp != 0)out << temp;
 			}
 			out << std::string().assign(other.point, '0');
 			break;
