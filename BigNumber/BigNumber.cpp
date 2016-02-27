@@ -1,6 +1,7 @@
 #pragma once
 #include "BigNumber.h"
 #include <math.h>
+#include <sstream>
 unsigned int R::getDigit(int num)const{
 	unsigned int count = 0;
 	while (num > 0){
@@ -101,8 +102,10 @@ R::R(double const &d){
 	Create(str);
 }
 R::R(int const & one){
-	char str[30];
-	sprintf_s(str, "%d", one);
+	std::stringstream ss;
+	std::string str;
+	ss << one;
+	str=ss.str();
 	Create(str);
 }
 R::R(const R & other):
@@ -112,6 +115,17 @@ point(other.point),
 datasize(other.datasize){
 	data = new int[datasize];
 	memcpy(data, other.data, sizeof(int)*datasize);
+}
+R& R::operator=(const R & other){
+	if (this == &other)return *this;
+	delete[] data;
+	sign = other.sign;
+	length = other.length;
+	point = other.point;
+	datasize = other.datasize;
+	data = EmptyIntSpace(datasize);
+	memcpy(data, other.data, sizeof(int)*datasize);
+	return *this;
 }
 
 R& R::plus(R &other){
@@ -126,10 +140,11 @@ R& R::plus(R &other){
 	re(i,other.datasize){
 		TempData[i] += other.data[i];
 	}
-	re(j, size){//进位
-		TempData[j + 1] += TempData[j] / 10000;
-		TempData[j] %= 10000;
-	}
+	re(j, size)//进位
+		if (TempData[j] >= 10000){
+			TempData[j + 1]++;
+			TempData[j] %= 10000;
+		}
 	//维护变量
 	if (TempData[size] > 0){
 		length = size * 4 + getDigit(TempData[size]);
@@ -210,15 +225,41 @@ R& R::operator-=(const R& other){
 	}
 }
 
-R& R::operator=(const R & other){
-	if (this == &other)return *this;
+R& R::operator*=(const R&other){
+	int NewSize = other.datasize + datasize;
+	int otherSize = other.datasize;
+	int* TempData = EmptyIntSpace(NewSize);
+	//整数乘法
+	re(i, otherSize){
+		if (other.data[i] > 0){//加一点小判断吧……
+			re(j, datasize){
+				if (data[j] > 0){
+					TempData[i + j] += data[j] * other.data[i];
+					if (TempData[i + j] >= 10000){
+						TempData[i + j + 1] += TempData[i + j] / 10000;
+						TempData[i + j] %= 10000;
+					}
+				}
+			}
+		}
+	}
+	//维护size
+	re(i, NewSize){
+		if (TempData[NewSize - i - 1] > 0){
+			datasize = NewSize - i;
+			break;
+		}
+		if (i == NewSize - 1)
+			datasize = 0;
+	}
+	//维护length
+	length = (datasize - 1) * 4 + getDigit(TempData[datasize - 1]);
+	//维护sign
+	sign ^= other.sign;
+	//维护point
+	point += other.point;
 	delete[] data;
-	sign = other.sign;
-	length = other.length;
-	point = other.point;
-	datasize = other.datasize;
-	data = EmptyIntSpace(datasize);
-	memcpy(data, other.data, sizeof(int)*datasize);
+	data = TempData;
 	return *this;
 }
 

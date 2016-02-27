@@ -14,6 +14,11 @@ TEMP T operator-(T const &a, T const &b){
 	T ans(a);
 	return ans -= b;
 }
+TEMP T operator*(T const &a, T const &b){
+	T ans(a);
+	return ans *= b;
+}
+
 
 TEMP void Swap(T & a, T &b)
 {

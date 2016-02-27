@@ -42,13 +42,15 @@ int main()
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
 	try{
-		string a, b;
-		while (cin >> a >> b){
-			R one(a), two(b);
-			cout << (one+two) << endl;
+		R one = 1;
+		re(i, 1000){
+			R two = int (i+1);
+			cout << (two * two);
 		}
 	}
 	catch (const char * error){ cout << error << endl; }
+	bool TRUE = 1, FALSE = 0;
+	//cout << (TRUE^FALSE) << (TRUE^TRUE) << (FALSE^FALSE) << endl;
 	//int point = a.find(".");
 	//cout << a.substr(0, point)<<" "<<a.substr(point+1, a.length())<<endl;
 	//cout<<a.length()<<"    "<<point;

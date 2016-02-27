@@ -12,6 +12,7 @@ TEMP inline bool operator!=	(T const & a, T const &b);
 
 TEMP T operator+(T const &a, T const &b);
 TEMP T operator-(T const &a, T const &b);
+TEMP T operator*(T const &a, T const &b);
 
 TEMP inline void Swap(T & a, T &b);
 

@@ -39,7 +39,6 @@ public:
 	R& operator+=(const R & other);
 	R& operator-=(const R & other);
 	R& operator*=(const R & other);
-	R operator*(const R & other)const;
 	bool operator>(const R & other)const;
 	bool operator==(const R & other)const;
 };
