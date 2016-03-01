@@ -58,7 +58,7 @@ void Cover(int **chess, unsigned int left, unsigned int right, unsigned int up, 
 		throw "边界出错";
 	point blackPoint=search(chess, left, right, up, down);
 	if (blackPoint == noPoint){
-		return;
+		throw "找不到被标记的点。无法进行";
 	}
 	unsigned int midX = (left + right) / 2;
 	unsigned int midY = (up + down) / 2;
@@ -91,12 +91,12 @@ int main()
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
 	try{
-		int n, x, y;
+		unsigned int n, x, y;
 		cin >> n >> x >> y;
 		//赋值
 		unsigned int width = 1;//正方形的边长
 		re(i, n){
-			width <<= 2;//4^n
+			width <<= 1;//2^n
 		}
 		int **map = new int *[width];
 		re(i, width){
