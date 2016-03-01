@@ -26,7 +26,7 @@ class R
 	R& substract(R& other);
 public:
 	//»ù±¾º¯Êý
-	R() :sign(0), length(0), point(0), data(NULL),datasize(0){}
+	R() :sign(0), length(0), point(0), data(new int(0)),datasize(1){}
 	R(std::string num);
 	R(double const &d);
 	R(int const & n);

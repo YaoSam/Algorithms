@@ -42,11 +42,12 @@ int main()
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
 	try{
-		R one = 1;
-		re(i, 1000){
-			R two = int (i+1);
-			cout << (two * two);
+		R one = 1, sum;
+		re(i, 100){
+			one *= int(i+1);
+			sum += one;
 		}
+		cout << sum;
 	}
 	catch (const char * error){ cout << error << endl; }
 	bool TRUE = 1, FALSE = 0;
