@@ -9,6 +9,8 @@ class BigNumber{
 	bool sign;
 	int* Space(unsigned int n);
 	void Create(const std::string &str);
+	BigNumber&  plus(const BigNumber& other);
+	BigNumber&  subtract(const BigNumber& other);
 public:
 	BigNumber() :num(new int(0)), length(1), Point(0), sign(0){}
 	BigNumber(const std::string &str);

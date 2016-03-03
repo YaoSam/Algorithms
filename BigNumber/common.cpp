@@ -30,6 +30,11 @@ TEMP inline T Max(T const &a, T const &b)
 {
 	return a > b ? a : b;
 }
+TEMP inline T Min(T const &a, T const &b)
+{
+	return a < b ? a : b;
+}
+
 
 TEMP void printArray(T const *a, unsigned int n)
 {

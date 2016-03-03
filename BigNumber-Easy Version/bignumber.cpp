@@ -62,19 +62,108 @@ BigNumber& BigNumber::operator=(const BigNumber& other){
 	memcpy(num, other.num, sizeof(int)*length);
 }
 
-BigNumber& BigNumber::operator+=(const BigNumber& other){
-	unsigned int NewLength = Max(length, other.length) + 1;
-	if (Point > other.Point){
-
-	}
-	else if (Point < other.Point){
-
+BigNumber& BigNumber::plus(const BigNumber& other){
+	int myLeft = Point + length, myRight = Point;//left就是最大位，right就是最小位。
+	int otherLeft = other.Point + other.length, otherRight = other.Point;
+	int newLength = Max(myLeft, otherLeft) - Min(myRight, otherRight) + 1;//整个位数
+	int * tempNum = Space(newLength);
+	//计算
+	if (myRight <= otherRight){
+		memcpy(tempNum, num, sizeof(int)*length);
+		int delta = otherRight - myRight;//用来对齐位数
+		int* otherNum = other.num;
+		re(i, other.length){
+			tempNum[i + delta] += otherNum[i];
+		}
 	}
 	else{
-		memcpy()
+		memcpy(tempNum, other.num, sizeof(int)*other.length);
+		int delta = myRight - otherRight;
+		re(i,length){
+			tempNum[i + delta] += num[i];
+		}
+		Point = other.Point;
 	}
+	//进位
+	re(i, newLength - 1)
+		if (tempNum[i] >= 10){
+			tempNum[i] %= 10;
+			tempNum[i + 1]++;
+		}
+	if (tempNum[newLength - 1] == 0)
+		newLength--;
+	length = newLength;
+	delete[] num;
+	num = tempNum;
+	return *this;
+}
 
+BigNumber& BigNumber::subtract(const BigNumber& other){
+	int myLeft = Point + length, myRight = Point;
+	int otherLeft = other.Point + other.length, otherRight = other.Point;
+	int newLength = Max(myLeft, otherLeft) - Min(myRight, otherRight);//不用申请多一个位置了
+	int * tempNum = Space(newLength);
+	//计算
+	if (myRight <= otherRight){
+		memcpy(tempNum, num, sizeof(int)*length);
+		int delta = otherRight - myRight;
+		int* otherNum = other.num;
+		re(i, other.length){
+			tempNum[i + delta] -= otherNum[i];
+		}
+	}
+	else{
+		int delta = myRight - otherRight;
+		memcpy(tempNum + delta, num, sizeof(int)*(length));
+		int* otherNum = other.num;
+		re(i, other.length){
+			tempNum[i] -= otherNum[i];
+		}
+		Point = other.Point;
+	}
+	//调整正负
+	re(i, newLength){
+		if (tempNum[newLength - 1 - i] > 0)	break;
+		if (tempNum[newLength - 1 - i] < 0){
+			sign = !sign;
+			newLength = newLength - i;
+			re(j, newLength){
+				tempNum[j] *= -1;
+			}
+			break;
+		}
+	}
+	//退位
+	re(i, newLength-1)//首位就不用考虑了
+		if (tempNum[i] < 0){
+			tempNum[i] += 10;
+			tempNum[i + 1]--;
+		}
+	re(i, newLength)
+		if (tempNum[newLength- i - 1] > 0){
+			length = newLength - i;
+			break;
+		}
+	delete[] num;
+	num = tempNum;
+	return *this;
+}
 
+BigNumber& BigNumber::operator+=(const BigNumber& other){
+	if (sign == other.sign){
+		return this->plus(other);
+	}
+	else{
+		return this->subtract(other);
+	}
+}
+BigNumber& BigNumber::operator-=(const BigNumber& other){
+	if (sign == other.sign){
+		return this->subtract(other);
+	}
+	else{
+		return this->plus(other);
+	}
 }
 
 

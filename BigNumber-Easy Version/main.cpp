@@ -42,12 +42,11 @@ int main()
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
 	try{
-		string str;
-		while (cin>>str)
-		{
-			cout<<str<<endl;
-			BigNumber one(str);
-			cout << str << endl;
+		string a, b;
+		while (cin >> a >> b){
+			BigNumber one(a), two(b);
+			cout << one << two ;
+			cout << (one -= two) << endl;
 		}
 	}
 	catch (const char * error){ cout << error << endl; }
