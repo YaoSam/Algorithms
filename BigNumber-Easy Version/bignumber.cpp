@@ -3,13 +3,14 @@
 #include <math.h>
 #include <sstream>
 #include <iostream>
-int* BigNumber::Space(unsigned int n){
+int* Number::Space(unsigned int n){
 	int *ans = new int[n];
 	memset(ans, 0, sizeof(int)*n);
 	return ans;
 }
 
-void BigNumber::Create(const std::string &str){
+void Number::Create(const std::string &str){
+	if(num)delete[] num;
 	sign = (str[0] == '-');
 	std::string temp = str;
 	unsigned int strLen, left = 0, right = temp.length();
@@ -41,7 +42,7 @@ void BigNumber::Create(const std::string &str){
 		num[i] = temp[length - i-1] - '0';
 }
 
-void BigNumber::RightMove(){
+void Number::RightMove(){
 	int count = 0;
 	re(i, length){
 		if (num[i] != 0)break;
@@ -57,17 +58,40 @@ void BigNumber::RightMove(){
 	}
 }
 
-BigNumber::BigNumber(const std::string &str){
+Number::Number(const std::string &str):num(NULL){
 	Create(str);
 }
 
-BigNumber::BigNumber(const BigNumber& other):
+Number::Number(const Number& other):
 length(other.length), sign(other.sign), Point(other.Point){
 	num = new int[length];
 	memcpy(num, other.num, sizeof(int)*length);
 }
 
-BigNumber& BigNumber::operator=(const BigNumber& other){
+Number::Number(const double &number):num(NULL){
+	std::stringstream ss;
+	std::string str;
+	ss << number;
+	str = ss.str();
+	Create(str);
+}
+Number::Number(const int & number):
+num(NULL),
+Point(0),
+length(0),
+sign(num<0){
+	int tempNum[100] = { 0 };
+	int n = abs(number);
+	while (n > 0){
+		tempNum[length++] = n % 10;
+		n /= 10;
+	}
+	num = Space(length);
+	memcpy(num, tempNum, sizeof(int)*length);
+}
+
+
+Number& Number::operator=(const Number& other){
 	if (this == &other)
 		return *this;
 	delete[] num;
@@ -76,12 +100,13 @@ BigNumber& BigNumber::operator=(const BigNumber& other){
 	Point = other.Point;
 	num = new int[length];
 	memcpy(num, other.num, sizeof(int)*length);
+	return *this;
 }
 
-BigNumber& BigNumber::plus(const BigNumber& other){
+Number& Number::plus(const Number& other){
 	int myLeft = Point + length, myRight = Point;//left就是最大位，right就是最小位。
 	int otherLeft = other.Point + other.length, otherRight = other.Point;
-	int newLength = Max(myLeft, otherLeft) - Min(myRight, otherRight) + 1;//整个位数
+	unsigned int newLength = Max(myLeft, otherLeft) - Min(myRight, otherRight) + 1;//整个位数
 	int * tempNum = Space(newLength);
 	//计算
 	if (myRight <= otherRight){
@@ -115,10 +140,10 @@ BigNumber& BigNumber::plus(const BigNumber& other){
 	return *this;
 }
 
-BigNumber& BigNumber::subtract(const BigNumber& other){
+Number& Number::subtract(const Number& other){
 	int myLeft = Point + length, myRight = Point;
 	int otherLeft = other.Point + other.length, otherRight = other.Point;
-	int newLength = Max(myLeft, otherLeft) - Min(myRight, otherRight);//不用申请多一个位置了
+	unsigned int newLength = Max(myLeft, otherLeft) - Min(myRight, otherRight);//不用申请多一个位置了
 	int * tempNum = Space(newLength);
 	//计算
 	if (myRight <= otherRight){
@@ -167,7 +192,33 @@ BigNumber& BigNumber::subtract(const BigNumber& other){
 	return *this;
 }
 
-BigNumber& BigNumber::operator+=(const BigNumber& other){
+Number& Number::product(const Number& other){
+	unsigned int NewLength = other.length + length;
+	int *tempNum = Space(NewLength);
+	re(i,other.length)
+		if (other.num[i]>0)
+			re(j, length){
+			tempNum[i + j] += num[j] * other.num[i];
+		}
+	re(i, NewLength){//不是万进制。所以可以和计算过程分离。
+		tempNum[i + 1] += tempNum[i] / 10;
+		tempNum[i] %= 10;
+	}
+	re(i, NewLength){
+		if (tempNum[NewLength - i - 1] > 0){
+			length = NewLength - i;
+			break;
+		}
+		if (i == NewLength - 1)length = 1;//特殊判断。
+	}
+	sign ^= other.sign;
+	Point += other.Point;
+	delete[] num;
+	num = tempNum;
+	return *this;
+}
+
+Number& Number::operator+=(const Number& other){
 	if (sign == other.sign){
 		return this->plus(other);
 	}
@@ -175,7 +226,7 @@ BigNumber& BigNumber::operator+=(const BigNumber& other){
 		return this->subtract(other);
 	}
 }
-BigNumber& BigNumber::operator-=(const BigNumber& other){
+Number& Number::operator-=(const Number& other){
 	if (sign == other.sign){
 		return this->subtract(other);
 	}
@@ -183,13 +234,16 @@ BigNumber& BigNumber::operator-=(const BigNumber& other){
 		return this->plus(other);
 	}
 }
+Number& Number::operator*=(const Number& other){
+	return this->product(other);
+}
 
 
-std::ostream& operator<<(std::ostream &out, BigNumber const &other){
+std::ostream& operator<<(std::ostream &out, Number const &other){
 	if (other.sign)
 		out << '-';
 	if (other.Point < 0){//有小数点
-		if (abs(other.Point) >= other.length){//小数点在前面
+		if (unsigned int(abs(other.Point)) >= other.length){//小数点在前面
 			unsigned int length = other.length;
 			std::string str;
 			out << "0.";
@@ -216,10 +270,16 @@ std::ostream& operator<<(std::ostream &out, BigNumber const &other){
 		str.assign(other.Point, '0');
 		out << str;
 	}
-	return out << std::endl;
+	return out;
+}
+std::istream& operator>>(std::istream &in, Number &other){
+	std::string str;
+	in >> str;
+	other.Create(str);
+	return in;
 }
 
-void Swap(BigNumber &a, BigNumber& b){
+void Swap(Number &a, Number& b){
 	Swap(a.Point, b.Point);
 	Swap(a.length, b.length);
 	Swap(a.num, b.num);

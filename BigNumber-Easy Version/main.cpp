@@ -30,7 +30,6 @@ using namespace std;
 #undef re
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 #define DEBUG
-void Test();
 
 int main()
 {
@@ -42,13 +41,19 @@ int main()
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
 	try{
-		string a, b;
-		while (cin >> a >> b){
-			BigNumber one(a), two(b);
+		Number one,two;
+		while (cin>> one >> two){
 			cout << one << two ;
 			cout << (one -= two);
-			cout << (one += two) << endl;
+			cout << (one += two);
+			cout << (one *= two) << endl;
 		}
+		Number three("2");
+		re(i,10){
+			cout << three << endl;
+			three *= three;
+		}
+		cout << three << endl;
 	}
 	catch (const char * error){ cout << error << endl; }
 #ifndef DEBUG
