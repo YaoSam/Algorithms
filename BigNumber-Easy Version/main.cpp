@@ -46,7 +46,8 @@ int main()
 		while (cin >> a >> b){
 			BigNumber one(a), two(b);
 			cout << one << two ;
-			cout << (one -= two) << endl;
+			cout << (one -= two);
+			cout << (one += two) << endl;
 		}
 	}
 	catch (const char * error){ cout << error << endl; }

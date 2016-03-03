@@ -41,6 +41,22 @@ void BigNumber::Create(const std::string &str){
 		num[i] = temp[length - i-1] - '0';
 }
 
+void BigNumber::RightMove(){
+	int count = 0;
+	re(i, length){
+		if (num[i] != 0)break;
+		count++;
+	}
+	if (count > 0){
+		int *tempNum = Space(length - count);
+		memcpy(tempNum, num + count, sizeof(int)*(length - count));
+		delete[] num;
+		num = tempNum;
+		Point += count;
+		length -= count;
+	}
+}
+
 BigNumber::BigNumber(const std::string &str){
 	Create(str);
 }
@@ -95,6 +111,7 @@ BigNumber& BigNumber::plus(const BigNumber& other){
 	length = newLength;
 	delete[] num;
 	num = tempNum;
+	RightMove();
 	return *this;
 }
 
@@ -146,6 +163,7 @@ BigNumber& BigNumber::subtract(const BigNumber& other){
 		}
 	delete[] num;
 	num = tempNum;
+	RightMove();
 	return *this;
 }
 

@@ -11,6 +11,7 @@ class BigNumber{
 	void Create(const std::string &str);
 	BigNumber&  plus(const BigNumber& other);
 	BigNumber&  subtract(const BigNumber& other);
+	void RightMove();//将多余的0去掉。
 public:
 	BigNumber() :num(new int(0)), length(1), Point(0), sign(0){}
 	BigNumber(const std::string &str);
