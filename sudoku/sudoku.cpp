@@ -1,9 +1,5 @@
 #pragma once
 #include "sudoku.h"
-std::ostream& operator<<(std::ostream &out, point const &other){
-	return out << "(" << other.x << "," << other.y << ")";
-}
-
 sudoku::sudoku(){
 	clean();
 }
@@ -15,20 +11,25 @@ void sudoku::Write(int x, int y, int value){
 	}
 	empty--;
 	map[y][x] = value;
-	re(i,4)
-		re(k, 9){
-		int X = x + (k + 1)*vector[i].x, Y = y + (k + 1)*vector[i].y;
-		if (!Out(X, Y)){
-			if (map[Y][X] == map[y][x]){
+	re(i, 9){
+		if (i + 1 != y){
+			if (map[i+1][x] == map[y][x]){
 				empty = -1;
 				return;
 			}
-			visit[Y][X][map[y][x]]++;
-			if (visit[Y][X][map[y][x]] == 1)
-				visit[Y][X][0]++;
+			visit[i + 1][x][map[y][x]]++;
+			if (visit[i + 1][x][map[y][x]] == 1)
+				visit[i + 1][x][0]++;
 		}
-		else
-			break;
+		if (i + 1 != x){
+			if (map[y][i+1] == map[y][x]){
+				empty = -1;
+				return;
+			}
+			visit[y][i + 1][map[y][x]]++;
+			if (visit[y][i + 1][map[y][x]] == 1)
+				visit[y][i + 1][0]++;
+		}
 	}
 	int X = (x - 1) / 3 * 3 + 1, Y = (y - 1) / 3 * 3 + 1;
 	re(i,3)
@@ -83,14 +84,11 @@ point sudoku::Find()const{
 				re(i,3)
 					re(j,3){
 					X += i; Y += j;
-				//for (k = 1; k <= 9; k++){
-					//X += k / 3; Y += k % 3;
 					if (map[Y][X] == 0 && (x != X || y != Y) && visit[Y][X][value] == 0)
 						break;
 				}
 				if (k == 10)return point(x, y, value);
 			}
-
 	}
 	return point();
 }
@@ -135,9 +133,7 @@ std::ostream& operator<<(std::ostream &out, sudoku const &other){
 }
 sudoku Solve(sudoku one){
 	TIME++;
-	//if (one.empty == -1)std::cout << "´íÎó" << std::endl;
 	one.solve();
-	//std::cout << one << std::endl;
 	if (one.empty == 0)
 		return one;
 	else{
@@ -157,8 +153,6 @@ sudoku Solve(sudoku one){
 			sudoku two=Solve(tempAns);
 			if (two.empty == 0)
 				return two;
-			//std::cout << "Ò»¸ö´íÁË\n";
-			//std::cout << tempAns << std::endl;
 		}
 		return one;
 	}

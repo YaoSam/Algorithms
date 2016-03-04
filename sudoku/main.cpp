@@ -43,18 +43,15 @@ int main()
 #endif
 	try{
 		sudoku one;
-		cin >> one;
+		re(i,5){
+			cin >> one;
+			//cout << one;
+			sudoku ans = Solve(one);
+			cout << ans;
+		}
 		//one.PrintVisit();
-		cout << one;
-		sudoku ans = Solve(one);
 		cout << TIME << endl;
-		cout << ans;
-		one.solve();
-		cout << one;
-		//one.erase(2, 2);
-		//one.PrintVisit();
-		//cout << one;
-		cout << clock() - BeginTime << endl;
+		cout <<endl<<"运行时间："<< clock() - BeginTime << endl;
 	}
 	catch (const char * error){ cout << error << endl; }
 #ifndef DEBUG
