@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SbPicture", "SbPicture\SbPi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BigNumber-Easy Version", "BigNumber-Easy Version\BigNumber-Easy Version.vcxproj", "{1CBEC7FC-1126-4BEA-9805-57498D10B8BF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sudoku", "sudoku\sudoku.vcxproj", "{5B13C9E8-B906-4917-AFA7-981428B1CD3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -47,6 +49,10 @@ Global
 		{1CBEC7FC-1126-4BEA-9805-57498D10B8BF}.Debug|Win32.Build.0 = Debug|Win32
 		{1CBEC7FC-1126-4BEA-9805-57498D10B8BF}.Release|Win32.ActiveCfg = Release|Win32
 		{1CBEC7FC-1126-4BEA-9805-57498D10B8BF}.Release|Win32.Build.0 = Release|Win32
+		{5B13C9E8-B906-4917-AFA7-981428B1CD3E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B13C9E8-B906-4917-AFA7-981428B1CD3E}.Debug|Win32.Build.0 = Debug|Win32
+		{5B13C9E8-B906-4917-AFA7-981428B1CD3E}.Release|Win32.ActiveCfg = Release|Win32
+		{5B13C9E8-B906-4917-AFA7-981428B1CD3E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

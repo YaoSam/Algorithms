@@ -215,24 +215,21 @@ Number& Number::product(const Number& other){
 	Point += other.Point;
 	delete[] num;
 	num = tempNum;
+	RightMove();
 	return *this;
 }
 
 Number& Number::operator+=(const Number& other){
-	if (sign == other.sign){
+	if (sign == other.sign)
 		return this->plus(other);
-	}
-	else{
+	else
 		return this->subtract(other);
-	}
 }
 Number& Number::operator-=(const Number& other){
-	if (sign == other.sign){
+	if (sign == other.sign)
 		return this->subtract(other);
-	}
-	else{
+	else
 		return this->plus(other);
-	}
 }
 Number& Number::operator*=(const Number& other){
 	return this->product(other);
@@ -244,8 +241,7 @@ bool Number::operator>(const Number& other)const{
 	int myLeft = Point + length,otherLeft=other.Point+other.length;
 	if (myLeft != otherLeft)//判断长度
 		return (myLeft > otherLeft) != sign;
-	unsigned int i = 0;
-	int minL = Min(length, other.length);
+	unsigned int i = 0, minL = Min(length, other.length);
 	while (i < minL){//判断每一位
 		if (num[length - i - 1] != other.num[other.length - i - 1])
 			return (num[length - i - 1] > other.num[other.length - i - 1]) != sign;
