@@ -24,6 +24,8 @@ public:
 	Number& operator+=(const Number& other);
 	Number& operator-=(const Number& other);
 	Number& operator*=(const Number& other);
+	bool operator>(const Number& other)const;
+	bool operator==(const Number& other)const;
 	friend std::ostream& operator<<(std::ostream &out, Number const &other);
 	friend std::istream& operator>>(std::istream &in, Number &other);
 	friend void Swap(Number &a, Number& b);

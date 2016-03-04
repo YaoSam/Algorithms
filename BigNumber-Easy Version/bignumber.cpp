@@ -238,6 +238,31 @@ Number& Number::operator*=(const Number& other){
 	return this->product(other);
 }
 
+bool Number::operator>(const Number& other)const{
+	if (sign != other.sign)//先判断符号。
+		return other.sign;
+	int myLeft = Point + length,otherLeft=other.Point+other.length;
+	if (myLeft != otherLeft)//判断长度
+		return (myLeft > otherLeft) != sign;
+	unsigned int i = 0;
+	int minL = Min(length, other.length);
+	while (i < minL){//判断每一位
+		if (num[length - i - 1] != other.num[other.length - i - 1])
+			return (num[length - i - 1] > other.num[other.length - i - 1]) != sign;
+			i++;
+		}
+	return (i < length) != sign;
+}
+
+bool Number::operator==(const Number& other)const{
+	if (sign != other.sign&&length != other.length&&Point!=other.Point)
+		return false;
+	re(i, length)//都相等了。直接比较
+		if (other.num[i] != num[i])
+			return false;
+	return true;
+}
+
 
 std::ostream& operator<<(std::ostream &out, Number const &other){
 	if (other.sign)

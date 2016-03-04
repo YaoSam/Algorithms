@@ -43,17 +43,15 @@ int main()
 	try{
 		Number one,two;
 		while (cin>> one >> two){
-			cout << one << two ;
-			cout << (one -= two);
-			cout << (one += two);
-			cout << (one *= two) << endl;
+			cout << one <<endl<<two<<endl;
+			cout << (one -= two)<<endl<< (one += two)<<endl<< (one == two) << endl;
 		}
-		Number three("2");
-		re(i,10){
-			cout << three << endl;
-			three *= three;
-		}
-		cout << three << endl;
+		//Number three("2");
+		//re(i,10){
+		//	cout << three << endl;
+		//	three *= three;
+		//}
+		//cout << three << endl;
 	}
 	catch (const char * error){ cout << error << endl; }
 #ifndef DEBUG
