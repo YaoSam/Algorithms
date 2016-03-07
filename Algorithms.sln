@@ -19,8 +19,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BigNumber-Easy Version", "B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sudoku", "sudoku\sudoku.vcxproj", "{5B13C9E8-B906-4917-AFA7-981428B1CD3E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Partition", "Partition\Partition.vcxproj", "{8A366262-0DAD-484A-8074-652CECB5EB1A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -55,10 +53,6 @@ Global
 		{5B13C9E8-B906-4917-AFA7-981428B1CD3E}.Debug|Win32.Build.0 = Debug|Win32
 		{5B13C9E8-B906-4917-AFA7-981428B1CD3E}.Release|Win32.ActiveCfg = Release|Win32
 		{5B13C9E8-B906-4917-AFA7-981428B1CD3E}.Release|Win32.Build.0 = Release|Win32
-		{8A366262-0DAD-484A-8074-652CECB5EB1A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{8A366262-0DAD-484A-8074-652CECB5EB1A}.Debug|Win32.Build.0 = Debug|Win32
-		{8A366262-0DAD-484A-8074-652CECB5EB1A}.Release|Win32.ActiveCfg = Release|Win32
-		{8A366262-0DAD-484A-8074-652CECB5EB1A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,7 +63,6 @@ Global
 		{8C4840D8-61F6-4ED5-8396-426B6B19D515} = {A2281DF4-0DF5-4583-9CCC-2120C1D95F83}
 		{2D86F945-BAB9-4199-8F40-7FC2EDF2AECF} = {A2281DF4-0DF5-4583-9CCC-2120C1D95F83}
 		{1CBEC7FC-1126-4BEA-9805-57498D10B8BF} = {A2281DF4-0DF5-4583-9CCC-2120C1D95F83}
-		{8A366262-0DAD-484A-8074-652CECB5EB1A} = {A2281DF4-0DF5-4583-9CCC-2120C1D95F83}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
