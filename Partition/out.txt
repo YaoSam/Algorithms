@@ -1,0 +1,27 @@
+|My|name|is|Sam|Yao|
+|My|name|is|Sam Yao|
+|My|name|is Sam|Yao|
+|My|name|is Sam Yao|
+|My|name is|Sam|Yao|
+|My|name is|Sam Yao|
+|My|name is Sam|Yao|
+|My|name is Sam Yao|
+|My name|is|Sam|Yao|
+|My name|is|Sam Yao|
+|My name|is Sam|Yao|
+|My name|is Sam Yao|
+|My name is|Sam|Yao|
+|My name is|Sam Yao|
+|My name is Sam|Yao|
+|My name is Sam Yao|
+
+|name|is|Sam|Yao|
+|name|is|Sam Yao|
+|name|is Sam|Yao|
+|name|is Sam Yao|
+|name is|Sam|Yao|
+|name is|Sam Yao|
+|name is Sam|Yao|
+|name is Sam Yao|
+
+运行时间：0
