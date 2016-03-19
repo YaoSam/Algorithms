@@ -47,7 +47,6 @@ poly::~poly()
 
 poly operator+(const poly& a, const poly& b)
 {
-	int tempLen=0;
 	node* temp=new node;
 	node* head = temp;
 	node* atemp = a.head->next, *btemp = b.head->next;
