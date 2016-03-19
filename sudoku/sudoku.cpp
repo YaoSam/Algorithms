@@ -12,6 +12,8 @@ void sudoku::Write(int x, int y, int value){
 	}
 	empty--;
 	map[y][x] = value;
+	int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;//得到当前方块的左上角。
+	int X, Y;
 	Re(i, 9){
 		if (i!= y){
 			if (map[i][x] == map[y][x]){
@@ -27,11 +29,7 @@ void sudoku::Write(int x, int y, int value){
 			}
 			visit[y][i].set(map[y][x]);
 		}
-	}
-	int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;//得到当前方块的左上角。
-	re(k, 9)
-	{
-		int X = tempX + k / 3, Y = tempY + k % 3;
+		X = tempX + (i-1) / 3, Y = tempY + (i-1) % 3;
 		if (!(Y== y&&X== x)){
 			if (map[Y][X] == map[y][x]){
 				empty = -1;
@@ -49,6 +47,7 @@ point sudoku::FindEmpty()const{
 		if (map[j][i] == 0)
 			return point(i, j);
 	}
+	return point(0, 0);
 }
 
 point sudoku::Find()const{
@@ -60,24 +59,25 @@ point sudoku::Find()const{
 					return point(x, y, i);
 		}
 	}
+	//二层搜索。感觉还可以搞三层四层。不过好像会很复杂……
 	Re(x, 9)
 		Re(y, 9){
-		if (map[y][x] == 0)
-			Re(v, 9)
-			if (visit[y][x].test(v) == 0){
-				int value = v;
+		if (map[y][x] == 0)//寻找空格。
+			Re(value, 9)
+			if (visit[y][x].test(value) == 0){
 				int k = 0;
+				//对该行该列该方块的visit进行遍历。看是否能能填上这个数。假如都不能。那就只有这个可以填了。
 				for (k = 1; k <= 9;k++)
 					if (map[y][k] == 0 && x != k&&visit[y][k].test(value) == 0)//可以填
 						break;
-				if (k == 10)return point(x, y, value);//只有这个可以填
+				if (k == 10)return point(x, y, value);//代表只有这个可以填
 				for (k = 1; k <= 9; k++)
 					if (map[k][x] == 0 && y != k&&visit[k][x].test(value)== 0)
 						break;
 				if (k == 10)return point(x, y, value);
-				int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;
+				int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1,X,Y;
 				for (k = 0; k < 9;k++){
-					int X = tempX + k / 3, Y = tempY + k % 3;
+					X = tempX + k / 3, Y = tempY + k % 3;
 					if (map[Y][X] == 0 && (x != X || y != Y) && visit[Y][X].test(value) == 0)
 						break;
 				}
@@ -131,9 +131,10 @@ sudoku Solve(sudoku one){
 	if (one.empty == 0)
 		return one;
 	else{
-		point temp = one.FindEmpty();
+		//常规方法不能解决，则暴力。
+		point temp = one.FindEmpty();//找到空格
 		int list[10] = { 0 }, count = 0;
-		Re(i, 9)
+		Re(i, 9)//记录能填的数字
 			if (one.visit[temp.y][temp.x].test(i) == 0)
 				list[count++] = i;
 		if (count == 0){ 
@@ -142,9 +143,9 @@ sudoku Solve(sudoku one){
 		}
 		sudoku tempAns;
 		re(i, count){
-			tempAns = one;
-			tempAns.Write(temp.x, temp.y, list[i]);
-			sudoku two=Solve(tempAns);
+			tempAns = one;//临时状态
+			tempAns.Write(temp.x, temp.y, list[i]);//填上能填的数字
+			sudoku two=Solve(tempAns);//进入递归
 			if (two.empty == 0)
 				return two;
 		}

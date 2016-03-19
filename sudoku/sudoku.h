@@ -1,7 +1,6 @@
 #pragma once
 #include "iostream"
 #include <bitset>
-#include "string"
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 #define Re(i,n) for(unsigned int i=1;i<=n;i++)
 struct point{
@@ -13,12 +12,12 @@ struct point{
 };
 const point vector[4] = { point(1, 0), point(0, 1), point(-1, 0), point(0, -1) };
 class sudoku{
-	int empty;
+	int empty;//记录空格的数目
 	int map[10][10];
-	std::bitset<10> visit[10][10];
+	std::bitset<10> visit[10][10];//代表是否能填某个数。
 	point Find()const;
 	void Write(int x, int y, int value);
-	void solve();
+	void solve();//常规推理。最多推理两层。
 	point FindEmpty()const;
 public:
 	sudoku();
