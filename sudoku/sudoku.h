@@ -15,8 +15,7 @@ const point vector[4] = { point(1, 0), point(0, 1), point(-1, 0), point(0, -1) }
 class sudoku{
 	int empty;
 	int map[10][10];
-	//std::bitset<9> visit[10][10];
-	int visit[10][10][10];//判断某个数是否能放。
+	std::bitset<10> visit[10][10];
 	point Find()const;
 	void Write(int x, int y, int value);
 	void solve();

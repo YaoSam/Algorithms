@@ -6,7 +6,7 @@ sudoku::sudoku(){
 }
 
 void sudoku::Write(int x, int y, int value){
-	if (map[y][x]>0||visit[y][x][value]>0){
+	if (map[y][x]>0||visit[y][x].test(value)){
 		empty = -1;
 		return;
 	}
@@ -18,18 +18,14 @@ void sudoku::Write(int x, int y, int value){
 				empty = -1;
 				return;
 			}
-			visit[i][x][map[y][x]]++;
-			if (visit[i][x][map[y][x]] == 1)
-				visit[i][x][0]++;
+			visit[i][x].set(map[y][x]);
 		}
 		if (i!= x){
 			if (map[y][i] == map[y][x]){
 				empty = -1;
 				return;
 			}
-			visit[y][i][map[y][x]]++;
-			if (visit[y][i][map[y][x]] == 1)
-				visit[y][i][0]++;
+			visit[y][i].set(map[y][x]);
 		}
 	}
 	int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;//得到当前方块的左上角。
@@ -41,9 +37,7 @@ void sudoku::Write(int x, int y, int value){
 				empty = -1;
 				return;
 			}
-			visit[Y][X][map[y][x]]++;
-			if (visit[Y][X][map[y][x]] == 1)
-				visit[Y][X][0]++;
+			visit[Y][X].set(map[y][x]);
 		}		
 	}
 
@@ -60,9 +54,9 @@ point sudoku::FindEmpty()const{
 point sudoku::Find()const{
 	Re(x, 9)//最简单的情况
 		Re(y, 9){
-		if (map[y][x] == 0 && visit[y][x][0] == 8){
+		if (map[y][x] == 0 && visit[y][x].count() == 8){
 			Re(i, 9)
-				if (visit[y][x][i] == 0)
+				if (visit[y][x].test(i) == 0)
 					return point(x, y, i);
 		}
 	}
@@ -70,21 +64,21 @@ point sudoku::Find()const{
 		Re(y, 9){
 		if (map[y][x] == 0)
 			Re(v, 9)
-			if (visit[y][x][v] == 0){
+			if (visit[y][x].test(v) == 0){
 				int value = v;
 				int k = 0;
 				for (k = 1; k <= 9;k++)
-					if (map[y][k] == 0 && x != k&&visit[y][k][value] == 0)//可以填
+					if (map[y][k] == 0 && x != k&&visit[y][k].test(value) == 0)//可以填
 						break;
 				if (k == 10)return point(x, y, value);//只有这个可以填
 				for (k = 1; k <= 9; k++)
-					if (map[k][x] == 0 && y != k&&visit[k][x][value] == 0)
+					if (map[k][x] == 0 && y != k&&visit[k][x].test(value)== 0)
 						break;
 				if (k == 10)return point(x, y, value);
 				int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;
 				for (k = 0; k < 9;k++){
 					int X = tempX + k / 3, Y = tempY + k % 3;
-					if (map[Y][X] == 0 && (x != X || y != Y) && visit[Y][X][value] == 0)
+					if (map[Y][X] == 0 && (x != X || y != Y) && visit[Y][X].test(value) == 0)
 						break;
 				}
 				if (k == 9)return point(x, y, value);
@@ -140,7 +134,7 @@ sudoku Solve(sudoku one){
 		point temp = one.FindEmpty();
 		int list[10] = { 0 }, count = 0;
 		Re(i, 9)
-			if (one.visit[temp.y][temp.x][i] == 0)
+			if (one.visit[temp.y][temp.x].test(i) == 0)
 				list[count++] = i;
 		if (count == 0){ 
 			one.empty = -1; 
