@@ -66,6 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sudoku.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sudoku.h" />

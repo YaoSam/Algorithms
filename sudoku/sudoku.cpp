@@ -1,5 +1,6 @@
 #pragma once
 #include "sudoku.h"
+int TIME = 0;
 sudoku::sudoku(){
 	clean();
 }
@@ -11,83 +12,82 @@ void sudoku::Write(int x, int y, int value){
 	}
 	empty--;
 	map[y][x] = value;
-	re(i, 9){
-		if (i + 1 != y){
-			if (map[i+1][x] == map[y][x]){
+	Re(i, 9){
+		if (i!= y){
+			if (map[i][x] == map[y][x]){
 				empty = -1;
 				return;
 			}
-			visit[i + 1][x][map[y][x]]++;
-			if (visit[i + 1][x][map[y][x]] == 1)
-				visit[i + 1][x][0]++;
+			visit[i][x][map[y][x]]++;
+			if (visit[i][x][map[y][x]] == 1)
+				visit[i][x][0]++;
 		}
-		if (i + 1 != x){
-			if (map[y][i+1] == map[y][x]){
+		if (i!= x){
+			if (map[y][i] == map[y][x]){
 				empty = -1;
 				return;
 			}
-			visit[y][i + 1][map[y][x]]++;
-			if (visit[y][i + 1][map[y][x]] == 1)
-				visit[y][i + 1][0]++;
+			visit[y][i][map[y][x]]++;
+			if (visit[y][i][map[y][x]] == 1)
+				visit[y][i][0]++;
 		}
 	}
-	int X = (x - 1) / 3 * 3 + 1, Y = (y - 1) / 3 * 3 + 1;
-	re(i,3)
-		re(j, 3)
-		if (!(Y + i == y&&X + j == x)){
-			if (map[Y + i][X + j] == map[y][x]){
+	int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;//得到当前方块的左上角。
+	re(k, 9)
+	{
+		int X = tempX + k / 3, Y = tempY + k % 3;
+		if (!(Y== y&&X== x)){
+			if (map[Y][X] == map[y][x]){
 				empty = -1;
 				return;
 			}
-			visit[Y + i][X + j][map[y][x]]++;
-			if (visit[Y + i][X + j][map[y][x]] == 1)
-				visit[Y + i][X + j][0]++;
-		}
+			visit[Y][X][map[y][x]]++;
+			if (visit[Y][X][map[y][x]] == 1)
+				visit[Y][X][0]++;
+		}		
+	}
+
 }
 
 point sudoku::FindEmpty()const{
-	re(i, 9)
-		re(j, 9){
-		if (map[j + 1][i + 1] == 0)
-			return point(i + 1, j + 1);
+	Re(i, 9)
+		Re(j, 9){
+		if (map[j][i] == 0)
+			return point(i, j);
 	}
 }
 
 point sudoku::Find()const{
-	re(ax, 9)//最简单的情况
-		re(ay, 9){
-		int x = ax + 1, y = ay + 1;
+	Re(x, 9)//最简单的情况
+		Re(y, 9){
 		if (map[y][x] == 0 && visit[y][x][0] == 8){
-			re(i, 9)
-				if (visit[y][x][i + 1] == 0)
-					return point(x, y, i + 1);
+			Re(i, 9)
+				if (visit[y][x][i] == 0)
+					return point(x, y, i);
 		}
 	}
-	re(ax, 9)
-		re(ay, 9){
-		int x = ax + 1, y = ay + 1;
+	Re(x, 9)
+		Re(y, 9){
 		if (map[y][x] == 0)
-			re(v, 9)
-			if (visit[y][x][v + 1] == 0){
-				int value = v + 1;
+			Re(v, 9)
+			if (visit[y][x][v] == 0){
+				int value = v;
 				int k = 0;
-				for (k = 1; k <= 9; k++){
+				for (k = 1; k <= 9;k++)
 					if (map[y][k] == 0 && x != k&&visit[y][k][value] == 0)//可以填
 						break;
-				}
 				if (k == 10)return point(x, y, value);//只有这个可以填
 				for (k = 1; k <= 9; k++)
 					if (map[k][x] == 0 && y != k&&visit[k][x][value] == 0)
 						break;
 				if (k == 10)return point(x, y, value);
-				int X = (x - 1) / 3 * 3 + 1, Y = (y - 1) / 3 * 3 + 1;
-				re(i,3)
-					re(j,3){
-					X += i; Y += j;
+				int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;
+				for (k = 0; k < 9;k++){
+					int X = tempX + k / 3, Y = tempY + k % 3;
 					if (map[Y][X] == 0 && (x != X || y != Y) && visit[Y][X][value] == 0)
 						break;
 				}
-				if (k == 10)return point(x, y, value);
+				if (k == 9)return point(x, y, value);
 			}
 	}
 	return point();
@@ -114,19 +114,19 @@ void sudoku::clean(){
 std::istream& operator>>(std::istream &in, sudoku &other){
 	other.clean();
 	int temp;
-	re(i, 9)
-		re(j, 9){
+	Re(i, 9)
+		Re(j, 9){
 		in >> temp;
 		if (temp != 0)
-			other.Write(j + 1, i + 1, temp);
+			other.Write(j, i, temp);
 	}
 	return in;
 }
 std::ostream& operator<<(std::ostream &out, sudoku const &other){
 	out << "空格数为：" << other.empty << std::endl;
-	re(i, 9){
-		re(j, 9)
-			out << other.map[i + 1][j + 1] << " ";
+	Re(i, 9){
+		Re(j, 9)
+			out << other.map[i][j] << " ";
 		out << std::endl;
 	}
 	return out;
@@ -139,9 +139,9 @@ sudoku Solve(sudoku one){
 	else{
 		point temp = one.FindEmpty();
 		int list[10] = { 0 }, count = 0;
-		re(i, 9)
-			if (one.visit[temp.y][temp.x][i + 1] == 0)
-				list[count++] = i + 1;
+		Re(i, 9)
+			if (one.visit[temp.y][temp.x][i] == 0)
+				list[count++] = i;
 		if (count == 0){ 
 			one.empty = -1; 
 			return one;

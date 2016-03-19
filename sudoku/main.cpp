@@ -26,12 +26,11 @@
 #include <time.h>
 #include <algorithm>
 #include "sudoku.h"
-#include "sudoku.cpp"
 using namespace std;
 #undef re
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 #define DEBUG
-
+extern int TIME;
 int main()
 {
 	clock_t BeginTime = clock();

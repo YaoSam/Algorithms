@@ -1,12 +1,13 @@
 #pragma once
 #include "iostream"
+#include <bitset>
 #include "string"
 #define re(i,n) for(unsigned int i=0;i<n;i++)
-extern int TIME = 0;
+#define Re(i,n) for(unsigned int i=1;i<=n;i++)
 struct point{
 	int x, y,value;
 	point(int X=0, int Y=0,int V=0) :x(X), y(Y),value(V){}
-	bool operator==(const point& other){ 
+	bool operator==(const point& other)const{ 
 		return x == other.x&&y == other.y; 
 	}
 };
@@ -14,6 +15,7 @@ const point vector[4] = { point(1, 0), point(0, 1), point(-1, 0), point(0, -1) }
 class sudoku{
 	int empty;
 	int map[10][10];
+	//std::bitset<9> visit[10][10];
 	int visit[10][10][10];//判断某个数是否能放。
 	point Find()const;
 	void Write(int x, int y, int value);
