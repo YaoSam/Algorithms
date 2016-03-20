@@ -42,7 +42,7 @@ int main()
 	try{
 		Input();
 		Output();
-		search();
+		cout<<search();
 		cout << endl << "运行时间：" << clock() - BeginTime << endl;
 	}
 	catch (const char * error){ cout << error << endl; }

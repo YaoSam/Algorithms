@@ -1,17 +1,6 @@
 #include "map.h"
 point location::end(1, 1), location::begin;
-int gcd(int x, int y)
-{
-	return y > 0 ? gcd(y, x%y) : x;
-}
 
-int point::operator-(const point &other)const{
-	int deltaX = abs(x - other.x), deltaY = abs(y - other.y);
-	if (deltaX == 0)return deltaY;
-	if (deltaY == 0)return deltaX;
-	int common = gcd(deltaX, deltaY);
-	return common*(deltaX / common + deltaY / common - 1);
-}
 std::ostream& operator<<(std::ostream& out, const point &other)
 {
 	return out << "(" << other.x << "," << other.y << ")";
@@ -27,14 +16,17 @@ std::istream& operator>>(std::istream& in, point &other)
 location::location(int x, int y):
 my_location_(x, y),
 my_distance_(0),
-min_distance_(end-my_location_)
+min_distance_(end-my_location_),
+first_walk(9)
 {}
 location location::walk(int x)const
 {
 	if (x > 8 || x < 0)throw "Error";
 	location ans(*this);
-	ans.path[ans.my_distance_++] = my_location_;
-	//ans.my_distance_ += map[my_location_.y][my_location_.x];
+	ans.my_distance_++;
+	ans.path[my_distance_] = my_location_;
+	//ans.my_distance_ += map[my_location_.y][my_location_.x];//该点的速度。
+	if (first_walk == 9)ans.first_walk = x;
 	visit[my_location_.y][my_location_.x]=1;
 	ans.my_location_ += vector[x];
 	ans.min_distance_ = end - ans.my_location_;
@@ -46,7 +38,15 @@ bool location::can_walk(int x)const
 {
 	point temp = my_location_;
 	temp += vector[x];
-	return map[temp.y][temp.x];
+	if (map[temp.y][temp.x] == 0)
+		return 0;
+	int &vis_my = visit[temp.y][temp.x];
+	if (vis_my == 0||vis_my>my_distance_+1)
+	{
+		vis_my = my_distance_ + 1;
+		return 1;
+	}
+	return 0;
 }
 
 void Input()//地图从1，1到width,height
@@ -74,7 +74,7 @@ void Output()
 	std::cout << std::endl;
 }
 
-void search()
+point search()
 {
 	MinHeap<location> Heap;
 	location temp(location::begin.x, location::begin.y);
@@ -86,15 +86,7 @@ void search()
 		temp = Heap.pop();
 	}
 	re(i, temp.my_distance_)
-		map[temp.path[i].y][temp.path[i].x] = i + 1;
-	re(i, height)
-	{
-		re(j, width)
-			std::cout << visit[i + 1][j + 1] << " ";
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-
+		map[temp.path[i].y][temp.path[i].x] = i;
 	Output();
-	std::cout << temp.dis() << std::endl;
+	return temp.First();
 }
