@@ -26,8 +26,15 @@ TEMP
 T pop(int Current, T Heap[]);
 
 TEMP
-void knn(int n, int k, T Data[]);
+void heapSort_knn(int n, int k, T Data[]);
 
 
 TEMP
 void Qsort_knn(T a[], int left, int right, int k);
+
+
+TEMP
+void _Qsort_knn(T a[], int left, int right, int k, int count);
+
+TEMP 
+void super_knn(int n, int k, T data[]);

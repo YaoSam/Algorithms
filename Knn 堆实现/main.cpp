@@ -30,7 +30,9 @@ using namespace std;
 #undef re
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 #define DEBUG
-extern int TIME;
+
+
+int num[5][1000000];
 int main()
 {
 	clock_t BeginTime =	clock();
@@ -41,36 +43,57 @@ int main()
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
 	try{
-		
-		unsigned int n = 1000;
-		int num1[10000], num2[10000],num3[10000];
-		unsigned int Test_Time = 100;//测试次数
+		clock_t my_Time[10], deltaTime; re(i, 4)my_Time[i+1] = 0;
+		unsigned int n = 100;
+		unsigned int Test_Time = 10;//测试次数
+		int k = 100;
 		re(COUNT, Test_Time)
 		{
+			//生成测试数据
 			re(i, n)
 			{
-				//cin >> num1[i];
-				num1[i] = rand() % 100;
+				//cin >> num[1][i];
+				num[1][i] = rand();
 			}
-			memcpy(num2, num1, sizeof(int)*n);
-			memcpy(num3, num1, sizeof(int)*n);
-			//printArray(num1, n);
+			Qsort_MaxToMin(num[1], 0, n - 1);
+			printArray(num[1], n);
+			memcpy(num[2], num[1], sizeof(int)*n);
+			memcpy(num[3], num[1], sizeof(int)*n);
+			memcpy(num[4], num[1], sizeof(int)*n);
+			//printArray(num[1], n);
 			//cout << endl;
-			int k = 20;
-			Qsort_knn(num1, 0, n - 1, k);
-			knn(n, k, num2);
-			Qsort(num3, 0, n - 1);
+			//各种knn
+
+			deltaTime = clock();
+			super_knn(n, k, num[4]);
+			my_Time[4] += clock() - deltaTime;
+
+			deltaTime = clock();
+			Qsort_knn(num[1], 0, n - 1, k);
+			my_Time[1] += clock() - deltaTime;
+
+			deltaTime = clock();
+			heapSort_knn(n, k, num[2]);
+			my_Time[2] += clock() - deltaTime;
+
+			deltaTime = clock();
+			Qsort(num[3], 0, n - 1);
+			my_Time[3] += clock() - deltaTime;
+
 			//排序方便对比。
-			Qsort(num1, 0, k - 1);
-			Qsort(num2, 0, k - 1);
+			Qsort(num[1], 0, k - 1);
+			Qsort(num[2], 0, k - 1);
+			Qsort(num[4], 0, k - 1);
 			re(i, k)
-				if (num1[i] != num3[i]||num1[i]!=num2[i])
+				if (num[1][i] != num[3][i]||num[1][i]!=num[2][i]||num[4][i]!=num[1][i])
 					throw "WTF!!!\n";
-			//printArray(num1, k);
-			//printArray(num2, k);
-			//printArray(num3, k);
+			//re(i, 4)
+			//	printArray(num[i+1], n);
 		}
 		cout << "测试通过！" << endl;
+		cout << "各种knn的时间分别为：" << endl;
+		re(i, 4)
+			cout << my_Time[i + 1] << " ";
 	}
 	catch (const char * error){ cout << error << endl; }
 #ifndef DEBUG

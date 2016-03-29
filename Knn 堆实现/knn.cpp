@@ -71,9 +71,8 @@ void Qsort_knn(T a[], int left, int right, int k)
 	if (l < right)	Qsort_knn(a, l, right,k);
 }
 
-
 TEMP
-void knn(int n, int k, T Data[])
+void heapSort_knn(int n, int k, T Data[])
 {
 	if (k >= n)return;
 	initial(k, Data);//建立k个元素的堆
@@ -87,3 +86,34 @@ void knn(int n, int k, T Data[])
 	push(temp1, k - 1, Data);//取最后一个元素放入堆
 	Data[k] = pop(k, Data);//将第k+1个位置放最大值
 }
+
+
+TEMP
+void _Qsort_knn(T a[], int left, int right, int k, int count)
+{
+	if (!(left <= k&&right >= k))return;
+	if (count < 0)
+	{
+		heapSort_knn(right - left + 1, /*元素数目*/k - left,/*剩余的前k个*/a + left);/*新的起始位置*/
+		return;
+	}
+	T mid = a[(left + right) / 2];
+	int l = left, r = right;
+	do
+	{
+		while (a[l] < mid)l++;
+		while (a[r] > mid)r--;
+		if (l <= r)
+			Swap(a[l++], a[r--]);
+	} while (l <= r);
+	if (r > left)	_Qsort_knn(a, left, r, k, count - 1);
+	if (l < right)	_Qsort_knn(a, l, right, k, count - 1);
+}
+
+TEMP
+void super_knn(int n, int k, T data[])
+{
+	int limit = floor(log2(n));
+	_Qsort_knn(data, 0, n - 1, k, limit);
+}
+
