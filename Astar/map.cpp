@@ -95,6 +95,7 @@ Vector search()
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
+	int tempmap[100][100];
 	memcpy(tempmap, map, sizeof(map));
 	re(i, temp.my_distance_)
 		map[temp.path[i].y][temp.path[i].x] = i;

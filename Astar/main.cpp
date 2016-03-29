@@ -26,6 +26,8 @@
 #include <time.h>
 #include "map.h"
 #include <algorithm>
+#include <iterator>
+#include <map>
 using namespace std;
 #undef re
 #define re(i,n) for(unsigned int i=0;i<n;i++)

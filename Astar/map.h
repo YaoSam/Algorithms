@@ -50,7 +50,6 @@ public:
 	int dis()const{ return my_distance_; }
 };
 static int map[100][100];
-static int tempmap[100][100];
 static int visit[100][100];
 static unsigned int width, height;
 void Input();

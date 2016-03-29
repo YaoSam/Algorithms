@@ -25,6 +25,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Astar", "Astar\Astar.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "List_Poly", "List_Poly\List_Poly.vcxproj", "{8C8904B3-55DB-4C3C-A17F-77E5ACA06333}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "第五章 深搜与宽搜", "第五章 深搜与宽搜", "{12BDABF0-2DC1-45AC-BB22-CBBB5E609F9C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "5-6 无和集问题", "..\5-6 无和集问题\5-6 无和集问题.vcxproj", "{D99DF800-0DDF-4950-AC6C-23F7AE521536}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -67,6 +71,10 @@ Global
 		{8C8904B3-55DB-4C3C-A17F-77E5ACA06333}.Debug|Win32.Build.0 = Debug|Win32
 		{8C8904B3-55DB-4C3C-A17F-77E5ACA06333}.Release|Win32.ActiveCfg = Release|Win32
 		{8C8904B3-55DB-4C3C-A17F-77E5ACA06333}.Release|Win32.Build.0 = Release|Win32
+		{D99DF800-0DDF-4950-AC6C-23F7AE521536}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D99DF800-0DDF-4950-AC6C-23F7AE521536}.Debug|Win32.Build.0 = Debug|Win32
+		{D99DF800-0DDF-4950-AC6C-23F7AE521536}.Release|Win32.ActiveCfg = Release|Win32
+		{D99DF800-0DDF-4950-AC6C-23F7AE521536}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,7 @@ Global
 		{1CBEC7FC-1126-4BEA-9805-57498D10B8BF} = {A2281DF4-0DF5-4583-9CCC-2120C1D95F83}
 		{CDFDD2F6-E27D-41BA-BDBE-96DD1A3CDA1E} = {DE0B4C53-5F0B-487B-8E32-1D229CA4B62E}
 		{8C8904B3-55DB-4C3C-A17F-77E5ACA06333} = {A2281DF4-0DF5-4583-9CCC-2120C1D95F83}
+		{D99DF800-0DDF-4950-AC6C-23F7AE521536} = {12BDABF0-2DC1-45AC-BB22-CBBB5E609F9C}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
