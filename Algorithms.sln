@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "第五章 深搜与宽搜",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "5-6无和集问题", "5-6无和集问题\5-6无和集问题.vcxproj", "{500CADF2-5685-434A-A7B8-753AD0F468CF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Knn 堆实现", "Knn 堆实现\Knn 堆实现.vcxproj", "{95E5DB7E-06FC-4FE2-8212-C83148387774}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -75,6 +77,10 @@ Global
 		{500CADF2-5685-434A-A7B8-753AD0F468CF}.Debug|Win32.Build.0 = Debug|Win32
 		{500CADF2-5685-434A-A7B8-753AD0F468CF}.Release|Win32.ActiveCfg = Release|Win32
 		{500CADF2-5685-434A-A7B8-753AD0F468CF}.Release|Win32.Build.0 = Release|Win32
+		{95E5DB7E-06FC-4FE2-8212-C83148387774}.Debug|Win32.ActiveCfg = Debug|Win32
+		{95E5DB7E-06FC-4FE2-8212-C83148387774}.Debug|Win32.Build.0 = Debug|Win32
+		{95E5DB7E-06FC-4FE2-8212-C83148387774}.Release|Win32.ActiveCfg = Release|Win32
+		{95E5DB7E-06FC-4FE2-8212-C83148387774}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
