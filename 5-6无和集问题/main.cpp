@@ -24,7 +24,7 @@
 #include <iostream>
 #include <time.h>
 using namespace std;
-#define DEBUG
+//#define DEBUG
 #undef re
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 const int MAX_Num = 100;
@@ -69,7 +69,7 @@ ostream& operator<<(ostream& out, const Number_list & other)
 Number_list list[10],ans[10];
 int max_k = 0;
 //只能到58了……艹………
-void dfs(int n,int k=1)
+void dfs(int n,int k=2)
 {
 	re(i,n)//遍历n个集合
 		if (list[i].check(k) == 0)//能否放入。
@@ -78,11 +78,19 @@ void dfs(int n,int k=1)
 			if (k > max_k)//成功在n个表里面放入k个数。新的最优解。记录。
 			{
 				max_k = k;
+				cout << k << endl;
 				re(j, n)ans[j] = list[j];
 			}
 			dfs(n, k + 1);//放入下一个数
 			list[i].pop();//清除标记
 		}
+}
+
+
+void DFS(int n)
+{
+	list[0].push(1); list[0].push(2);
+	dfs(n, 3);//放入下一个数
 }
 
 int main()
@@ -94,14 +102,14 @@ int main()
 	freopen_s(&input, "in.txt", "r", stdin);
 	freopen_s(&output, "out.txt", "w", stdout);
 #endif
-
+	
 	/*主函数体*/
-	int n = 3;
-	dfs(n);
+	int n = 4;
+	DFS(n);
 	cout<< max_k<< endl;
 	re(i, n)
 		cout << ans[i] << endl;
-
+	cout << "运行时间：" << (clock() - BeginTime) << endl;
 #ifndef DEBUG
 	system("pause");
 #endif // !DEBUG

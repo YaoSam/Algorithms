@@ -76,15 +76,34 @@ void heapSort_knn(int n, int k, T Data[])
 {
 	if (k >= n)return;
 	initial(k, Data);//建立k个元素的堆
-	T temp1=Data[k],temp,max;
-	re(i,n-k-1)
+
+	int i,next;
+	re(j,n-k)
 	{
-		push(temp1, k - 1, Data);	//取一下一个元素放入堆
-		temp1 = Data[k+i+1];		//储存下一个位置
-		Data[k+i+1]=pop(k, Data);	//将下一个位置放最大值
+		if (Data[j + k]<Data[0])
+		{
+			Swap(Data[0], Data[j + k]);
+			i = 0;
+			//Down(0, k - 1, Data);
+			next = 2 * i + 1;
+			while (next <= k-1)
+			{
+				//不断向下跟较大的节点交换。
+				if (next + 1 <= k-1 && (Data[next]<Data[next + 1]))
+					next++;
+				if (!(Data[next]<Data[i]))
+					Swap(Data[next], Data[i]);
+				else break;
+				i = next;
+				next = next * 2 + 1;
+			}
+		}
+		//push(temp1, k - 1, Data);	//取一下一个元素放入堆
+		//temp1 = Data[k+i+1];		//储存下一个位置
+		//Data[k+i+1]=pop(k, Data);	//将下一个位置放最大值
 	}
-	push(temp1, k - 1, Data);//取最后一个元素放入堆
-	Data[k] = pop(k, Data);//将第k+1个位置放最大值
+	//push(temp1, k - 1, Data);//取最后一个元素放入堆
+	//Data[k] = pop(k, Data);//将第k+1个位置放最大值
 }
 
 
@@ -113,7 +132,6 @@ void _Qsort_knn(T a[], int left, int right, int k, int count)
 TEMP
 void super_knn(int n, int k, T data[])
 {
-	int limit = floor(log2(n));
-	_Qsort_knn(data, 0, n - 1, k, limit);
+	_Qsort_knn(data, 0, n - 1, k, floor(log10(n))/2);
 }
 
