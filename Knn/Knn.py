@@ -46,9 +46,9 @@ def Qsort(data, left, right):
 
 def Qsort_knn(data, left, right, k):
     '''KNN with Quick Sort'''
-    #temp=data[mid(left, right, (left + right)/2, data)]
     if not left <= k and right >= k: return
-    temp=data[(left + right)/2]
+    #temp=data[(left + right)/2]
+    temp=data[mid(left, right, (left + right)/2, data)]
     l = left;r = right;
     while l <= r:
         while data[l] < temp: l += 1
@@ -101,7 +101,8 @@ def inspecteSort_knn(data, left, right, k, count):
     if count < 0:
         Heapsort_knn(right - left + 1, k - left, data, left)
         return
-    temp = data[(left + right)/2]
+    temp=data[mid(left, right, (left + right)/2, data)]
+    #temp = data[(left + right)/2]
     l = left;r = right
     while l <=r:
         while data[l] < temp: l += 1
@@ -124,29 +125,26 @@ def myKNN(n, k, data):
 
 
 if __name__=='__main__':
-    #n=1000000
-    #k=n/1000
-    #size=n
-    #Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
-    #print Data.__len__()
-    #start = time.clock()
-    #Heapsort_knn(n, k, Data)
-    #end = time.clock()
-    #print end-start;
-    #Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
-    #start = time.clock()
-    #Qsort_knn(Data,0,n-1,k);
-    #end = time.clock()
-    #print end-start;
+    n=1000000
+    k=n/2
+    size=n
+    Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
+    #Data.sort();Data.reverse()
+    print Data.__len__()
+    start = time.clock()
+    Heapsort_knn(n, k, Data)
+    end = time.clock()
+    print end-start;
+    Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
+    #Data.sort();Data.reverse()
+    start = time.clock()
+    Qsort_knn(Data,0,n-1,k);
+    end = time.clock()
+    print end-start;
 
-    #Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
-    #start = time.clock()
-    #myKNN(n,k,Data);
-    #end = time.clock()
-    #print end-start;
-
-    a=[0,3]
-    b=[a for i in range(3)]
-    print b
-    a[1]=1;
-    print b
+    Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
+    #Data.sort();Data.reverse()
+    start = time.clock()
+    myKNN(n,k,Data);
+    end = time.clock()
+    print end-start;
