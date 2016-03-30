@@ -45,8 +45,8 @@ int main()
 	try{
 		clock_t my_Time[10], deltaTime; re(i, 4)my_Time[i+1] = 0;
 		unsigned int n = 1000000;
-		unsigned int Test_Time = 10;//测试次数
-		int k = n/1000;
+		unsigned int Test_Time = 1;//测试次数
+		int k = n / 1000;
 		re(COUNT, Test_Time)
 		{
 			//生成测试数据
@@ -75,10 +75,10 @@ int main()
 			deltaTime = clock();
 			super_knn(n, k, num[3]);
 			my_Time[3] += clock() - deltaTime;
-
+/*
 			deltaTime = clock();
 			Qsort(num[3], 0, n - 1);
-			my_Time[4] += clock() - deltaTime;
+			my_Time[4] += clock() - deltaTime;*/
 
 			//排序方便对比。
 			Qsort(num[1], 0, k - 1);

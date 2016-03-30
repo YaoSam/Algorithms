@@ -64,9 +64,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="knn.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="knn.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

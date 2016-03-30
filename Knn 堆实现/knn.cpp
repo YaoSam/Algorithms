@@ -1,4 +1,22 @@
-#include "knn.h"
+#pragma once
+#include "C:\Users\Sam\OneDrive\C++\数据结构汇总\Data Structure\Data Sturcture\normal.cpp"
+
+TEMP
+void _mid(int a,int b,int c,T Data[])
+{
+	if (Data[a]>Data[b])
+	{
+		if (Data[b] > Data[c])return;//a>b>c
+		if (Data[a] < Data[c])Swap(Data[a], Data[b]);//c>a>b
+		else Swap(Data[c], Data[b]);//a>=c>b
+	}
+	else
+	{
+		if (Data[b] < Data[c])return;//a<=b<c
+		if (Data[a] < Data[c])Swap(Data[c], Data[b]);//a<c<=b
+		else Swap(Data[a], Data[b]);//c<=a<=b
+	}
+}
 
 TEMP
 void Down(int i, int Current, T Heap[])
@@ -58,7 +76,8 @@ void Qsort_knn(T a[], int left, int right, int k)
 {
 	//相对于快排增加了一个筛选条件。只要left，right跨越k才继续。
 	if (!(left <= k&&right >= k))return;
-	T mid = a[(left + right) / 2];
+	_mid(left, (left + right) / 2, right, a);
+	T mid = a[(left+right)/2];
 	int l = left, r = right;
 	do
 	{
@@ -67,7 +86,7 @@ void Qsort_knn(T a[], int left, int right, int k)
 		if (l <= r)
 			Swap(a[l++], a[r--]);
 	} while (l <= r);
-	if (r > left)		Qsort_knn(a, left, r,k);
+	if (r > left)	Qsort_knn(a, left, r,k);
 	if (l < right)	Qsort_knn(a, l, right,k);
 }
 
@@ -76,34 +95,14 @@ void heapSort_knn(int n, int k, T Data[])
 {
 	if (k >= n)return;
 	initial(k, Data);//建立k个元素的堆
-
-	int i,next;
 	re(j,n-k)
 	{
 		if (Data[j + k]<Data[0])
 		{
 			Swap(Data[0], Data[j + k]);
-			i = 0;
-			//Down(0, k - 1, Data);
-			next = 2 * i + 1;
-			while (next <= k-1)
-			{
-				//不断向下跟较大的节点交换。
-				if (next + 1 <= k-1 && (Data[next]<Data[next + 1]))
-					next++;
-				if (!(Data[next]<Data[i]))
-					Swap(Data[next], Data[i]);
-				else break;
-				i = next;
-				next = next * 2 + 1;
-			}
+			Down(0, k - 1, Data);
 		}
-		//push(temp1, k - 1, Data);	//取一下一个元素放入堆
-		//temp1 = Data[k+i+1];		//储存下一个位置
-		//Data[k+i+1]=pop(k, Data);	//将下一个位置放最大值
 	}
-	//push(temp1, k - 1, Data);//取最后一个元素放入堆
-	//Data[k] = pop(k, Data);//将第k+1个位置放最大值
 }
 
 
@@ -111,11 +110,12 @@ TEMP
 void _Qsort_knn(T a[], int left, int right, int k, int count)
 {
 	if (!(left <= k&&right >= k))return;
-	if (count < 0)
+	if (count < 0/*||k<floor(log10(right-left+1))*/)//但递归进入特定深度的时候转化为快排。
 	{
 		heapSort_knn(right - left + 1, /*元素数目*/k - left,/*剩余的前k个*/a + left);/*新的起始位置*/
 		return;
 	}
+	_mid(left, (left + right) / 2, right, a);
 	T mid = a[(left + right) / 2];
 	int l = left, r = right;
 	do
@@ -132,6 +132,6 @@ void _Qsort_knn(T a[], int left, int right, int k, int count)
 TEMP
 void super_knn(int n, int k, T data[])
 {
-	_Qsort_knn(data, 0, n - 1, k, floor(log10(n))/2);
+	//std::cout << floor(log2(n)) << std::endl;
+	_Qsort_knn(data, 0, n - 1, k, 5/*floor(log2(n))*/);
 }
-
