@@ -38,7 +38,7 @@ struct Number_list//代表一个数字集合
 		Count(0)
 	{
 		memset(number, 0, sizeof(number));
-		memset(number, 0, sizeof(Error_Number));
+		memset(Error_Number, 0, sizeof(Error_Number));
 	}
 	bool check(int const &n)const//判断数字是否能放入
 	{

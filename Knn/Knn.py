@@ -124,27 +124,30 @@ def myKNN(n, k, data):
     inspecteSort_knn(data, 0, n-1, k, int(math.log(n,2)))
 
 
+output=open("out.txt","w");
+
+
 if __name__=='__main__':
-    n=1000000
-    k=n/2
+    n=100000
+    k=n/100
     size=n
     Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
     #Data.sort();Data.reverse()
-    print Data.__len__()
+    print(Data.__len__());
     start = time.clock()
     Heapsort_knn(n, k, Data)
     end = time.clock()
-    print end-start;
+    print(end-start);
     Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
     #Data.sort();Data.reverse()
     start = time.clock()
     Qsort_knn(Data,0,n-1,k);
     end = time.clock()
-    print end-start;
-
+    print(end-start);
     Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
     #Data.sort();Data.reverse()
     start = time.clock()
     myKNN(n,k,Data);
     end = time.clock()
-    print end-start;
+    print(end-start);
+    
