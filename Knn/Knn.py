@@ -27,26 +27,9 @@ def Swap(a, b, data):
     return
 
 
-def Qsort(data, left, right):
-    '''Just Quick Sort between data[left] and data[right]'''
-    temp = data[(left + right)/2]
-    l = left
-    r = right
-    while l <= r:
-        while data[l] < temp: l=l + 1
-        while data[r] > temp: r=r-1
-        if l <= r:
-            Swap(l, r, data)
-            l += 1
-            r -= 1
-    if r > left: Qsort(data, left, r)
-    if l < right: Qsort(data, l, right)
-    return
-
-
 def Qsort_knn(data, left, right, k):
     '''KNN with Quick Sort'''
-    if not left <= k and right >= k: return
+    if not left <= k and right >= k: return #Key sentences 
     #temp=data[(left + right)/2]
     temp=data[mid(left, right, (left + right)/2, data)]
     l = left;r = right;
@@ -66,13 +49,13 @@ def Heap_down(i, current, Heap, k=0):
     '''Maintain Heap from head'''
     next = 2 * i + 1
     while next <= current:
-        if next + 1 <= current and Heap[next + k] < Heap[next + 1 + k]: next += 1
+        if next + 1 <= current and Heap[next + k] < Heap[next + 1 + k]: next += 1 #turn to the right child.
         if not Heap[next + k] < Heap[i + k]:
             Swap(next + k, i + k, Heap)
-        else:
-            break
+        else: #Down can no longer continue.
+            break 
         i = next
-        next = next*2 + 1
+        next = next*2 + 1 #left child.
     return
 
 
@@ -83,7 +66,7 @@ def Heapsort_knn(n, k, data, Delta=0):
     k: you want the first k object.
     Delta: the begin of data.
     '''
-    if k>=n: return
+    if k >=n: return
     j=0
     while j < k/2 + 2:#Intialize Heap
         Heap_down(k/2 + 1-j, k, data, Delta)
@@ -97,7 +80,7 @@ def Heapsort_knn(n, k, data, Delta=0):
 
 
 def inspecteSort_knn(data, left, right, k, count):    
-    if not left <= k and right >= k: return
+    if not (left <= k and right >= k): return
     if count < 0:
         Heapsort_knn(right - left + 1, k - left, data, left)
         return
@@ -124,12 +107,9 @@ def myKNN(n, k, data):
     inspecteSort_knn(data, 0, n-1, k, int(math.log(n,2)))
 
 
-output=open("out.txt","w");
-
-
 if __name__=='__main__':
-    n=100000
-    k=n/100
+    n=1000000
+    k=n/1000
     size=n
     Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
     #Data.sort();Data.reverse()

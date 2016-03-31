@@ -3,11 +3,9 @@ import numpy
 import operator
 from numpy import *
 from os import listdir
+from Knn import myKNN
 
-
-class Node: #Äã¾õµÃÄØ£¿
-    index=0
-    dis=0.0
+class Node: 
     def __init__(self,i,d):
         self.index=i;
         self.dis=d;
@@ -20,11 +18,24 @@ class Node: #Äã¾õµÃÄØ£¿
             return 1;
         return 0;
 
+    def __repr__(self):
+        return "index: "+'%3d' %self.index+" ,distance: "+'%f' %self.dis; 
+
 def dis(vec1,vec2):
-    return sum((vec1-vec2)*(vec1-vec2)).cumsum(axis=0);
+    return sum((vec1-vec2)*(vec1-vec2));
 
 if __name__=='__main__':
-    vec1=array([1,2,3])
-    vec2=array([2,3,4])
-    print dis(vec1,vec2)
-    
+    size=100;
+    j=0;
+    k=10
+    Data=[Node(j,((random.random()*size))) for j in range(size)];
+    Origin=[Data[j].dis for j in range(size)]
+    #    print Data[i].dis,Data[i].index;
+    print("After KNN\n");
+    myKNN(size,k,Data);
+    for i in range(k):
+        print Data[i];
+    Origin=sort(Origin)
+    print;
+    for i in range(k):
+        print(Origin[i])
