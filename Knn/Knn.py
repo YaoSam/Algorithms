@@ -30,8 +30,8 @@ def Swap(a, b, data):
 def Qsort_knn(data, left, right, k):
     '''KNN with Quick Sort'''
     if not left <= k and right >= k: return #Key sentences 
-    #temp=data[(left + right)/2]
-    temp=data[mid(left, right, (left + right)/2, data)]
+    temp=data[(left + right)/2]
+    #temp=data[mid(left, right, (left + right)/2, data)]
     l = left;r = right;
     while l <= r:
         while data[l] < temp: l += 1
@@ -79,13 +79,14 @@ def Heapsort_knn(n, k, data, Delta=0):
         j += 1
 
 
-def inspecteSort_knn(data, left, right, k, count):    
+def introspecteSort_knn(data, left, right, k, count):    
     if not (left <= k and right >= k): return
-    if count < 0:
+    if count < 0 :
         Heapsort_knn(right - left + 1, k - left, data, left)
         return
-    temp=data[mid(left, right, (left + right)/2, data)]
+    #temp=data[mid(left, right, (left + right)/2, data)]
     #temp = data[(left + right)/2]
+    temp=data[left]
     l = left;r = right
     while l <=r:
         while data[l] < temp: l += 1
@@ -94,8 +95,8 @@ def inspecteSort_knn(data, left, right, k, count):
             Swap(l, r, data)
             l += 1
             r -= 1
-    if r > left:  inspecteSort_knn(data, left, r, k, count-1)
-    if l < right: inspecteSort_knn(data, l, right, k, count-1)
+    if r > left:  introspecteSort_knn(data, left, r, k, count-1)
+    if l < right: introspecteSort_knn(data, l, right, k, count-1)
     return
 
 def myKNN(n, k, data):
@@ -104,12 +105,12 @@ def myKNN(n, k, data):
         n: the number of object.
     k: you want the first k object.
     '''
-    inspecteSort_knn(data, 0, n-1, k, int(math.log(n,2)))
+    introspecteSort_knn(data, 0, n-1, k, int(math.log(n,2)))
 
 
 if __name__=='__main__':
     n=1000000
-    k=n/1000
+    k=n/100000
     size=n
     Data=[int(math.floor(random.random()*size*2)) for i in range(0,size,1)];
     #Data.sort();Data.reverse()
@@ -131,3 +132,28 @@ if __name__=='__main__':
     end = time.clock()
     print(end-start);
     
+    
+
+class Node: 
+    def __init__(self,i,d):
+        self.index=i;
+        self.dis=d;
+        return;
+
+    def __cmp__(self,other):
+        if self.dis<other.dis:
+            return -1;
+        elif self.dis>other.dis:
+            return 1;
+        return 0;
+
+    def __repr__(self):
+        return "index: "+'%5d' %self.index+" ,distance: "+'%f' %self.dis+'\n'; 
+
+def dis(vec1,vec2):
+    return sum((vec1-vec2)*(vec1-vec2));
+
+def ArgSort_k(Data,n,k):
+    node=[Node(i,Data[i]) for i in range(n)];
+    myKNN(n,k,node);
+    return [node[i].index for i in range(n)];

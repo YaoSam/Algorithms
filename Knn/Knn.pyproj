@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>d2be3c34-4b20-4d75-9dbd-37b922f2c864</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Data.py</StartupFile>
+    <StartupFile>loadFile.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -27,7 +27,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Data.py">
+    <Compile Include="loadFile.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Knn.py" />
