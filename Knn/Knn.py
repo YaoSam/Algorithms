@@ -108,6 +108,32 @@ def myKNN(n, k, data):
     introspecteSort_knn(data, 0, n-1, k, int(math.log(n,2)))
 
 
+class Node: 
+    def __init__(self,i,d):
+        self.index=i;
+        self.dis=d;
+        return;
+
+    def __cmp__(self,other):
+        if self.dis<other.dis:
+            return -1;
+        elif self.dis>other.dis:
+            return 1;
+        return 0;
+
+    def __repr__(self):
+        return "("+'%3d' %self.index+","+'%f' %self.dis+")"; 
+
+
+def ArgSort_k(Data,n,k):
+    '''Return the index of the K nearest point.'''
+    
+    node=[Node(i,Data[i]) for i in range(n)];
+    myKNN(n,k,node);
+    print(node);
+    return [node[i].index for i in range(n)];
+
+
 if __name__=='__main__':
     n=1000000
     k=n/100000
@@ -134,26 +160,3 @@ if __name__=='__main__':
     
     
 
-class Node: 
-    def __init__(self,i,d):
-        self.index=i;
-        self.dis=d;
-        return;
-
-    def __cmp__(self,other):
-        if self.dis<other.dis:
-            return -1;
-        elif self.dis>other.dis:
-            return 1;
-        return 0;
-
-    def __repr__(self):
-        return "index: "+'%5d' %self.index+" ,distance: "+'%f' %self.dis+'\n'; 
-
-def dis(vec1,vec2):
-    return sum((vec1-vec2)*(vec1-vec2));
-
-def ArgSort_k(Data,n,k):
-    node=[Node(i,Data[i]) for i in range(n)];
-    myKNN(n,k,node);
-    return [node[i].index for i in range(n)];

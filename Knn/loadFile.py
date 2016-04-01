@@ -1,19 +1,22 @@
 # coding: UTF-8
 from numpy import *
 import operator
+import math
+import random
 from os import listdir
-from Knn import ArgSort_k
+import Knn
+#from Knn import ArgSort_k
 # 跟KNN差不多。只是这里的距离是已经提前算好的。还是本质还是通过KNN来模式识别。
 def topk(distances,labels,k):
-    sortedDistIndicies = ArgSort_k(distances,len(distances),k);
-    print 'sortedDistIndicies',sortedDistIndicies
+    sortedDistIndicies = Knn.ArgSort_k(distances,len(distances),k);
+    #print 'sortedDistIndicies',sortedDistIndicies
     classCount={}
     for i in range(k):
         voteIlabel = labels[sortedDistIndicies[i]]
         classCount[voteIlabel] = classCount.get(voteIlabel,0) + 1
-    print 'classCount',classCount
+    #print 'classCount',classCount
     sortedClassCount = sorted(classCount.items(), key=operator.itemgetter(1), reverse=True)
-    print 'sortedClassCount',sortedClassCount
+    #print 'sortedClassCount',sortedClassCount
     return sortedClassCount[0][0]
 
 # 加载数据。
@@ -75,8 +78,12 @@ def try1() :
 
 if  '__name__ == __main__' :
     # try1()
-    distances=array([23,45,12,78,45,90,32,45,20])
-    labels=array([2,3,2,1,2,3,1,1,2])
+    #distances=array([23,45,12,78,45,90,32,45,20])
+    #labels=array([2,3,2,1,2,3,1,1,2])
+    size=100;
+    distances=array([random.random()*size for i in range(size)]);
+    print distances
+    labels=array([int(random.random()*10) for i in range(size)])
     print labels 
-    print topk(distances,labels,4)
+    print topk(distances,labels,10)
 
