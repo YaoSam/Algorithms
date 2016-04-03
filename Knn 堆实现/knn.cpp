@@ -2,19 +2,23 @@
 #include "C:\Users\Sam\OneDrive\C++\数据结构汇总\Data Structure\Data Sturcture\normal.cpp"
 
 TEMP
-void _mid(int a,int b,int c,T Data[])
+int _mid(int a,int b,int c,T Data[])
 {
 	if (Data[a]>Data[b])
 	{
-		if (Data[b] > Data[c])return;//a>b>c
-		if (Data[a] < Data[c])Swap(Data[a], Data[b]);//c>a>b
-		else Swap(Data[c], Data[b]);//a>=c>b
+		if (Data[b] > Data[c])
+			return b;//a>b>c
+		if (Data[a] < Data[c])
+			return a;//c>a>b
+		return c;//a>=c>b
 	}
 	else
 	{
-		if (Data[b] < Data[c])return;//a<=b<c
-		if (Data[a] < Data[c])Swap(Data[c], Data[b]);//a<c<=b
-		else Swap(Data[a], Data[b]);//c<=a<=b
+		if (Data[b] < Data[c])
+			return b;//a<=b<c
+		if (Data[a] < Data[c])
+			return c;//a<c<=b
+		return a;//c<=a<=b
 	}
 }
 
@@ -76,8 +80,9 @@ void Qsort_knn(T a[], int left, int right, int k)
 {
 	//相对于快排增加了一个筛选条件。只要left，right跨越k才继续。，因为(left+right)/2当right=left+1时是left，所以right等号必须取
 	if (!(left < k&&right >= k))return;
-	//_mid(left, (left + right) / 2, right, a);
-	T mid = a[(left+right)/2];
+	T mid = a[left+rand() % (right - left + 1)];
+	//T mid = a[_mid(left, (left + right) / 2, right, a)];
+	//T mid = a[left];
 	int l = left, r = right;
 	do
 	{
@@ -94,13 +99,13 @@ TEMP
 void heapSort_knn(int n, int k, T Data[])
 {
 	if (k >= n)return;
-	initial(k, Data);//建立k个元素的堆
+	initial(k, Data);//建堆。大小为k
 	re(j,n-k)
 	{
-		if (Data[j + k]<Data[0])
+		if (Data[j + k]<Data[0])//比较最大元素
 		{
-			Swap(Data[0], Data[j + k]);
-			Down(0, k - 1, Data);
+			Swap(Data[0], Data[j + k]);//更新最大值
+			Down(0, k - 1, Data);//从上到下维护堆
 		}
 	}
 }
@@ -110,14 +115,15 @@ TEMP
 void _Qsort_knn(T a[], int left, int right, int k, int count)
 {
 	if (!(left < k&&right >= k))return;
-	std::cout << left << " " << right << " " << count << std::endl;
-	if (count < 0/*||k-left<int(sqrt(right-left+1))*/)//但递归进入特定深度的时候转化为快排。
+	//std::cout << left << " " << right << " " << count << std::endl;
+	if (count < 0||k-left<(right-left+1)/10)//但递归进入特定深度的时候转化为快排。
 	{
 		heapSort_knn(right - left + 1, /*元素数目*/k - left,/*剩余的前k个*/a + left);/*新的起始位置*/
 		return;
 	}
-	//_mid(left, (left + right) / 2, right, a);
-	T mid = a[(left + right) / 2];
+	//T mid = a[left];
+	//T mid = a[_mid(left, (left + right) / 2, right, a)];
+	T mid = a[left+rand() % (right - left + 1)];
 	int l = left, r = right;
 	do
 	{
@@ -134,5 +140,5 @@ TEMP
 void super_knn(int n, int k, T data[])
 {
 	//std::cout << floor(log2(n)) << std::endl;
-	_Qsort_knn(data, 0, n - 1, k, floor(log2(n)));
+	_Qsort_knn(data, 0, n - 1, k, floor(log2(n))/2);
 }

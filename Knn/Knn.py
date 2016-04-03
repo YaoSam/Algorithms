@@ -3,23 +3,6 @@ import random
 import math
 import numpy
 from os import listdir
-def mid(a, b, c, data):
-    '''Return the Index of Mid Value of data[a], data[b], data[c]'''
-    if data[a] > data[b]:
-        if data[b] > data[c]:
-            return b
-        if data[a] < data[c]:
-            return a
-        else:               
-            return c
-    else:
-        if data[b] < data[c]: 
-            return b
-        if data[a] < data[c]: 
-            return c
-        else:               
-            return a
-
 
 def Swap(a, b, data):
     '''Exchange the value of data[a] and data[b]'''
@@ -32,9 +15,8 @@ def Swap(a, b, data):
 def Qsort_knn(data, left, right, k):
     '''KNN with Quick Sort'''
     if not (left < k and right >= k): return #Key sentences 
-    print left," ",right;
-    temp=data[(left + right)/2]
-    #temp=data[mid(left, right, (left + right)/2, data)]
+    #print left," ",right;
+    temp=data[random.randint(left,right-1)]
     l = left;r = right;
     while l <= r:
         while data[l] < temp: l += 1
@@ -89,12 +71,10 @@ def introspectiveSort_knn(data, left, right, k, count):
     k: you want the first k object.
     '''    
     if not (left < k and right >= k): return
-    if count < 0 :
+    if count < 0 or k-left < (right-left+1)/10:
         Heapsort_knn(right - left + 1, k - left, data, left)
         return
-    #temp=data[mid(left, right, (left + right)/2, data)]
-    temp = data[(left + right)/2]
-    #temp=data[left]
+    temp=data[random.randint(left,right-1)]
     l = left;r = right
     while l <=r:
         while data[l] < temp: l += 1
@@ -132,21 +112,18 @@ def ArgSort_k(Data,n,k):
 
 
 if __name__=='__main__':
-    n=100
-    k=10
-    size=n
-    Data=[int(math.floor(random.random()*size*2)) for i in range(size)];
-    #Data.sort();Data.reverse()
+    n=size=200000
+    k=1000
+    Data=[random.randint(0,size*2) for i in range(size)];
+    Data.sort();Data.reverse()
     checkData=[Data[i] for i in range(n)];
     checkData.sort();
-    print checkData
     print(Data.__len__());
 
     testData=[Data[i] for i in range(size)]
     start = time.clock()
     Heapsort_knn(n, k, testData)
     end = time.clock()
-    print testData
     print(end-start);
 
     testData=[Data[i] for i in range(size)]
@@ -155,7 +132,6 @@ if __name__=='__main__':
     Qsort_knn(testData,0,n-1,k);
     end = time.clock()
     print(end-start);
-    print testData
 
 
     testData=[Data[i] for i in range(size)]
@@ -164,4 +140,3 @@ if __name__=='__main__':
     introspectiveSort_knn(testData,0,n-1,k,int(math.log(n,2)));
     end = time.clock()
     print(end-start);
-    print testData
