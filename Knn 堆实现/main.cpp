@@ -32,7 +32,7 @@ using namespace std;
 #define DEBUG
 
 
-int num[5][1000000];
+int num[4][4000000];
 int main()
 {
 	clock_t BeginTime =	clock();
@@ -44,9 +44,9 @@ int main()
 #endif
 	try{
 		clock_t my_Time[10], deltaTime; re(i, 4)my_Time[i+1] = 0;
-		unsigned int n = 1000000;
-		unsigned int Test_Time = 1;//测试次数
-		int k = n / 1000;
+		unsigned int n = 4000000;
+		unsigned int Test_Time = 10;//测试次数
+		int k = n/2;
 		re(COUNT, Test_Time)
 		{
 			//生成测试数据
@@ -59,7 +59,7 @@ int main()
 			//Qsort_MaxToMin(num[1], 0, n - 1);
 			memcpy(num[2], num[1], sizeof(int)*n);
 			memcpy(num[3], num[1], sizeof(int)*n);
-			memcpy(num[4], num[1], sizeof(int)*n);
+			//memcpy(num[4], num[1], sizeof(int)*n);
 			//printArray(num[1], n);
 			//cout << endl;
 			//各种knn
@@ -93,7 +93,7 @@ int main()
 		cout << "测试通过！" << endl;
 		cout << "各种knn的时间分别为：" << endl;
 		re(i, 4)
-			cout << my_Time[i + 1] << " ";
+			cout << my_Time[i + 1]/Test_Time << " ";
 	}
 	catch (const char * error){ cout << error << endl; }
 #ifndef DEBUG

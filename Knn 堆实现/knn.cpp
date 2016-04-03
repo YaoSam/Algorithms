@@ -74,9 +74,9 @@ T pop(int Current, T Heap[])
 TEMP
 void Qsort_knn(T a[], int left, int right, int k)
 {
-	//相对于快排增加了一个筛选条件。只要left，right跨越k才继续。
-	if (!(left <= k&&right >= k))return;
-	_mid(left, (left + right) / 2, right, a);
+	//相对于快排增加了一个筛选条件。只要left，right跨越k才继续。，因为(left+right)/2当right=left+1时是left，所以right等号必须取
+	if (!(left < k&&right >= k))return;
+	//_mid(left, (left + right) / 2, right, a);
 	T mid = a[(left+right)/2];
 	int l = left, r = right;
 	do
@@ -109,13 +109,14 @@ void heapSort_knn(int n, int k, T Data[])
 TEMP
 void _Qsort_knn(T a[], int left, int right, int k, int count)
 {
-	if (!(left <= k&&right >= k))return;
-	if (count < 0/*||k<floor(log10(right-left+1))*/)//但递归进入特定深度的时候转化为快排。
+	if (!(left < k&&right >= k))return;
+	std::cout << left << " " << right << " " << count << std::endl;
+	if (count < 0/*||k-left<int(sqrt(right-left+1))*/)//但递归进入特定深度的时候转化为快排。
 	{
 		heapSort_knn(right - left + 1, /*元素数目*/k - left,/*剩余的前k个*/a + left);/*新的起始位置*/
 		return;
 	}
-	_mid(left, (left + right) / 2, right, a);
+	//_mid(left, (left + right) / 2, right, a);
 	T mid = a[(left + right) / 2];
 	int l = left, r = right;
 	do
@@ -133,5 +134,5 @@ TEMP
 void super_knn(int n, int k, T data[])
 {
 	//std::cout << floor(log2(n)) << std::endl;
-	_Qsort_knn(data, 0, n - 1, k, 5/*floor(log2(n))*/);
+	_Qsort_knn(data, 0, n - 1, k, floor(log2(n)));
 }

@@ -82,8 +82,8 @@ if  '__name__ == __main__' :
     #labels=array([2,3,2,1,2,3,1,1,2])
     size=100;
     distances=array([random.random()*size for i in range(size)]);
-    print distances
+    #print distances
     labels=array([int(random.random()*10) for i in range(size)])
-    print labels 
+    #print labels 
     print topk(distances,labels,10)
 

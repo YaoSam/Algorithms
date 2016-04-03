@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>d2be3c34-4b20-4d75-9dbd-37b922f2c864</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>loadFile.py</StartupFile>
+    <StartupFile>Knn.py</StartupFile>
     <SearchPath>.</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
