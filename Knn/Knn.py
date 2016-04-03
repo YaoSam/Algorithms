@@ -31,7 +31,7 @@ def Swap(a, b, data):
 
 def Qsort_knn(data, left, right, k):
     '''KNN with Quick Sort'''
-    if not (left <= k and right >= k): return #Key sentences 
+    if not (left < k and right >= k): return #Key sentences 
     print left," ",right;
     temp=data[(left + right)/2]
     #temp=data[mid(left, right, (left + right)/2, data)]
@@ -88,7 +88,7 @@ def introspectiveSort_knn(data, left, right, k, count):
         n: the number of object.
     k: you want the first k object.
     '''    
-    if not (left < k and right > k): return
+    if not (left < k and right >= k): return
     if count < 0 :
         Heapsort_knn(right - left + 1, k - left, data, left)
         return
