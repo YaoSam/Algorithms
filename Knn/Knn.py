@@ -64,14 +64,15 @@ def Heapsort_knn(n, k, data, Delta=0):
         j += 1
 
 
-def introspectiveSort_knn(data, left, right, k, count):
+def introspectiveSort_knn(data, left, right, k, count=0):
     '''
     KNN with both Heapsort and QuickSort.
         n: the number of object.
     k: you want the first k object.
     '''    
     if not (left < k and right >= k): return
-    if count < 0 or k-left < (right-left+1)/10:
+    #if count>2:
+    if 1<<count > right-left+1 or k-left<(right-left+1)/100:
         Heapsort_knn(right - left + 1, k - left, data, left)
         return
     temp=data[random.randint(left,right-1)]
@@ -83,8 +84,8 @@ def introspectiveSort_knn(data, left, right, k, count):
             Swap(l, r, data)
             l += 1
             r -= 1
-    if r > left:  introspectiveSort_knn(data, left, r, k, count-1)
-    if l < right: introspectiveSort_knn(data, l, right, k, count-1)
+    if r > left:  introspectiveSort_knn(data, left, r, k, count+1)
+    if l < right: introspectiveSort_knn(data, l, right, k, count+1)
     return
 
 class Node: 
@@ -107,36 +108,40 @@ class Node:
 def ArgSort_k(Data,n,k):
     '''Return the index of the K nearest point.'''
     node=[Node(i,Data[i]) for i in range(n)];
-    introspectiveSort_knn(node, 0, n-1, k, int(math.log(n,2)))
+    introspectiveSort_knn(node, 0, n-1, k)
     return [node[i].index for i in range(n)];
 
 
 if __name__=='__main__':
-    n=size=200000
-    k=1000
-    Data=[random.randint(0,size*2) for i in range(size)];
-    Data.sort();Data.reverse()
-    checkData=[Data[i] for i in range(n)];
-    checkData.sort();
-    print(Data.__len__());
-
-    testData=[Data[i] for i in range(size)]
-    start = time.clock()
-    Heapsort_knn(n, k, testData)
-    end = time.clock()
-    print(end-start);
-
-    testData=[Data[i] for i in range(size)]
-    #Data.sort();Data.reverse()
-    start = time.clock()
-    Qsort_knn(testData,0,n-1,k);
-    end = time.clock()
-    print(end-start);
-
-
-    testData=[Data[i] for i in range(size)]
-    #Data.sort();Data.reverse()
-    start = time.clock()
-    introspectiveSort_knn(testData,0,n-1,k,int(math.log(n,2)));
-    end = time.clock()
-    print(end-start);
+    n=size=500000
+    i=0;
+    Time=[0.0 for i in range(10)];
+    print(size);
+    k=50
+    for j in range(100):
+        print j;
+        #k=50*(j+1)
+        Data=[random.randint(0,size*2) for i in range(size)];
+        #Data.sort();Data.reverse()
+        #checkData=[Data[i] for i in range(n)];
+        #checkData.sort();
+    
+        testData=[Data[i] for i in range(size)]
+        start = time.clock()
+        Heapsort_knn(n, k, testData)
+        Time[0]+=(time.clock()-start);
+    
+        testData=[Data[i] for i in range(size)]
+        #Data.sort();Data.reverse()
+        start = time.clock()
+        Qsort_knn(testData,0,n-1,k);
+        Time[1]+=(time.clock()-start);
+    
+    
+        testData=[Data[i] for i in range(size)]
+        #Data.sort();Data.reverse()
+        start = time.clock()
+        introspectiveSort_knn(testData,0,n-1,k);
+        Time[2]+=(time.clock()-start);
+    for j in range(3):
+        print Time[j]/100.0;
