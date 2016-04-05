@@ -44,12 +44,12 @@ int main()
 #endif
 	try{
 		clock_t my_Time[10], deltaTime; re(i, 4)my_Time[i+1] = 0;
-		unsigned int n = 400000;
-		unsigned int Test_Time = 1000;//测试次数
-		//int k = n/2;
+		unsigned int n = 4000000;
+		unsigned int Test_Time = 10;//测试次数
+		int k = 10;
 		re(COUNT, Test_Time)
 		{
-			int k = n / (COUNT + 2);
+			//int k = n / (COUNT + 2);
 			//生成测试数据
 			re(i, n)
 			{

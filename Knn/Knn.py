@@ -16,18 +16,19 @@ def Qsort_knn(data, left, right, k):
     '''KNN with Quick Sort'''
     if not (left < k and right >= k): return #Key sentences 
     #print left," ",right;
-    temp=data[random.randint(left,right-1)]
-    l = left;r = right;
-    while l <= r:
-        while data[l] < temp: l += 1
-        while data[r] > temp: r -= 1
-        if l <= r:
-            Swap(l, r, data)
-            l += 1
-            r -= 1
-    if r > left: Qsort_knn(data, left, r, k)
-    if l < right: Qsort_knn(data, l, right, k)
-    return
+    while True:
+        temp=data[random.randint(left,right-1)]
+        l = left;r = right;
+        while l <= r:
+            while data[l] < temp: l += 1
+            while data[r] > temp: r -= 1
+            if l <= r:
+                Swap(l, r, data)
+                l += 1
+                r -= 1
+        if left<k<=r:   right=r
+        elif l<k<=right:  left=l
+        else: return
 
 
 def Heap_down(i, current, Heap, k=0):
@@ -70,22 +71,21 @@ def introspectiveSort_knn(data, left, right, k, count=0):
         n: the number of object.
     k: you want the first k object.
     '''    
-    if not (left < k and right >= k): return
-    #if count>2:
-    if 1<<count > right-left+1 or k-left<(right-left+1)/100:
-        Heapsort_knn(right - left + 1, k - left, data, left)
-        return
-    temp=data[random.randint(left,right-1)]
-    l = left;r = right
-    while l <=r:
-        while data[l] < temp: l += 1
-        while data[r] > temp: r -= 1
-        if l <= r:
-            Swap(l, r, data)
-            l += 1
-            r -= 1
-    if r > left:  introspectiveSort_knn(data, left, r, k, count+1)
-    if l < right: introspectiveSort_knn(data, l, right, k, count+1)
+    if not k<(right-left+1)/100:
+        for i in range(count):
+            temp=data[random.randint(left,right-1)]
+            l = left;r = right;
+            while l <= r:
+                while data[l] < temp: l += 1
+                while data[r] > temp: r -= 1
+                if l <= r:
+                    Swap(l, r, data)
+                    l += 1
+                    r -= 1
+            if left<k<=r:   right=r
+            elif l<k<=right:  left=l
+            else: return;
+    Heapsort_knn(right - left + 1, k - left, data, left)
     return
 
 class Node: 
@@ -113,7 +113,7 @@ def ArgSort_k(Data,n,k):
 
 
 if __name__=='__main__':
-    n=size=500000
+    n=size=50000
     i=0;
     Time=[0.0 for i in range(10)];
     print(size);
@@ -123,8 +123,8 @@ if __name__=='__main__':
         #k=50*(j+1)
         Data=[random.randint(0,size*2) for i in range(size)];
         #Data.sort();Data.reverse()
-        #checkData=[Data[i] for i in range(n)];
-        #checkData.sort();
+        checkData=[Data[i] for i in range(n)];
+        checkData.sort();
     
         testData=[Data[i] for i in range(size)]
         start = time.clock()
@@ -132,16 +132,20 @@ if __name__=='__main__':
         Time[0]+=(time.clock()-start);
     
         testData=[Data[i] for i in range(size)]
-        #Data.sort();Data.reverse()
         start = time.clock()
         Qsort_knn(testData,0,n-1,k);
         Time[1]+=(time.clock()-start);
     
     
         testData=[Data[i] for i in range(size)]
-        #Data.sort();Data.reverse()
         start = time.clock()
         introspectiveSort_knn(testData,0,n-1,k);
         Time[2]+=(time.clock()-start);
+
+        testData2=[testData[i] for i in range(k)];testData2.sort();
+        for what in range(k):
+            if not testData2[what]==checkData[what]:
+                break
+
     for j in range(3):
         print Time[j]/100.0;
