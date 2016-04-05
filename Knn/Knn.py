@@ -71,6 +71,7 @@ def introspectiveSort_knn(data, left, right, k, count=0):
         n: the number of object.
     k: you want the first k object.
     '''    
+    count=int(math.log(n,2));
     if not k<(right-left+1)/100:
         for i in range(count):
             temp=data[random.randint(left,right-1)]
@@ -123,8 +124,8 @@ if __name__=='__main__':
         #k=50*(j+1)
         Data=[random.randint(0,size*2) for i in range(size)];
         #Data.sort();Data.reverse()
-        checkData=[Data[i] for i in range(n)];
-        checkData.sort();
+        #checkData=[Data[i] for i in range(n)];
+        #checkData.sort();
     
         testData=[Data[i] for i in range(size)]
         start = time.clock()
@@ -142,10 +143,10 @@ if __name__=='__main__':
         introspectiveSort_knn(testData,0,n-1,k);
         Time[2]+=(time.clock()-start);
 
-        testData2=[testData[i] for i in range(k)];testData2.sort();
-        for what in range(k):
-            if not testData2[what]==checkData[what]:
-                break
+        #testData2=[testData[i] for i in range(k)];testData2.sort();
+        #for what in range(k):
+        #    if not testData2[what]==checkData[what]:
+        #        break
 
     for j in range(3):
         print Time[j]/100.0;
