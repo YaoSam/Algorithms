@@ -1,7 +1,7 @@
 #include <math.h>
-#include "C:\Users\Sam\OneDrive\C++\数据结构汇总\Data Structure\Data Sturcture\heap.cpp"
-#include "C:\Users\Sam\OneDrive\C++\数据结构汇总\Data Structure\Data Sturcture\queue.cpp"
-#include "C:\Users\Sam\OneDrive\C++\数据结构汇总\Data Structure\Data Sturcture\normal.cpp"
+#include "C:\Users\Sam\Documents\C++\数据结构汇总\Data Structure\Data Sturcture\heap.cpp"
+#include "C:\Users\Sam\Documents\C++\数据结构汇总\Data Structure\Data Sturcture\queue.cpp"
+#include "C:\Users\Sam\Documents\C++\数据结构汇总\Data Structure\Data Sturcture\normal.cpp"
 struct Vector
 {
 	int x, y;
