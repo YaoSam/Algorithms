@@ -49,7 +49,7 @@ istream& operator>>(istream& in, vector & other)
 }
 int map[20][20] = { 0 };
 int visit[20][20] = { 0 };
-int height = 0, width = 0;
+unsigned int height = 0, width = 0;
 const vector direction[8] =
 {
 	vector(1, 0), vector(-1, 0), vector(0, 1), vector(0, -1),
