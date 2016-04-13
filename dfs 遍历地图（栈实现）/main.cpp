@@ -24,36 +24,37 @@
 #include <iostream>
 #include <time.h>
 #include "C:\Users\Sam\Documents\C++\数据结构汇总\Data Structure\Data Sturcture\Stack.cpp"
+#include "C:\Users\Sam\Documents\C++\数据结构汇总\Data Structure\Data Sturcture\ALL.h"
 using namespace std;
 #define DEBUG
 #undef re
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 
-struct vector
+struct Vector
 {
 	int y, x,i;//加了一个i用来辨识是那个方向下来的。
-	vector(int y = 0, int x = 0, int i = 0) :x(x), y(y), i(i){}
-	bool operator==(const vector& other)const{ return x == other.x&&y == other.y; }
-	vector operator+(const vector & other)const{ return vector(y + other.y, x + other.x,i); }
-	vector operator-(const vector & other)const{ return vector(y - other.y, x - other.x, i); }
-	vector& operator+=(const vector & other){ x += other.x, y += other.y; return *this; }//这个效率更高
-	vector& operator-=(const vector & other){ x -= other.x, y -= other.y; return *this; }
+	Vector(int y = 0, int x = 0, int i = 0) :x(x), y(y), i(i){}
+	bool operator==(const Vector& other)const{ return x == other.x&&y == other.y; }
+	Vector operator+(const Vector & other)const{ return Vector(y + other.y, x + other.x,i); }
+	Vector operator-(const Vector & other)const{ return Vector(y - other.y, x - other.x, i); }
+	Vector& operator+=(const Vector & other){ x += other.x, y += other.y; return *this; }//这个效率更高
+	Vector& operator-=(const Vector & other){ x -= other.x, y -= other.y; return *this; }
 };
-ostream& operator<<(ostream& out, const vector & other)
+ostream& operator<<(ostream& out, const Vector & other)
 {
 	return out << '(' << other.x << ',' << other.y << ')';
 }
-istream& operator>>(istream& in, vector & other)
+istream& operator>>(istream& in, Vector & other)
 {
 	return in >> other.y >> other.x;
 }
 int map[20][20] = { 0 };
 int visit[20][20] = { 0 };
 unsigned int height = 0, width = 0;
-const vector direction[8] =
+const Vector direction[8] =
 {
-	vector(1, 0), vector(-1, 0), vector(0, 1), vector(0, -1),
-	vector(1, 1), vector(1, -1), vector(-1, 1), vector(-1, -1),
+	Vector(1, 0), Vector(-1, 0), Vector(0, 1), Vector(0, -1),
+	Vector(1, 1), Vector(1, -1), Vector(-1, 1), Vector(-1, -1),
 };
 void Input()
 {
@@ -77,27 +78,30 @@ void Output()
 	cout << endl;
 }
 
-inline bool Judge(const vector &one)
+bool Judge(const Vector &one)
 {
-	return	 0 <= one.y && 0 <= one.x&&one.y < height&&one.x < width
-		&&map[one.y][one.x] == 0
-		&& visit[one.y][one.x] == 0;
+	return 0 <= one.y && 0 <= one.x&&one.y < height&&one.x < width&&map[one.y][one.x] == 0 && visit[one.y][one.x] == 0;
 }
 
-int Dfs(const vector &Begin,const vector &End)//模仿二叉树的前序遍历
+int Dfs(const Vector &Begin,const Vector &End)//模仿二叉树的前序遍历
 {
-	stack<vector> Stack;
-	vector temp = Begin;
+	stack<Vector> Stack,solution;
 	int count = 0;
+	Vector temp = Begin;
+	const int direction_number = 8;
 	while (Judge(temp) || !Stack.isEmpty())
 	{
-		while (Judge(temp)&&temp.i<8)
+		while (Judge(temp)&&temp.i<direction_number)
 		{
 			if (temp == End)
 			{
-				count++;
-				//Output();
-				//return 0;
+				if (solution.isEmpty() || solution.Top() > Stack.Top())
+				{
+					count++;
+					solution = Stack;
+					cout << solution;
+					Output();
+				}
 			}
 			Stack.push(temp);
 			visit[temp.y][temp.x] = Stack.Top() + 1;//标记栈里面的。
@@ -106,24 +110,31 @@ int Dfs(const vector &Begin,const vector &End)//模仿二叉树的前序遍历
 		}
 		if(!Stack.isEmpty())
 		{
-			while (temp.i==8&&!Stack.isEmpty())//是否可以往右边走
+			while (((!solution.isEmpty() && solution.Top() <= Stack.Top()) //最优条件筛选
+				||temp.i == direction_number-1) && !Stack.isEmpty())//是否可以往右边走
 			{
 				temp = Stack.pop();//不可以，则返回上一层
 				visit[temp.y][temp.x] = 0;//取消栈标记
 			}
+			cout << temp.i << endl;
 			(temp-=direction[temp.i])+=direction[temp.i + 1];//向右走
 			temp.i++;//记录当前的方向。
+			cout << temp << endl;
+
 		}
 	}
 	return count;
 }
-int Dfs(const vector &Begin,const vector &End,const vector &next,int my_time=0)//递归用引用效率高很多的。
+
+int times = 0;
+int Dfs(const Vector &Begin,const Vector &End,const Vector &next,int my_time=0)//递归用引用效率高很多的。
 {
+	if ((times > 0 && my_time >= times)||!Judge(next))return 0;
 	int ans = 0;
-	if (!Judge(next) /*|| Count2>0*/)return 0;
 	if (next == End)
 	{
-		//Output();
+		Output();
+		times = my_time;
 		return 1;
 	}
 	re(i, 8)
@@ -147,7 +158,7 @@ int main()
 #endif
 
 	/*主函数体*/
-	vector Begin, End;
+	Vector Begin, End;
 	cin >> height >> width;
 	cin >> Begin >> End;
 	Input();
