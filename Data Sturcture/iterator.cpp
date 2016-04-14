@@ -17,12 +17,7 @@ treeNode<T>* Pre_iterator<T>::operator++()
 	Stack.push(pCurrent);
 	pCurrent = pCurrent->Left();
 	while (pCurrent == NULL&&!Stack.isEmpty())//能否回去
-	{
-		pCurrent = Stack.pop();
-		pCurrent = pCurrent->Right();
-		if (pCurrent)
-			break;
-	}
+		pCurrent = Stack.pop()->Right();
 	return pCurrent;//可以向左走。退出，或者此时不能回去且P为空。结束。
 }
 
@@ -55,7 +50,7 @@ treeNode<T>* Mid_iterator<T>::operator++()
 	if (pCurrent->Right()!= NULL)
 	{
 		treeNode<T>* temp = pCurrent->Right();//往右边走一步
-		while (temp != NULL)//接着一直往右走
+		while (temp != NULL)//接着一直往左走
 		{
 			Stack.push(temp);
 			temp = temp->Left();
