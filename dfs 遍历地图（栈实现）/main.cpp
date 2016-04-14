@@ -23,7 +23,7 @@
 */
 #include <iostream>
 #include <time.h>
-#include "C:\Users\Sam\Documents\C++\数据结构汇总\Data Structure\Data Sturcture\Stack.cpp"
+#include "..\Data Sturcture\Stack.cpp"
 using namespace std;
 #define DEBUG
 #undef re
