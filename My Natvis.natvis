@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+
+  <Type Name="Vector">
+    <DisplayString>{{({x},{y}),  i={i}}}</DisplayString>
+  </Type>
+
+
+  <Type Name="queue&lt;*&gt;">
+    <DisplayString>{{size={size}, front={front},rear={rear}}}</DisplayString>
+    <Expand>
+      <ArrayItems Condition="rear>front">
+        <Size>rear-front</Size>
+        <ValuePointer>data+front</ValuePointer>
+      </ArrayItems>
+      <!--下面的是为了循环队列而实现的-->
+      <ArrayItems Condition ="front>rear">
+        <Size>size-front</Size>
+        <ValuePointer>data+front</ValuePointer>
+      </ArrayItems>
+
+      <ArrayItems Condition ="front>rear">
+        <Size>rear</Size>
+        <LowerBound>size-front</LowerBound>
+        <ValuePointer>data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+
+
+  <Type Name="Heap&lt;*&gt;">
+    <DisplayString>{{size={size}, Current={Current}}}</DisplayString>
+    <Expand>
+      <ArrayItems Condition="Current>=0">
+        <Size>Current+1</Size>
+        <ValuePointer>Data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+
+
+  <Type Name="stack&lt;*&gt;">
+    <DisplayString>{{size={size}, top={top}}}</DisplayString>
+    <Expand>
+      <ArrayItems Condition="top>=0">
+        <Size>top+1</Size>
+        <ValuePointer>data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+
+
+  <Type Name="list&lt;*&gt;">
+    <DisplayString>{{Length = {length}}}</DisplayString>
+    <Expand>
+      <Item Name="Length">length</Item>
+      <LinkedListItems>
+        <Size>length</Size>
+        <HeadPointer>head</HeadPointer>
+        <NextPointer>next</NextPointer>
+        <ValueNode>data</ValueNode>
+      </LinkedListItems>
+    </Expand>
+  </Type>
+
+
+
+  <Type Name="NormalTree&lt;*&gt;">
+    <DisplayString Condition="root!=0">{{height = {root-&gt;height}}}</DisplayString>
+    <Expand>
+      <TreeItems>
+        <HeadPointer>root</HeadPointer>
+        <LeftPointer>left</LeftPointer>
+        <RightPointer>right</RightPointer>
+        <ValueNode>data</ValueNode>
+      </TreeItems>
+    </Expand>
+  </Type>
+  
+
+
+  <Type Name="treeNode&lt;*&gt;">
+    <DisplayString Condition="this!=0">{{data = {data}, height = {height}}}</DisplayString>
+    <Expand>
+      <Item Name="left" Condition="left!=0">*left</Item>
+      <Item Name="right" Condition="right!=0">*right</Item>
+      <!--<TreeItems>
+        <HeadPointer>this</HeadPointer>
+        <LeftPointer>left</LeftPointer>
+        <RightPointer>right</RightPointer>
+        <ValueNode>data</ValueNode>
+      </TreeItems>-->
+    </Expand>
+  </Type>
+
+</AutoVisualizer>
