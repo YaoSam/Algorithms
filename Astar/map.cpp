@@ -1,4 +1,5 @@
 #include "map.h"
+#include "..\Data Sturcture\queue.cpp"
 Vector location::end(1, 1), location::begin;
 
 std::ostream& operator<<(std::ostream& out, const Vector &other)
