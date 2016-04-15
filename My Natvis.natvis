@@ -51,7 +51,15 @@
       </ArrayItems>
     </Expand>
   </Type>
-
+ <Type Name="array&lt;*&gt;">
+    <DisplayString>{{size={size}, top={top}}}</DisplayString>
+    <Expand>
+      <ArrayItems Condition="top>=0">
+        <Size>size</Size>
+        <ValuePointer>data</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
 
 
   <Type Name="list&lt;*&gt;">
