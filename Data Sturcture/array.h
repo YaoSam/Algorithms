@@ -33,6 +33,7 @@ public:
 	T operator[](unsigned int n)const;
 	T& operator[](unsigned int n);
 	void push(const T &one);
+	int Top()const{ return top; }
 	friend std::ostream& operator<<(std::ostream& out, const array<T>& other)
 	{
 		re(i, other.top + 1)

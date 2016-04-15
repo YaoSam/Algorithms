@@ -42,10 +42,10 @@ int main()
 #endif
 
 	/*Ö÷º¯ÊýÌå*/
-	int n,weight;
+	unsigned int n,weight;
 	cin >> n>>weight;
-	bag_1d one(weight);
-	object_1d temp[100];
+	bag one(weight);
+	object temp[100];
 	re(i,n)
 	{
 		cin >> temp[0];
