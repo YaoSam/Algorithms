@@ -9,14 +9,7 @@ class array
 	T *data;
 	int size;
 	int top;
-	void expend()
-	{
-		T *temp = new T[size*2];
-		memcpy(temp, data, sizeof(T)*(top+1));
-		size *= 2;
-		delete[] data;
-		data = temp;
-	}
+	void expend();
 public:
 	array(unsigned int n) :
 		size(n),top(-1)
@@ -34,39 +27,16 @@ public:
 		data = new T[size];
 		memcpy(data, D, sizeof(T)*n);
 	}
-	array(const array<T>& other) :
-		size(other.size), top(other.top)
-	{
-		data = new T[size];
-		memcpy(data, other.data, sizeof(T)*(top+1));
-	}
-	array& operator=(const array<T>& other)
-	{
-		if (size < other.size)
-		{
-			delete[] data;
-			size = other.size;
-			data = new T[size];
-		}
-		top = other.top;
-		memcpy(data, other.data, sizeof(T)*(top+1));
-		return *this;
-	}
+	array(const array<T>& other);
+	array<T>& operator=(const array<T>& other);
 	~array(){ delete[] data; }
-	T operator[](unsigned int n)const
+	T operator[](unsigned int n)const;
+	T& operator[](unsigned int n);
+	void push(const T &one);
+	friend std::ostream& operator<<(std::ostream& out, const array<T>& other)
 	{
-		if (n >= size||n>top)throw "OUT OF SIZE!";
-		return data[n];
-	}
-	T& operator[](unsigned int n)
-	{
-		while (n >= size)expend();
-		if (int(n) > top)top = n;
-		return data[n];
-	}
-	void push(const T &one)
-	{
-		if (top == size - 1)expend();
-		data[++top] = one;
+		re(i, other.top + 1)
+			out << other.data[i] << " ";
+		return out << std::endl;
 	}
 };
