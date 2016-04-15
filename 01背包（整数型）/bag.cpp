@@ -1,6 +1,6 @@
 #include "bag.h"
 
-void bag_1d::Onebag(const object_1d &one)
+float bag_1d::Onebag(const object_1d &one)
 {
 	for (int i = Max_weight; i >= one.weight;i--)
 		if (ValueOfBag[i-one.weight]>=0//要求恰好装满的时候用的。
@@ -8,22 +8,26 @@ void bag_1d::Onebag(const object_1d &one)
 		{
 			ValueOfBag[i] = ValueOfBag[i - one.weight] + one.value;
 			//更新解
-			solution[i - one.weight]=solution[i];
-			solution[i - one.weight].push(one);
+			solution[i]=solution[i-one.weight];
+			solution[i].push(one);
 		}
+	return ValueOfBag[Max_weight];
 }
-void bag_1d::Twobag(const object_1d &one)
+
+float bag_1d::Twobag(const object_1d &one)
 {
 	for (int i = one.weight; i <= Max_weight;i++)
 		if (ValueOfBag[i-one.weight]>=0
 			&& ValueOfBag[i]<ValueOfBag[i-one.weight]+one.value)
 		{
 			ValueOfBag[i] = ValueOfBag[i - one.weight] + one.value;
+			solution[i] = solution[i - one.weight];
 			solution[i].push(one);
 		}
+	return ValueOfBag[Max_weight];
 }
 
-void bag_1d::Threebag(const object_1d &one)
+float bag_1d::Threebag(const object_1d &one)
 {
 	int i = 0;
 	while ((1 << (i + 1) <= one.num))
@@ -33,7 +37,23 @@ void bag_1d::Threebag(const object_1d &one)
 	}
 	int left = one.num - (1 << i) + 1;
 	Onebag(object_1d(one.value*left, one.weight*left, left));
+	return ValueOfBag[Max_weight];
 }
+
+float bag_1d::groupbag(const object_1d one[], unsigned int n)
+{
+	for (int i = Max_weight; i >= 0; i--)
+		re(j,n)
+		if (i>=one[j].weight&&ValueOfBag[i-one[j].weight]>=0
+			&& ValueOfBag[i]<ValueOfBag[i-one[j].weight]+one[j].value)
+		{
+			ValueOfBag[i] = ValueOfBag[i - one[j].weight] + one[j].value;
+			solution[i] = solution[i - one[j].weight];
+			solution[i].push(one[j]);
+		}
+	return ValueOfBag[Max_weight];
+}
+
 
 
 float bag_1d::push(const object_1d& one)

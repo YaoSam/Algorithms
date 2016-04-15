@@ -45,12 +45,21 @@ int main()
 	int n,weight;
 	cin >> n>>weight;
 	bag_1d one(weight);
-	object_1d temp;
+	object_1d temp[100];
+	re(i,n)
+	{
+		cin >> temp[0];
+		cout << one.push(temp[0]) << endl;
+		cout << one.Solution();
+	}
+	cin >> n;
 	re(i, n)
 	{
-		cin >> temp;
-		cout<<one.push(temp)<<endl;
+		cin >> temp[i];
+		//cout<<one.push(temp)<<endl;
 	}
+	cout<<one.groupbag(temp, n)<<endl;
+	cout << one.Solution();
 
 	cout << "运行时间：" << (clock() - BeginTime) << endl;
 #ifndef DEBUG
