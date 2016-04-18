@@ -31,16 +31,18 @@ using namespace std;
 
 const int MaxNode = 100;
 int map[MaxNode][MaxNode] = { 0 };
-int road[MaxNode+1000] = { 0 };
+int road[1000] = { 0 };
 int visit[MaxNode] = { 0 };
-int Count = 0;
+int Reached_Node = 0;
 int node_number,edge_number;
 int min_cost=0;
 void dfs(int from,int current_cost,int level=0)
 {
-	if (Count == node_number&&from==0)//是否要求回路
+	if (Reached_Node == node_number/*&&from==0*/)//是否要求回路
 	{
+		/*更新最优值*/
 		min_cost = current_cost;
+		/*输出解*/
 		cout << min_cost << endl;
 		re(i, level)
 			cout << road[i];
@@ -54,15 +56,13 @@ void dfs(int from,int current_cost,int level=0)
 	re(i, node_number)
 		if (map[from][i]>0&&current_cost+map[from][i]<min_cost)
 		{
-			if (visit[i] == 0)Count++;
-			visit[i]++;
-			road[level]=i+1;
+			if (visit[i] == 0)Reached_Node++;
+			visit[i]++;//由于可能会有重复走的情况。所以标记必须多重。
+			road[level]=i+1;//记录路径。
 			dfs(i, current_cost + map[from][i],level+1);
-			road[level] = 0;
 			visit[i]--;
-			if (visit[i] == 0)Count--;
+			if (visit[i] == 0)Reached_Node--;
 		}
-
 }
 
 
@@ -90,7 +90,9 @@ int main()
 		min_cost += cost;
 		map[from-1][to-1] = cost;
 	}
-	dfs(0, 0);
+	re(i,node_number)//假如不要求回路。则起点并不是对称的。所以每个点都得遍历一遍。
+		dfs(i, 0);
+	//dfs(0,0);
 	cout << "运行时间：" << (clock() - BeginTime) << endl;
 #ifndef DEBUG
 	system("pause");
