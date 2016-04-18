@@ -73,15 +73,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="array.cpp" />
-    <ClCompile Include="bstree.cpp" />
-    <ClCompile Include="btree.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h" />
-    <ClInclude Include="bstree.h" />
-    <ClInclude Include="btree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

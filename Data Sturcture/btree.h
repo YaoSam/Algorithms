@@ -5,9 +5,10 @@
 #include "queue.cpp"
 #include "normal.cpp"
 #include "normal2.h"
-#include <math.h>
+#include <iterator>
 #define re(i,n) for(unsigned int i=0;i<n;i++)
-
+#undef NULL
+#define NULL nullptr
 
 TEMP class NormalTree;
 TEMP class FreeTree;
@@ -51,6 +52,89 @@ class NormalTree//这东西用来继承吧！
 {
 protected:
 	treeNode<T>* root;
+	class m_iterator
+	{
+	protected:
+		treeNode<T>* pCurrent, *m_root;
+	public:
+		m_iterator(treeNode<T>* P, treeNode<T>* R) :pCurrent(P), m_root(R){}
+		virtual ~m_iterator(){}
+		T operator*()const;
+		bool isEnd()const{ return pCurrent == NULL; }
+		treeNode<T>* operator()()const{ return pCurrent; }
+		virtual void goFirst() = 0;
+		bool operator==(const m_iterator& other)const { return pCurrent == other.pCurrent; }
+		bool operator!=(const m_iterator& other)const { return pCurrent != other.pCurrent; }
+	};
+public:
+	class Pre_iterator :public m_iterator
+	{
+		stack<treeNode<T>*> Stack;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+	public:
+		Pre_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
+		void goFirst()override{ pCurrent = m_root; Stack.clear(); }
+		const Pre_iterator& operator++();
+		static Pre_iterator end()//返回终点的迭代器。
+		{
+			return Pre_iterator(nullptr, nullptr);
+		}
+		bool operator==(const Pre_iterator& other)const { return pCurrent == other.pCurrent; }
+		bool operator!=(const Pre_iterator& other)const { return pCurrent != other.pCurrent; }
+	};
+	class Mid_iterator :public m_iterator
+	{
+		stack<treeNode<T>*> Stack;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+		Mid_iterator(treeNode<T>* root, treeNode<T>* p) :m_iterator(p, root){}
+	public:
+		Mid_iterator(const NormalTree<T>* tree);
+		void goFirst()override;
+		const Mid_iterator& operator++();
+		static Mid_iterator end()
+		{
+			return Mid_iterator(nullptr,nullptr);
+		}
+		bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
+		bool operator!=(const Mid_iterator& other)const { return pCurrent != other.pCurrent; }
+	};
+
+	class Post_iterator :public m_iterator 
+	{
+		stack<treeNode<T>*> Stack;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+		Post_iterator(treeNode<T>* root, treeNode<T>* p) :m_iterator(p, root){}
+	public:
+		Post_iterator(const NormalTree<T>* const tree);
+		void goFirst()override;
+		const Post_iterator& operator++();
+		bool operator==(const Post_iterator& other)const { return pCurrent == other.pCurrent; }
+		bool operator!=(const Post_iterator& other)const { return pCurrent != other.pCurrent; }
+	};
+	class Level_iterator :public m_iterator
+	{
+		queue<treeNode<T>*> Queue;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+		Level_iterator(treeNode<T>* root, treeNode<T>* p) :m_iterator(p, root){}
+	public:
+		Level_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
+		void goFirst()override
+		{
+			pCurrent = m_root;
+			Queue.clear();
+		}
+		const Level_iterator& operator++();
+		static Level_iterator end()
+		{
+			return Level_iterator(nullptr, nullptr);
+		}
+		bool operator==(const Level_iterator& other)const { return pCurrent == other.pCurrent; }
+		bool operator!=(const Level_iterator& other)const { return pCurrent != other.pCurrent; }
+	};
 public:
 	NormalTree(T const & x,unsigned int h=1) :root(new treeNode<T>(x, h)){}
 	NormalTree(treeNode<T>* r = NULL) :root(r){}
@@ -67,4 +151,8 @@ public:
 	virtual void insert(T const & x) = 0;
 	treeNode<T>* Root()const{ return root; }
 	TEMP friend void Swap(NormalTree<T>* a, NormalTree<T>* b);
+	Pre_iterator pre_begin()const	{ return Pre_iterator(this); }
+	Mid_iterator mid_begin()const	{ return Mid_iterator(this); }
+	Post_iterator post_begin()const	{ return Post_iterator(this); }
+	Level_iterator level_begin()const{ return Level_iterator(this); }
 };

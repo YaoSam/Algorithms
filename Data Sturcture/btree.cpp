@@ -251,3 +251,131 @@ TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
 {
 	Swap(a->root,b->root);
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+TEMP
+T NormalTree<T>::m_iterator::operator*()const
+{
+	if (pCurrent == NULL)
+		throw "iterator range error\n";
+	else
+		return pCurrent->Data();
+}
+
+TEMP
+const typename NormalTree<T>::Pre_iterator& NormalTree<T>::Pre_iterator::operator++()
+{
+	if (pCurrent == NULL)	throw "Pre_iterator range error\n";
+	Stack.push(pCurrent);
+	pCurrent = pCurrent->Left();
+	while (pCurrent == NULL&&!Stack.isEmpty())//能否回去
+		pCurrent = Stack.pop()->Right();
+	return *this;//可以向左走。退出，或者此时不能回去且P为空。结束。
+}
+
+TEMP
+void NormalTree<T>::Mid_iterator::goFirst()
+{
+	pCurrent = m_root;
+	Stack.clear();
+	while (pCurrent != NULL)
+	{
+		Stack.push(pCurrent);
+		pCurrent = pCurrent->Left();
+	}
+	pCurrent = Stack.topData();
+	return;
+}
+
+TEMP
+NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
+{
+	goFirst();
+}
+
+TEMP
+const typename NormalTree<T>::Mid_iterator& NormalTree<T>::Mid_iterator::operator++()
+{
+	if (Stack.isEmpty())
+		throw "Mid_iterator range error\n";
+	pCurrent = Stack.pop();//这个已经被输出了。说明这个的左边已经不用管了。
+	if (pCurrent->Right() != NULL)
+	{
+		treeNode<T>* temp = pCurrent->Right();//往右边走一步
+		while (temp != NULL)//接着一直往左走
+		{
+			Stack.push(temp);
+			temp = temp->Left();
+		}
+	}
+	if (Stack.isEmpty())
+		pCurrent = NULL;
+	else
+		pCurrent = Stack.topData();
+	return *this;
+}
+
+TEMP 
+const typename NormalTree<T>::Level_iterator& NormalTree<T>::Level_iterator::operator++()
+{
+	if (pCurrent->Left())
+		Queue.push(pCurrent->Left());
+	if (pCurrent->Right())
+		Queue.push(pCurrent->Right());
+	if (!Queue.isEmpty())
+		pCurrent = Queue.pop();
+	else
+		pCurrent = NULL;//否则置为空
+	return *this;
+}
+
+TEMP
+void NormalTree<T>::Post_iterator::goFirst()
+{
+	pCurrent = m_root;
+	Stack.clear();
+	while (pCurrent != NULL)
+	{
+		while (pCurrent != NULL)
+		{
+			Stack.push(pCurrent);
+			pCurrent = pCurrent->Left();
+		}
+		pCurrent = Stack.topData()->Right();
+	}
+	if (Stack.isEmpty())//置为空
+		pCurrent = NULL;
+	else
+		pCurrent = Stack.pop();
+}
+
+TEMP
+NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
+{
+	goFirst();
+}
+
+TEMP
+const typename NormalTree<T>::Post_iterator& NormalTree<T>::Post_iterator::operator++()//输出最左边的叶子节点。
+{
+	if (pCurrent == NULL)
+		throw "Post_iterator range error\n";
+	if (Stack.isEmpty())//置为空
+		return pCurrent = NULL;
+	if (pCurrent == Stack.topData()->Left())
+	{
+		pCurrent = Stack.topData()->Right();//对其右边goFirst
+		while (pCurrent != NULL)
+		{
+			while (pCurrent != NULL)
+			{
+				Stack.push(pCurrent);
+				pCurrent = pCurrent->Left();
+			}
+			pCurrent = Stack.topData()->Right();
+		}
+	}
+	pCurrent = Stack.pop();
+	return *this;
+}

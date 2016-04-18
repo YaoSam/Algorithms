@@ -14,5 +14,7 @@ public:
 	virtual ~bstree(){}
 	treeNode<T>* find(T const &x)const;
 	virtual void DelNode(T const &x);
+	typename NormalTree<T>::Mid_iterator begin()const{ return NormalTree<T>::Mid_iterator(this); }
+	typename NormalTree<T>::Mid_iterator end()const	{ return  NormalTree<T>::Mid_iterator::end(); }
 	//void erase(T const & x);
 };

@@ -172,69 +172,18 @@ void TestOfIterator()
 	re(i, SizeOfTest)
 		a[i] = rand() % 10000;
 	bstree<int> one(a, SizeOfTest);
-	Pre_iterator<int> iterP(&one);
-	Mid_iterator<int> iterM(&one);
-	Post_iterator<int> iterPost(&one);
-	Level_iterator<int> iterL(&one);
-	Qsort(a, 0, SizeOfTest - 1);
-	re(i, SizeOfTest)
-		cout << a[i] << " ";
-	cout << endl;
-	one.pre();
-	while (!iterP.isEnd())
-	{
-		cout << *iterP << " ";
-		++iterP;
-	}
-	cout << endl;
-	iterP.goFirst();
-	while (!iterP.isEnd())
-	{
-		cout << *iterP << " ";
-		++iterP;
-	}
+	for (auto i : one)
+		cout << i << " ";
 	cout << endl;
 	one.mid();
-	while (!iterM.isEnd())
+	AVLtree<int>::Pre_iterator wer(&one);
+	while (!wer.isEnd())
 	{
-		cout << *iterM << " ";
-		++iterM;
+		cout << *wer << " ";
+		++wer;
 	}
 	cout << endl;
-	iterM.goFirst();
-	while (!iterM.isEnd())
-	{
-		cout << *iterM << " ";
-		++iterM;
-	}
-	cout << endl;
-	one.post();
-	while (!iterPost.isEnd())
-	{
-		cout << *iterPost << " ";
-		++iterPost;
-	}
-	cout << endl;
-	iterPost.goFirst();
-	while (!iterPost.isEnd())
-	{
-		cout << *iterPost << " ";
-		++iterPost;
-	}
-	cout << endl;
-	one.print();
-	while (!iterL.isEnd())
-	{
-		cout << *iterL << " ";
-		++iterL;
-	}
-	cout << endl;
-	iterL.goFirst();
-	while (!iterL.isEnd())
-	{
-		cout << *iterL << " ";
-		++iterL;
-	}
+	one.pre();
 }
 
 void TestOfHeap()
@@ -274,12 +223,12 @@ void Test()
 		//TestOfQueue();
 		//cout << "²âÊÔÁ´±í" << endl;
 		//TestOfList();
-		cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
-		TestOfBstree();
-		cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
-		TestOfAVLTree();
-		//cout << "\n²âÊÔµü´úÆ÷" << endl;
-		//TestOfIterator();
+		//cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
+		//TestOfBstree();
+		//cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
+		//TestOfAVLTree();
+		cout << "\n²âÊÔµü´úÆ÷" << endl;
+		TestOfIterator();
 		cout << "\n²âÊÔ¶Ñ" << endl;
 		TestOfHeap();
 
