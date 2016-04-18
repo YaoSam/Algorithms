@@ -67,6 +67,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "第三章 动态规划", "�
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01背包（整数型）", "01背包（整数型）\01背包（整数型）.vcxproj", "{FB034794-8589-48FB-9AE4-438FD75E93BB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "旅行商问题", "旅行商问题\旅行商问题.vcxproj", "{58B972D5-9620-4CBF-8ED6-152D838CA229}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -311,6 +313,18 @@ Global
 		{FB034794-8589-48FB-9AE4-438FD75E93BB}.Release|Win32.ActiveCfg = Release|Win32
 		{FB034794-8589-48FB-9AE4-438FD75E93BB}.Release|Win32.Build.0 = Release|Win32
 		{FB034794-8589-48FB-9AE4-438FD75E93BB}.Release|x64.ActiveCfg = Release|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Debug|Win32.ActiveCfg = Debug|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Debug|Win32.Build.0 = Debug|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Debug|x64.ActiveCfg = Debug|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Release|Any CPU.ActiveCfg = Release|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Release|Win32.ActiveCfg = Release|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Release|Win32.Build.0 = Release|Win32
+		{58B972D5-9620-4CBF-8ED6-152D838CA229}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -336,5 +350,6 @@ Global
 		{F01CF506-EECE-4871-BB67-8067041B2AD7} = {B0889489-7906-4FE6-AE62-59E122F03417}
 		{9C543942-EAA7-409A-A9D8-7CC60D09AD21} = {B0889489-7906-4FE6-AE62-59E122F03417}
 		{FB034794-8589-48FB-9AE4-438FD75E93BB} = {8CC97603-A65F-4EF8-8694-CB4041B46A3A}
+		{58B972D5-9620-4CBF-8ED6-152D838CA229} = {7E6F8C02-CB39-4476-828C-3C459CDDA318}
 	EndGlobalSection
 EndGlobal
