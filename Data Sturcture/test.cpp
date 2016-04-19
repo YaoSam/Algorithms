@@ -9,6 +9,23 @@
 #include <math.h>
 using namespace std;
 
+void TestOfArray()
+{
+	int a[100] = { 0 };
+	array<int> hello;
+	unsigned int SizeOfTest = 100;
+	re(i, SizeOfTest)
+	{
+		a[i] = rand() % SizeOfTest;
+		hello.push(a[i]);
+	}
+	for (auto i : hello)
+		cout << i << " ";
+	cout << endl;
+	for (auto i : a)
+		cout << i << " ";
+}
+
 void TestOfQueue()//修改后请通过该函数进行测试。
 {
 	srand(unsigned(time(NULL)));
@@ -217,6 +234,8 @@ void TestOfHeap()
 void Test()
 {
 	try{
+		cout<<"测试动态数组"<<endl;
+		TestOfArray();
 		//cout << "测试栈" << endl;
 		//TestOfStack();
 		//cout << "测试队列" << endl;
