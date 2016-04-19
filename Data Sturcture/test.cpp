@@ -19,12 +19,11 @@ void TestOfArray()
 		a[i] = rand() % SizeOfTest;
 		hello.push(a[i]);
 	}
+	sort(hello.begin(), hello.end());
 	for (auto& i : hello)
 	{
-		//i += 1;
 		cout << i << " ";
 	}
-	arr_iterator<int> temp(hello);
 	cout << endl;
 	for (auto i : a)
 		cout << i << " ";

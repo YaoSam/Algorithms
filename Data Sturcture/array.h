@@ -13,53 +13,54 @@ class array
 	void expend();
 public:
 	friend class array_iterator;
-	class array_iterator
+	class array_iterator:public std::iterator<std::random_access_iterator_tag,T>
 	{
 		const T *root,*end;
-		T* pointer;
+		T* P;
 	public:
-		array_iterator(T* r=nullptr,T *p=nullptr,T* e=nullptr) :root(r), pointer(p),end(e){}
-		array_iterator(array& Array) :root(Array.data),pointer(Array.data),end(Array.data+Array.top+1){}
-		void goFirst(){ pointer = root; }
-		bool isEnd()const { return pointer == end; }
-		bool CheckRange(){ return pointer >= root&&pointer < end; }
+		array_iterator(const T* r=nullptr,T *p=nullptr,const T* e=nullptr) :root(r), P(p),end(e){}
+		array_iterator(array& Array) :root(Array.data),P(Array.data),end(Array.data+Array.top+1){}
+		void goFirst(){ P = root; }
+		bool isEnd()const { return P == end; }
+		bool CheckRange(){ return P >= root&&P < end; }
 		T& operator*()const
 		{
-			return (*pointer); 
+			return (*P); 
 		}
 		typename array_iterator& operator++()
 		{
-			++pointer; 
+			++P; 
 			return *this; 
 		}
 		typename array_iterator& operator--()
 		{
-			--pointer;
+			--P;
 			return *this;
 		}
 		typename array_iterator operator+(const int & movement)const//没有边界检查哟~
 		{
-			return array_iterator(root, pointer + movement, end);
+			return array_iterator(root, P + movement, end);
 		}
 		typename array_iterator operator-(const int & movement)const
 		{
-			return array_iterator(root, pointer - movement, end);
+			return array_iterator(root, P - movement, end);
 		}
 		typename array_iterator& operator+=(const int & movement)
 		{
-			pointer += movement;
+			P += movement;
 			return *this;
 		}
 		typename array_iterator& operator-=(const int & movement)
 		{
-			pointer -= movement;
+			P -= movement;
 			return *this;
 		}
 		int operator-(const array_iterator& other)const
 		{
-			return pointer - other.pointer;
+			return P - other.P;
 		}
-		bool operator==(const array_iterator& other)const{ return pointer == other.pointer; }
+		bool operator==(const array_iterator& other)const{ return P == other.P; }
+		bool operator>(const array_iterator& other)const{ return P > other.P; }
 	};
 	array(unsigned int n) :
 		size(n),top(-1)
