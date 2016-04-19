@@ -9,11 +9,32 @@
 #include <math.h>
 using namespace std;
 
+void TestOfArray()
+{
+	int a[1000] = { 0 };
+	array<int> hello;
+	unsigned int SizeOfTest = 1000;
+	re(i, SizeOfTest)
+	{
+		a[i] = rand() % SizeOfTest;
+		hello.push(a[i]);
+	}
+	sort(hello.begin(), hello.end());
+	for (auto& i : hello)
+	{
+		cout << i << " ";
+	}
+	cout << endl;
+	for (auto i : a)
+		cout << i << " ";
+	cout << endl;
+}
+
 void TestOfQueue()//ÐÞ¸ÄºóÇëÍ¨¹ý¸Ãº¯Êý½øÐÐ²âÊÔ¡£
 {
 	srand(unsigned(time(NULL)));
 	queue<int> a, b;
-	unsigned int SizeOfTest = 10000;
+	unsigned int SizeOfTest = 100;
 	re(i, SizeOfTest)
 		a.push(rand() % 1000);
 	queue<int> c = a;
@@ -54,7 +75,7 @@ void TestOfList()
 	int a[1000];
 	unsigned int SizeOfTest = 100;
 	re(i, SizeOfTest)
-		a[i] = rand() % 10;
+		a[i] = rand() % 100;
 	list<int> one(a, SizeOfTest);
 	Qsort(a, 0, SizeOfTest - 1);
 	re(i, SizeOfTest)//earse test
@@ -71,16 +92,9 @@ void TestOfList()
 	cout << one;
 	list<int> two = one;
 	cout << two;
-	two = one;
-	cout << two<< endl;
-	one.resetPointer();
-	while (!one.pointer.isEnd())
-	{
-		cout << *one.pointer << " ";
-		++one.pointer;
-	}
-
-
+	for (auto& i : one)
+		cout << i << " ";
+	
 }
 
 
@@ -172,69 +186,18 @@ void TestOfIterator()
 	re(i, SizeOfTest)
 		a[i] = rand() % 10000;
 	bstree<int> one(a, SizeOfTest);
-	Pre_iterator<int> iterP(&one);
-	Mid_iterator<int> iterM(&one);
-	Post_iterator<int> iterPost(&one);
-	Level_iterator<int> iterL(&one);
-	Qsort(a, 0, SizeOfTest - 1);
-	re(i, SizeOfTest)
-		cout << a[i] << " ";
-	cout << endl;
-	one.pre();
-	while (!iterP.isEnd())
-	{
-		cout << *iterP << " ";
-		++iterP;
-	}
-	cout << endl;
-	iterP.goFirst();
-	while (!iterP.isEnd())
-	{
-		cout << *iterP << " ";
-		++iterP;
-	}
+	for (auto i : one)
+		cout << i << " ";
 	cout << endl;
 	one.mid();
-	while (!iterM.isEnd())
+	Pre<int> wer(&one);
+	while (!wer.isEnd())
 	{
-		cout << *iterM << " ";
-		++iterM;
+		cout << *wer << " ";
+		++wer;
 	}
 	cout << endl;
-	iterM.goFirst();
-	while (!iterM.isEnd())
-	{
-		cout << *iterM << " ";
-		++iterM;
-	}
-	cout << endl;
-	one.post();
-	while (!iterPost.isEnd())
-	{
-		cout << *iterPost << " ";
-		++iterPost;
-	}
-	cout << endl;
-	iterPost.goFirst();
-	while (!iterPost.isEnd())
-	{
-		cout << *iterPost << " ";
-		++iterPost;
-	}
-	cout << endl;
-	one.print();
-	while (!iterL.isEnd())
-	{
-		cout << *iterL << " ";
-		++iterL;
-	}
-	cout << endl;
-	iterL.goFirst();
-	while (!iterL.isEnd())
-	{
-		cout << *iterL << " ";
-		++iterL;
-	}
+	one.pre();
 }
 
 void TestOfHeap()
@@ -268,20 +231,22 @@ void TestOfHeap()
 void Test()
 {
 	try{
+		cout<<"²âÊÔ¶¯Ì¬Êý×é"<<endl;
+		TestOfArray();
 		//cout << "²âÊÔÕ»" << endl;
 		//TestOfStack();
 		//cout << "²âÊÔ¶ÓÁÐ" << endl;
 		//TestOfQueue();
-		//cout << "²âÊÔÁ´±í" << endl;
-		//TestOfList();
-		cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
-		TestOfBstree();
-		cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
-		TestOfAVLTree();
-		//cout << "\n²âÊÔµü´úÆ÷" << endl;
-		//TestOfIterator();
-		cout << "\n²âÊÔ¶Ñ" << endl;
-		TestOfHeap();
+		cout << "²âÊÔÁ´±í" << endl;
+		TestOfList();
+		//cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
+		//TestOfBstree();
+		//cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
+		//TestOfAVLTree();
+		cout << "\n²âÊÔµü´úÆ÷" << endl;
+		TestOfIterator();
+		//cout << "\n²âÊÔ¶Ñ" << endl;
+		//TestOfHeap();
 
 	}
 	catch (const char *a){

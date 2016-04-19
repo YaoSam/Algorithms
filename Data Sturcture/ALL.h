@@ -1,4 +1,5 @@
 #pragma  once
+#include "array.cpp"
 #include "queue.cpp"
 #include "stack.cpp"
 #include "list.cpp"
@@ -8,6 +9,5 @@
 #include "heap.cpp"
 #include "normal.cpp"
 #include "normal2.h"
-#include "iterator.cpp"
 #include <algorithm>
 #include <math.h>

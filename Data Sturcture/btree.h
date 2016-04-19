@@ -1,13 +1,12 @@
 #pragma once
 #include <iostream>
-#include <time.h>
 #include "Stack.cpp"
 #include "queue.cpp"
 #include "normal.cpp"
-#include "normal2.h"
-#include <math.h>
+#include <iterator>
 #define re(i,n) for(unsigned int i=0;i<n;i++)
-
+#undef NULL
+#define NULL nullptr
 
 TEMP class NormalTree;
 TEMP class FreeTree;
@@ -32,14 +31,24 @@ protected:
 	{
 		return height = Max((left ? left->height : 0), (right ? right->height : 0)) + 1;
 	}
-	inline void leftlink(treeNode<T>* other);
-	inline void rightlink(treeNode<T>* other);
-	void Copy(treeNode<T>*& root,const treeNode<T>*  otherRoot);//模仿前序遍历实现的复制
+	void leftlink(treeNode<T>* other)
+	{
+		left = other;
+		if (other)
+			other->parent = this;
+	}
+	void rightlink(treeNode<T>* other)
+	{
+		right = other;
+		if (other)
+			other->parent = this;
+	}
+	void Copy(treeNode<T>*& root, const treeNode<T>*  otherRoot);//模仿前序遍历实现的复制
 	void Del(treeNode<T>*& root);//模仿后序遍历实现删除。
 public:
 	treeNode<T>(T const &x=T(), unsigned int h = 1,treeNode<T>*p = NULL, treeNode<T>* l = NULL, treeNode<T>* r = NULL ) :
 		data(x),height(h),left(l),right(r),parent(p){}
-	T Data()const{ return data; }
+	const T& Data()const{ return data; }
 	treeNode<T>* Left()const{ return left; }
 	treeNode<T>* Right()const{ return right; }
 	treeNode<T>* Parent()const{ return parent; }
@@ -51,6 +60,82 @@ class NormalTree//这东西用来继承吧！
 {
 protected:
 	treeNode<T>* root;
+	class m_iterator:public std::iterator<std::input_iterator_tag,T>
+	{
+	protected:
+		treeNode<T>* pCurrent, *m_root;
+	public:
+		m_iterator(treeNode<T>* P, treeNode<T>* R) :pCurrent(P), m_root(R){}
+		virtual ~m_iterator(){}
+		T operator*()const;
+		T* operator->()const;
+		bool isEnd()const{ return pCurrent == NULL; }
+		treeNode<T>* operator()()const{ return pCurrent; }
+		virtual void goFirst() = 0;
+		bool operator==(const m_iterator& other)const { return pCurrent == other.pCurrent; }
+	};
+public:
+	class Pre_iterator :public m_iterator
+	{
+		stack<treeNode<T>*> Stack;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+	public:
+		Pre_iterator() :m_iterator(nullptr, nullptr){};
+		Pre_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
+		void goFirst()override{ pCurrent = m_root; Stack.clear(); }
+		const Pre_iterator& operator++();
+		static Pre_iterator end()//返回终点的迭代器。
+		{
+			return Pre_iterator(nullptr, nullptr);
+		}
+		bool operator==(const Pre_iterator& other)const { return pCurrent == other.pCurrent; }
+	};
+	class Mid_iterator :public m_iterator
+	{
+		stack<treeNode<T>*> Stack;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+	public:
+		Mid_iterator() :m_iterator(nullptr, nullptr){};
+		Mid_iterator(const NormalTree<T>* tree);
+		void goFirst()override;
+		const Mid_iterator& operator++();
+		bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
+	};
+
+	class Post_iterator :public m_iterator 
+	{
+		stack<treeNode<T>*> Stack;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+	public:
+		Post_iterator() :m_iterator(nullptr, nullptr){};
+		Post_iterator(const NormalTree<T>* const tree);
+		void goFirst()override;
+		const Post_iterator& operator++();
+		bool operator==(const Post_iterator& other)const { return pCurrent == other.pCurrent; }
+	};
+	class Level_iterator :public m_iterator
+	{
+		queue<treeNode<T>*> Queue;
+		using m_iterator::pCurrent;
+		using m_iterator::m_root;
+	public:
+		Level_iterator() :m_iterator(nullptr, nullptr){}
+		Level_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
+		void goFirst()override
+		{
+			pCurrent = m_root;
+			Queue.clear();
+		}
+		const Level_iterator& operator++();
+		static Level_iterator end()
+		{
+			return Level_iterator(nullptr, nullptr);
+		}
+		bool operator==(const Level_iterator& other)const { return pCurrent == other.pCurrent; }
+	};
 public:
 	NormalTree(T const & x,unsigned int h=1) :root(new treeNode<T>(x, h)){}
 	NormalTree(treeNode<T>* r = NULL) :root(r){}
@@ -68,3 +153,8 @@ public:
 	treeNode<T>* Root()const{ return root; }
 	TEMP friend void Swap(NormalTree<T>* a, NormalTree<T>* b);
 };
+TEMP using Tree = NormalTree < T > ;
+TEMP using Pre = typename Tree<T>::Pre_iterator;
+TEMP using Mid = typename Tree<T>::Mid_iterator;
+TEMP using Post = typename Tree<T>::Post_iterator;
+TEMP using Level = typename Tree<T>::Level_iterator;

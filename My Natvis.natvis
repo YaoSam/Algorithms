@@ -61,6 +61,16 @@
     </Expand>
   </Type>
 
+  <Type Name="array&lt;*&gt;::array_iterator">
+    <DisplayString >{{current={*pointer},size={end-root}}</DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Size>end-root</Size>
+        <ValuePointer>root</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
 
   <Type Name="list&lt;*&gt;">
     <DisplayString>{{Length = {length}}}</DisplayString>

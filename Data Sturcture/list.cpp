@@ -4,21 +4,18 @@
 TEMP
 list<T>::list(T const a[] /* = NULL */, unsigned int n /* = 0 */) :
 head(new node<T>),
-length(n),
-pointer(NULL)
+length(n)
 {
 	node<T>* temp=head; 
 	re(i, n)
 		temp = (temp->next = new node<T>(a[i]));
-	if (head->next)pointer.P = head->next;
 	return;
 }
 
 TEMP
 list<T>::list(list<T> const & other):
 head(new node<T>),
-length(other.length),
-pointer(head)
+length(other.length)
 {
 	node<T>* othertemp = other.head->next,*temp=head;
 	while (othertemp != NULL)
@@ -27,7 +24,6 @@ pointer(head)
 		temp = temp->next;
 		othertemp = othertemp->next;
 	}
-	if (head->next)pointer= head->next;
 	return;
 }
 
@@ -63,8 +59,6 @@ list<T>& list<T>::operator=(list<T> const & other)
 		temp->next = new node<T>(othertemp->data);
 		temp = temp->next;
 		othertemp = othertemp->next;
-		if (other.pointer.P == othertemp)
-			pointer = temp;
 	}
 	length = other.length;
 	return *this;
@@ -130,7 +124,6 @@ TEMP void Swap(list<T>& a, list<T>&b)
 {
 	Swap(a.head, b.head);
 	Swap(a.length, b.length);
-	Swap(a.pointer, b.pointer);
 	return;
 }
 
@@ -153,15 +146,24 @@ void list<T>::erase(T const & x)
 }
 
 TEMP
-node<T>* list<T>::list_iterator::operator++()
+typename list<T>::list_iterator& list<T>::list_iterator::operator++()
 {
 	if (P== NULL)
 		throw "List iterator out of range\n";
-	return P = P->next;
+	P = P->next;
+	return *this;
 }
-
 TEMP
-T list<T>::list_iterator::operator*()const
+typename list<T>::list_iterator list<T>::list_iterator::operator++(int)
+{
+	list_iterator ans(this);
+	if (P == NULL)
+		throw "List iterator out of range\n";
+	P = P->next;
+	return ans;
+}
+TEMP
+T& list<T>::list_iterator::operator*()const
 {
 	if (P == NULL)
 		throw "List iterator out of range\n";
