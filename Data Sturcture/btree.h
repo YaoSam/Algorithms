@@ -38,7 +38,7 @@ protected:
 public:
 	treeNode<T>(T const &x=T(), unsigned int h = 1,treeNode<T>*p = NULL, treeNode<T>* l = NULL, treeNode<T>* r = NULL ) :
 		data(x),height(h),left(l),right(r),parent(p){}
-	T Data()const{ return data; }
+	const T& Data()const{ return data; }
 	treeNode<T>* Left()const{ return left; }
 	treeNode<T>* Right()const{ return right; }
 	treeNode<T>* Parent()const{ return parent; }
@@ -50,7 +50,7 @@ class NormalTree//这东西用来继承吧！
 {
 protected:
 	treeNode<T>* root;
-	class m_iterator
+	class m_iterator:public std::iterator<std::input_iterator_tag,T>
 	{
 	protected:
 		treeNode<T>* pCurrent, *m_root;
@@ -58,6 +58,7 @@ protected:
 		m_iterator(treeNode<T>* P, treeNode<T>* R) :pCurrent(P), m_root(R){}
 		virtual ~m_iterator(){}
 		T operator*()const;
+		T* operator->()const;
 		bool isEnd()const{ return pCurrent == NULL; }
 		treeNode<T>* operator()()const{ return pCurrent; }
 		virtual void goFirst() = 0;

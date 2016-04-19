@@ -18,6 +18,12 @@ public:
 		const T *root,*end;
 		T* P;
 	public:
+		//下面5句与继承iterator等价。为了trait服务。
+		//typedef std::random_access_iterator_tag iterator_category;
+		//typedef T value_type;
+		//typedef typename std::allocator<T>::difference_type difference_type;
+		//typedef typename std::allocator<T>::const_pointer pointer;
+		//typedef typename std::allocator<T>::const_reference reference;
 		array_iterator(const T* r=nullptr,T *p=nullptr,const T* e=nullptr) :root(r), P(p),end(e){}
 		array_iterator(array& Array) :root(Array.data),P(Array.data),end(Array.data+Array.top+1){}
 		void goFirst(){ P = root; }
@@ -36,6 +42,14 @@ public:
 		{
 			--P;
 			return *this;
+		}
+		typename array_iterator operator++(int)
+		{
+			return array_iterator(root, P++, end);
+		}
+		typename array_iterator operator--(int)
+		{
+			return array_iterator(root, P--, end);
 		}
 		typename array_iterator operator+(const int & movement)const//没有边界检查哟~
 		{

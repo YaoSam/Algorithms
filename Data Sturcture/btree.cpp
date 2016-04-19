@@ -259,9 +259,17 @@ T NormalTree<T>::m_iterator::operator*()const
 {
 	if (pCurrent == NULL)
 		throw "iterator range error\n";
-	else
-		return pCurrent->Data();
+	return pCurrent->Data();
 }
+
+TEMP
+T* NormalTree<T>::m_iterator::operator->()const
+{
+	if (pCurrent == NULL)
+		throw "iterator out of range\n";
+	return &(pCurrent->Data());
+}
+
 
 TEMP
 const Pre<T>& NormalTree<T>::Pre_iterator::operator++()
