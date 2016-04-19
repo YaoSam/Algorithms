@@ -75,20 +75,6 @@ TEMP void treeNode<T>::Copy(treeNode<T>*& root, const treeNode<T>* otherRoot)
 	}
 }
 
-TEMP void treeNode<T>::leftlink(treeNode<T>* other)
-{
-	left = other;
-	if (other)
-		other->parent = this;
-}
-
-TEMP void treeNode<T>::rightlink(treeNode<T>* other)
-{
-	right = other;
-	if (other)
-		other->parent = this;
-}
-
 //////////////////////////////////////////////////////////////////////////
 
 TEMP NormalTree<T>& NormalTree<T>::operator=(NormalTree<T> const & other)

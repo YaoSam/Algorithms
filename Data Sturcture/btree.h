@@ -31,9 +31,19 @@ protected:
 	{
 		return height = Max((left ? left->height : 0), (right ? right->height : 0)) + 1;
 	}
-	inline void leftlink(treeNode<T>* other);
-	inline void rightlink(treeNode<T>* other);
-	void Copy(treeNode<T>*& root,const treeNode<T>*  otherRoot);//模仿前序遍历实现的复制
+	void leftlink(treeNode<T>* other)
+	{
+		left = other;
+		if (other)
+			other->parent = this;
+	}
+	void rightlink(treeNode<T>* other)
+	{
+		right = other;
+		if (other)
+			other->parent = this;
+	}
+	void Copy(treeNode<T>*& root, const treeNode<T>*  otherRoot);//模仿前序遍历实现的复制
 	void Del(treeNode<T>*& root);//模仿后序遍历实现删除。
 public:
 	treeNode<T>(T const &x=T(), unsigned int h = 1,treeNode<T>*p = NULL, treeNode<T>* l = NULL, treeNode<T>* r = NULL ) :

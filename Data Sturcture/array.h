@@ -33,38 +33,38 @@ public:
 		{
 			return (*P); 
 		}
-		typename array_iterator& operator++()
+		array_iterator& operator++()
 		{
 			++P; 
 			return *this; 
 		}
-		typename array_iterator& operator--()
+		array_iterator& operator--()
 		{
 			--P;
 			return *this;
 		}
-		typename array_iterator operator++(int)
+		array_iterator operator++(int)
 		{
 			return array_iterator(root, P++, end);
 		}
-		typename array_iterator operator--(int)
+		array_iterator operator--(int)
 		{
 			return array_iterator(root, P--, end);
 		}
-		typename array_iterator operator+(const int & movement)const//没有边界检查哟~
+		array_iterator operator+(const int & movement)const//没有边界检查哟~
 		{
 			return array_iterator(root, P + movement, end);
 		}
-		typename array_iterator operator-(const int & movement)const
+		array_iterator operator-(const int & movement)const
 		{
 			return array_iterator(root, P - movement, end);
 		}
-		typename array_iterator& operator+=(const int & movement)
+		array_iterator& operator+=(const int & movement)
 		{
 			P += movement;
 			return *this;
 		}
-		typename array_iterator& operator-=(const int & movement)
+		array_iterator& operator-=(const int & movement)
 		{
 			P -= movement;
 			return *this;
