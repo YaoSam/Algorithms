@@ -19,8 +19,12 @@ void TestOfArray()
 		a[i] = rand() % SizeOfTest;
 		hello.push(a[i]);
 	}
-	for (auto i : hello)
+	for (auto& i : hello)
+	{
+		//i += 1;
 		cout << i << " ";
+	}
+	arr_iterator<int> temp(hello);
 	cout << endl;
 	for (auto i : a)
 		cout << i << " ";
