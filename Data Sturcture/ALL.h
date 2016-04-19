@@ -8,6 +8,5 @@
 #include "heap.cpp"
 #include "normal.cpp"
 #include "normal2.h"
-#include "iterator.cpp"
 #include <algorithm>
 #include <math.h>

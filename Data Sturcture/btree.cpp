@@ -264,7 +264,7 @@ T NormalTree<T>::m_iterator::operator*()const
 }
 
 TEMP
-const typename NormalTree<T>::Pre_iterator& NormalTree<T>::Pre_iterator::operator++()
+const Pre<T>& NormalTree<T>::Pre_iterator::operator++()
 {
 	if (pCurrent == NULL)	throw "Pre_iterator range error\n";
 	Stack.push(pCurrent);
@@ -295,7 +295,7 @@ NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>* const tree) :m_it
 }
 
 TEMP
-const typename NormalTree<T>::Mid_iterator& NormalTree<T>::Mid_iterator::operator++()
+const Mid<T>& NormalTree<T>::Mid_iterator::operator++()
 {
 	if (Stack.isEmpty())
 		throw "Mid_iterator range error\n";
@@ -317,7 +317,7 @@ const typename NormalTree<T>::Mid_iterator& NormalTree<T>::Mid_iterator::operato
 }
 
 TEMP 
-const typename NormalTree<T>::Level_iterator& NormalTree<T>::Level_iterator::operator++()
+const Level<T>& NormalTree<T>::Level_iterator::operator++()
 {
 	if (pCurrent->Left())
 		Queue.push(pCurrent->Left());
@@ -357,7 +357,7 @@ NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>* const tree) :m_
 }
 
 TEMP
-const typename NormalTree<T>::Post_iterator& NormalTree<T>::Post_iterator::operator++()//输出最左边的叶子节点。
+const Post<T>& NormalTree<T>::Post_iterator::operator++()//输出最左边的叶子节点。
 {
 	if (pCurrent == NULL)
 		throw "Post_iterator range error\n";

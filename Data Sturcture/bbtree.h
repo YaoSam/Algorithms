@@ -5,6 +5,7 @@
 TEMP
 class AVLtree :public bstree < T >
 {
+	using Tree<T>::root;
 	int differ(treeNode<T>* node)const//计算左边高度-右边。平衡二叉树用。
 	{
 		return int(node->left ? node->left->height : 0) - int(node->right ? node->right->height : 0);
@@ -13,7 +14,7 @@ class AVLtree :public bstree < T >
 	void RotateRR(treeNode<T>* node);
 	void RotateLR(treeNode<T>* node);
 	void RotateRL(treeNode<T>* node);
-	void Maintain(treeNode<T>* node, T const &x);
+	void Maintain(treeNode<T>* node, T const &x)override;
 	int Height(const treeNode<T>* node)const{//用来Debug的。检查对height的维护
 		return Max(((node->left) ? Height(node->left) : 0), ((node->right) ? Height(node->right) : 0)) +1;
 	}
@@ -49,5 +50,5 @@ class SearchTree:public AVLtree<SearchNode<A,B>>
 public:
 	SearchTree(A const *Index = NULL, B const * Data = NULL, unsigned int n = 0);
 	SearchTree(SearchTree<A, B> const *node,unsigned int n);
-	treeNode<SearchNode<A,B>>* find(A const & index)const;
+	treeNode<SearchNode<A,B>>* find(A const & index)const override;
 };

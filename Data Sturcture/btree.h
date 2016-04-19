@@ -1,10 +1,8 @@
 #pragma once
 #include <iostream>
-#include <time.h>
 #include "Stack.cpp"
 #include "queue.cpp"
 #include "normal.cpp"
-#include "normal2.h"
 #include <iterator>
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 #undef NULL
@@ -64,7 +62,6 @@ protected:
 		treeNode<T>* operator()()const{ return pCurrent; }
 		virtual void goFirst() = 0;
 		bool operator==(const m_iterator& other)const { return pCurrent == other.pCurrent; }
-		bool operator!=(const m_iterator& other)const { return pCurrent != other.pCurrent; }
 	};
 public:
 	class Pre_iterator :public m_iterator
@@ -73,6 +70,7 @@ public:
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
 	public:
+		Pre_iterator() :m_iterator(nullptr, nullptr){};
 		Pre_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
 		void goFirst()override{ pCurrent = m_root; Stack.clear(); }
 		const Pre_iterator& operator++();
@@ -81,24 +79,18 @@ public:
 			return Pre_iterator(nullptr, nullptr);
 		}
 		bool operator==(const Pre_iterator& other)const { return pCurrent == other.pCurrent; }
-		bool operator!=(const Pre_iterator& other)const { return pCurrent != other.pCurrent; }
 	};
 	class Mid_iterator :public m_iterator
 	{
 		stack<treeNode<T>*> Stack;
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
-		Mid_iterator(treeNode<T>* root, treeNode<T>* p) :m_iterator(p, root){}
 	public:
+		Mid_iterator() :m_iterator(nullptr, nullptr){};
 		Mid_iterator(const NormalTree<T>* tree);
 		void goFirst()override;
 		const Mid_iterator& operator++();
-		static Mid_iterator end()
-		{
-			return Mid_iterator(nullptr,nullptr);
-		}
 		bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
-		bool operator!=(const Mid_iterator& other)const { return pCurrent != other.pCurrent; }
 	};
 
 	class Post_iterator :public m_iterator 
@@ -106,21 +98,20 @@ public:
 		stack<treeNode<T>*> Stack;
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
-		Post_iterator(treeNode<T>* root, treeNode<T>* p) :m_iterator(p, root){}
 	public:
+		Post_iterator() :m_iterator(nullptr, nullptr){};
 		Post_iterator(const NormalTree<T>* const tree);
 		void goFirst()override;
 		const Post_iterator& operator++();
 		bool operator==(const Post_iterator& other)const { return pCurrent == other.pCurrent; }
-		bool operator!=(const Post_iterator& other)const { return pCurrent != other.pCurrent; }
 	};
 	class Level_iterator :public m_iterator
 	{
 		queue<treeNode<T>*> Queue;
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
-		Level_iterator(treeNode<T>* root, treeNode<T>* p) :m_iterator(p, root){}
 	public:
+		Level_iterator() :m_iterator(nullptr, nullptr){}
 		Level_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
 		void goFirst()override
 		{
@@ -133,7 +124,6 @@ public:
 			return Level_iterator(nullptr, nullptr);
 		}
 		bool operator==(const Level_iterator& other)const { return pCurrent == other.pCurrent; }
-		bool operator!=(const Level_iterator& other)const { return pCurrent != other.pCurrent; }
 	};
 public:
 	NormalTree(T const & x,unsigned int h=1) :root(new treeNode<T>(x, h)){}
@@ -151,8 +141,9 @@ public:
 	virtual void insert(T const & x) = 0;
 	treeNode<T>* Root()const{ return root; }
 	TEMP friend void Swap(NormalTree<T>* a, NormalTree<T>* b);
-	Pre_iterator pre_begin()const	{ return Pre_iterator(this); }
-	Mid_iterator mid_begin()const	{ return Mid_iterator(this); }
-	Post_iterator post_begin()const	{ return Post_iterator(this); }
-	Level_iterator level_begin()const{ return Level_iterator(this); }
 };
+TEMP using Tree = NormalTree < T > ;
+TEMP using Pre = typename Tree<T>::Pre_iterator;
+TEMP using Mid = typename Tree<T>::Mid_iterator;
+TEMP using Post = typename Tree<T>::Post_iterator;
+TEMP using Level = typename Tree<T>::Level_iterator;

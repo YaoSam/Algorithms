@@ -176,7 +176,7 @@ void TestOfIterator()
 		cout << i << " ";
 	cout << endl;
 	one.mid();
-	AVLtree<int>::Pre_iterator wer(&one);
+	Pre<int> wer(&one);
 	while (!wer.isEnd())
 	{
 		cout << *wer << " ";
