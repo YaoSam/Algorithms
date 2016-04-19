@@ -46,17 +46,20 @@ public:
 		}
 		return out << std::endl;
 	}
-	void resetPointer(){ pointer = head->next; }
-	class list_iterator{
-	private:
+	friend class list_iterator;
+	class list_iterator:public std::iterator<std::output_iterator_tag,T>
+	{
 		node<T>* P;
-		friend list < T > ;
 	public:
+		list_iterator(const list<T>& other) :P(other.head->next){}
 		list_iterator(node<T>* p) :P(p){}
-		node<T>* operator++();
-		list_iterator& operator=(node<T>* p){ P = p; return *this; }
-		T operator*()const;
+		list_iterator& operator++();
+		list_iterator operator++(int);
+		T& operator*()const;
 		bool isEnd(){ return P == NULL; }
 		void reset(){ P = head; }
-	}pointer;
+		bool operator==(const list_iterator& other)const{ return P == other.P; }
+	};
+	list_iterator begin()const{ return list_iterator(*this); }
+	list_iterator end()const { return list_iterator(nullptr); }
 };

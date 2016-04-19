@@ -11,9 +11,9 @@ using namespace std;
 
 void TestOfArray()
 {
-	int a[100] = { 0 };
+	int a[1000] = { 0 };
 	array<int> hello;
-	unsigned int SizeOfTest = 100;
+	unsigned int SizeOfTest = 1000;
 	re(i, SizeOfTest)
 	{
 		a[i] = rand() % SizeOfTest;
@@ -27,13 +27,14 @@ void TestOfArray()
 	cout << endl;
 	for (auto i : a)
 		cout << i << " ";
+	cout << endl;
 }
 
 void TestOfQueue()//ÐÞ¸ÄºóÇëÍ¨¹ý¸Ãº¯Êý½øÐÐ²âÊÔ¡£
 {
 	srand(unsigned(time(NULL)));
 	queue<int> a, b;
-	unsigned int SizeOfTest = 10000;
+	unsigned int SizeOfTest = 100;
 	re(i, SizeOfTest)
 		a.push(rand() % 1000);
 	queue<int> c = a;
@@ -74,7 +75,7 @@ void TestOfList()
 	int a[1000];
 	unsigned int SizeOfTest = 100;
 	re(i, SizeOfTest)
-		a[i] = rand() % 10;
+		a[i] = rand() % 100;
 	list<int> one(a, SizeOfTest);
 	Qsort(a, 0, SizeOfTest - 1);
 	re(i, SizeOfTest)//earse test
@@ -91,16 +92,9 @@ void TestOfList()
 	cout << one;
 	list<int> two = one;
 	cout << two;
-	two = one;
-	cout << two<< endl;
-	one.resetPointer();
-	while (!one.pointer.isEnd())
-	{
-		cout << *one.pointer << " ";
-		++one.pointer;
-	}
-
-
+	for (auto& i : one)
+		cout << i << " ";
+	
 }
 
 
@@ -243,16 +237,16 @@ void Test()
 		//TestOfStack();
 		//cout << "²âÊÔ¶ÓÁÐ" << endl;
 		//TestOfQueue();
-		//cout << "²âÊÔÁ´±í" << endl;
-		//TestOfList();
+		cout << "²âÊÔÁ´±í" << endl;
+		TestOfList();
 		//cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
 		//TestOfBstree();
 		//cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
 		//TestOfAVLTree();
 		cout << "\n²âÊÔµü´úÆ÷" << endl;
 		TestOfIterator();
-		cout << "\n²âÊÔ¶Ñ" << endl;
-		TestOfHeap();
+		//cout << "\n²âÊÔ¶Ñ" << endl;
+		//TestOfHeap();
 
 	}
 	catch (const char *a){
