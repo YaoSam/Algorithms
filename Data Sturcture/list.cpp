@@ -144,29 +144,3 @@ void list<T>::erase(T const & x)
 	}
 	return;
 }
-
-TEMP
-typename list<T>::list_iterator& list<T>::list_iterator::operator++()
-{
-	if (P== NULL)
-		throw "List iterator out of range\n";
-	P = P->next;
-	return *this;
-}
-TEMP
-typename list<T>::list_iterator list<T>::list_iterator::operator++(int)
-{
-	list_iterator ans(this);
-	if (P == NULL)
-		throw "List iterator out of range\n";
-	P = P->next;
-	return ans;
-}
-TEMP
-T& list<T>::list_iterator::operator*()const
-{
-	if (P == NULL)
-		throw "List iterator out of range\n";
-	return P->data;
-}
-

@@ -46,20 +46,37 @@ public:
 		}
 		return out << std::endl;
 	}
-	friend class list_iterator;
-	class list_iterator:public std::iterator<std::output_iterator_tag,T>
+	class iterator:public std::iterator<std::output_iterator_tag,T>
 	{
 		node<T>* P;
 	public:
-		list_iterator(const list<T>& other) :P(other.head->next){}
-		list_iterator(node<T>* p) :P(p){}
-		list_iterator& operator++();
-		list_iterator operator++(int);
-		T& operator*()const;
-		bool isEnd(){ return P == NULL; }
-		void reset(){ P = head; }
-		bool operator==(const list_iterator& other)const{ return P == other.P; }
+		iterator(const list<T>& other) :P(other.head->next){}
+		iterator(node<T>* p) :P(p){}
+		iterator& operator++()	{ P = P->next; return*this; }
+		iterator operator++(int){ iterator ans(P); P = P->next; return ans; }
+		T& operator*()const		{ return P->data; }
+		T* operator->()const	{ return &(P->data); }
+		bool isEnd()const		{ return P == NULL; }
+		void reset()			{ P = head; }
+		bool operator==(const iterator& other)const{ return P == other.P; }
 	};
-	list_iterator begin()const{ return list_iterator(*this); }
-	list_iterator end()const { return list_iterator(nullptr); }
+	class const_iterator:public std::iterator<std::input_iterator_tag,T>
+	{
+		const node<T>* P;
+	public:
+		const_iterator(const list<T>& other) :P(other.head->next){}
+		const_iterator(const node<T>* p) :P(p){}
+		const_iterator& operator++()	{ P = P->next; return *this; }
+		const_iterator operator++(int)	{ const_iterator ans(P); P = P->next; return ans; }
+		const T& operator*()const		{ return P->data; }
+		const T* operator->()const		{ return &(P->data); }
+		bool isEnd()const				{ return P == NULL; }
+		void reset()					{ P = head; }
+		bool operator==(const const_iterator& other)const{ return P == other.P; }
+
+	};
+	iterator begin(){ return iterator(head->next); }
+	iterator end(){ return iterator(nullptr); }
+	const_iterator begin()const	{ return const_iterator(head->next); }
+	const_iterator end()const	{ return const_iterator(nullptr); }
 };

@@ -73,7 +73,7 @@ void TestOfList()
 {
 	srand(int(time(NULL)));
 	int a[1000];
-	unsigned int SizeOfTest = 100;
+	unsigned int SizeOfTest = 10;
 	re(i, SizeOfTest)
 		a[i] = rand() % 100;
 	list<int> one(a, SizeOfTest);
@@ -90,10 +90,12 @@ void TestOfList()
 	re(i, SizeOfTest)
 		one.HeadInsert(rand() % 1000);
 	cout << one;
-	list<int> two = one;
-	cout << two;
-	for (auto& i : one)
+	const list<int> two = one;
+	for (auto& i : two)
+	{
 		cout << i << " ";
+	}
+	cout << two;
 	
 }
 
