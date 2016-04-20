@@ -12,8 +12,8 @@ class array
 	int top;
 	void expend();
 public:
-	friend class array_iterator;
-	class array_iterator:public std::iterator<std::random_access_iterator_tag,T>
+	//friend class array<T>::iterator;
+	class iterator:public std::iterator<std::random_access_iterator_tag,T>
 	{
 		const T *root,*end;
 		T* P;
@@ -24,57 +24,46 @@ public:
 		//typedef typename std::allocator<T>::difference_type difference_type;
 		//typedef typename std::allocator<T>::const_pointer pointer;
 		//typedef typename std::allocator<T>::const_reference reference;
-		array_iterator(const T* r=nullptr,T *p=nullptr,const T* e=nullptr) :root(r), P(p),end(e){}
-		array_iterator(array& Array) :root(Array.data),P(Array.data),end(Array.data+Array.top+1){}
-		void goFirst(){ P = root; }
-		bool isEnd()const { return P == end; }
-		bool CheckRange(){ return P >= root&&P < end; }
-		T& operator*()const
-		{
-			return (*P); 
-		}
-		array_iterator& operator++()
-		{
-			++P; 
-			return *this; 
-		}
-		array_iterator& operator--()
-		{
-			--P;
-			return *this;
-		}
-		array_iterator operator++(int)
-		{
-			return array_iterator(root, P++, end);
-		}
-		array_iterator operator--(int)
-		{
-			return array_iterator(root, P--, end);
-		}
-		array_iterator operator+(const int & movement)const//没有边界检查哟~
-		{
-			return array_iterator(root, P + movement, end);
-		}
-		array_iterator operator-(const int & movement)const
-		{
-			return array_iterator(root, P - movement, end);
-		}
-		array_iterator& operator+=(const int & movement)
-		{
-			P += movement;
-			return *this;
-		}
-		array_iterator& operator-=(const int & movement)
-		{
-			P -= movement;
-			return *this;
-		}
-		int operator-(const array_iterator& other)const
-		{
-			return P - other.P;
-		}
-		bool operator==(const array_iterator& other)const{ return P == other.P; }
-		bool operator>(const array_iterator& other)const{ return P > other.P; }
+		iterator(const T* r=nullptr,T *p=nullptr,const T* e=nullptr) :root(r), P(p),end(e){}
+		iterator(array& Array) :root(Array.data),P(Array.data),end(Array.data+Array.top+1){}
+		void goFirst()						{ P = root; }
+		bool isEnd()const					{ return P == end; }
+		bool CheckRange()					{ return P >= root&&P < end; }
+		T& operator*()const {return (*P);}
+		iterator& operator++()		{ ++P; return *this; }
+		iterator& operator--()		{ --P; return *this; }
+		iterator operator++(int)		{ return iterator(root, P++, end); }
+		iterator operator--(int)		{ return iterator(root, P--, end); }
+		iterator operator+(const int & movement)const	{ return iterator(root, P + movement, end); }
+		iterator operator-(const int & movement)const	{ return iterator(root, P - movement, end); }
+		iterator& operator+=(const int & movement)	{ P += movement; return *this; }
+		iterator& operator-=(const int & movement)	{ P -= movement; return *this; }
+		int operator-(const iterator& other)const		{ return P - other.P; }
+		bool operator==(const iterator& other)const	{ return P == other.P; }
+		bool operator>(const iterator& other)const	{ return P > other.P; }
+	};
+	class const_iterator:public std::iterator<std::input_iterator_tag,const T>
+	{
+		T const * root, *end;//不允许改变指针。
+		const T* P;//不允许改变值。
+	public:
+		const_iterator(T* const r = nullptr, const T *p = nullptr, T*const e = nullptr) :root(r), P(p), end(e){}
+		const_iterator(const array& Array) :root(Array.data), P(Array.data), end(Array.data + Array.top + 1){}
+		void goFirst()						{ P = root; }
+		bool isEnd()const					{ return P == end; }
+		bool CheckRange()					{ return P >= root&&P < end; }
+		const T& operator*()const			{ return (*P); }
+		const_iterator& operator++()		{ ++P; return *this; }
+		const_iterator& operator--()		{ --P; return *this; }
+		const_iterator operator++(int)		{ return const_iterator(root, P++, end); }
+		const_iterator operator--(int)		{ return const_iterator(root, P--, end); }
+		const_iterator operator+(const int & movement)const	{ return const_iterator(root, P + movement, end); }
+		const_iterator operator-(const int & movement)const	{ return const_iterator(root, P - movement, end); }
+		const_iterator& operator+=(const int & movement)	{ P += movement; return *this; }
+		const_iterator& operator-=(const int & movement)	{ P -= movement; return *this; }
+		int operator-(const const_iterator& other)const		{ return P - other.P; }
+		bool operator==(const const_iterator& other)const	{ return P == other.P; }
+		bool operator>(const const_iterator& other)const	{ return P > other.P; }
 	};
 	array(unsigned int n) :
 		size(n),top(-1)
@@ -108,9 +97,13 @@ public:
 	}
 	void push(const T &one);
 	const int& Top()const	{ return top; }
-	const int& Size()const { return size; }
-	array_iterator begin(){ return array_iterator(*this); }
-	array_iterator end(){ return array_iterator(nullptr,data+top+1); }
+	const int& Size()const	{ return size; }
+	iterator begin()		{ return iterator(*this); }
+	const_iterator begin()const { return const_iterator(*this); }
+	const_iterator cbegin()const{ return const_iterator(*this); }
+	iterator end()			{ return iterator(nullptr,data+top+1); }
+	const_iterator end()const{ return const_iterator(nullptr, data + top + 1); }
+	const_iterator cend()const	{ return const_iterator(nullptr, data + top + 1); }
 	friend std::ostream& operator<<(std::ostream& out, const array<T>& other)
 	{
 		re(i, other.top + 1)
@@ -120,4 +113,4 @@ public:
 };
 
 TEMP
-using arr_iterator = typename array<T>::array_iterator;
+using arr_iterator = typename array<T>::iterator;

@@ -63,21 +63,21 @@ protected:
 	class m_iterator:public std::iterator<std::input_iterator_tag,T>
 	{
 	protected:
-		treeNode<T>* pCurrent, *m_root;
+		const treeNode<T>* pCurrent, *const m_root;
 	public:
 		m_iterator(treeNode<T>* P, treeNode<T>* R) :pCurrent(P), m_root(R){}
 		virtual ~m_iterator(){}
-		T operator*()const;
-		T* operator->()const;
+		const T& operator*()const;
+		const T* operator->()const;
 		bool isEnd()const{ return pCurrent == NULL; }
-		treeNode<T>* operator()()const{ return pCurrent; }
+		const treeNode<T>* operator()()const{ return pCurrent; }
 		virtual void goFirst() = 0;
 		bool operator==(const m_iterator& other)const { return pCurrent == other.pCurrent; }
 	};
 public:
 	class Pre_iterator :public m_iterator
 	{
-		stack<treeNode<T>*> Stack;
+		stack<const treeNode<T>*> Stack;
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
 	public:
@@ -93,7 +93,7 @@ public:
 	};
 	class Mid_iterator :public m_iterator
 	{
-		stack<treeNode<T>*> Stack;
+		stack<const treeNode<T>*> Stack;
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
 	public:
@@ -106,7 +106,7 @@ public:
 
 	class Post_iterator :public m_iterator 
 	{
-		stack<treeNode<T>*> Stack;
+		stack<const treeNode<T>*> Stack;
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
 	public:
@@ -118,7 +118,7 @@ public:
 	};
 	class Level_iterator :public m_iterator
 	{
-		queue<treeNode<T>*> Queue;
+		queue<const treeNode<T>*> Queue;
 		using m_iterator::pCurrent;
 		using m_iterator::m_root;
 	public:

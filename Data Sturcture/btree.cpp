@@ -241,7 +241,7 @@ TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
 
 //////////////////////////////////////////////////////////////////////////
 TEMP
-T NormalTree<T>::m_iterator::operator*()const
+const T& NormalTree<T>::m_iterator::operator*()const
 {
 	if (pCurrent == NULL)
 		throw "iterator range error\n";
@@ -249,7 +249,7 @@ T NormalTree<T>::m_iterator::operator*()const
 }
 
 TEMP
-T* NormalTree<T>::m_iterator::operator->()const
+const T* NormalTree<T>::m_iterator::operator->()const
 {
 	if (pCurrent == NULL)
 		throw "iterator out of range\n";

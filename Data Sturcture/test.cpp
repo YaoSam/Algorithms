@@ -12,15 +12,15 @@ using namespace std;
 void TestOfArray()
 {
 	int a[1000] = { 0 };
-	array<int> hello;
 	unsigned int SizeOfTest = 1000;
 	re(i, SizeOfTest)
 	{
 		a[i] = rand() % SizeOfTest;
-		hello.push(a[i]);
+		//hello.push(a[i]);
 	}
-	sort(hello.begin(), hello.end());
-	for (auto& i : hello)
+	const array<int> hello(a,SizeOfTest);
+	//sort(hello.begin(), hello.end());
+	for (const auto& i : hello)
 	{
 		cout << i << " ";
 	}
@@ -185,8 +185,8 @@ void TestOfIterator()
 	unsigned int SizeOfTest = 1000;
 	re(i, SizeOfTest)
 		a[i] = rand() % 10000;
-	bstree<int> one(a, SizeOfTest);
-	for (auto i : one)
+	const bstree<int> one(a, SizeOfTest);
+	for (auto& i : one)
 		cout << i << " ";
 	cout << endl;
 	one.mid();
