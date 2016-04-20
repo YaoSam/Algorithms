@@ -1,365 +1,335 @@
 #pragma  once
 #include "btree.h"
-TEMP void treeNode<T>::Del(treeNode<T>*& root)
-{
-	stack<const treeNode<T>*> Stack;
-	const treeNode<T>* temp = root, *temp2;
-	if (root == NULL)return;
-	while (temp != NULL)
+namespace ME{
+	TEMP void treeNode<T>::Del(treeNode<T>*& root)
 	{
+		stack<const treeNode<T>*> Stack;
+		const treeNode<T>* temp = root, *temp2;
+		if (root == NULL)return;
 		while (temp != NULL)
 		{
-			Stack.push(temp);
-			temp = temp->left;
-		}
-		temp = Stack.topData()->right;
-	}
-	temp = Stack.pop();
-	while (temp != NULL)
-	{
-		temp2 = temp; delete temp2; //ÒòÎªºóÃæ»¹ÒªÓÃµ½tempµÄÐÅÏ¢¡£
-		if (Stack.isEmpty())break;
-		if (temp == Stack.topData()->left)
-		{
-			temp = Stack.topData()->right;
 			while (temp != NULL)
 			{
-				while (temp != NULL)
-				{
-					Stack.push(temp);
-					temp = temp->left;
-				}
-				temp = Stack.topData()->right;
+				Stack.push(temp);
+				temp = temp->left;
 			}
+			temp = Stack.topData()->right;
 		}
 		temp = Stack.pop();
-	}
-	root = NULL;
-}
-TEMP void treeNode<T>::Copy(treeNode<T>*& root, const treeNode<T>* otherRoot)
-{
-	stack<const treeNode<T>*> Stack_other;
-	const treeNode<T>* temp_other = otherRoot;
-	stack<treeNode<T>*> Stack_this;
-	treeNode<T> *temp_this=NULL;
-	if (temp_other){
-		temp_this = root = new treeNode<T>(temp_other->data, temp_other->height);
-		Stack_other.push(temp_other);
-		Stack_this.push(temp_this);
-		temp_other = temp_other->left;
-	}
-	else root = NULL;
-	while (temp_other != NULL || !Stack_other.isEmpty())
-	{
-		while (temp_other != NULL)//´ËÊ±Ò»¶¨ÊÇÏò×ó×ßµÄ¡£
+		while (temp != NULL)
 		{
-			temp_this->left = new treeNode<T>(temp_other->data, temp_other->height, temp_this);
-			temp_this = temp_this->left;//¸úÉÏtemp_otherµÄ²½·¥
-			Stack_this.push(temp_this);
+			temp2 = temp; delete temp2; //ÒòÎªºóÃæ»¹ÒªÓÃµ½tempµÄÐÅÏ¢¡£
+			if (Stack.isEmpty())break;
+			if (temp == Stack.topData()->left)
+			{
+				temp = Stack.topData()->right;
+				while (temp != NULL)
+				{
+					while (temp != NULL)
+					{
+						Stack.push(temp);
+						temp = temp->left;
+					}
+					temp = Stack.topData()->right;
+				}
+			}
+			temp = Stack.pop();
+		}
+		root = NULL;
+	}
+	TEMP void treeNode<T>::Copy(treeNode<T>*& root, const treeNode<T>* otherRoot)
+	{
+		stack<const treeNode<T>*> Stack_other;
+		const treeNode<T>* temp_other = otherRoot;
+		stack<treeNode<T>*> Stack_this;
+		treeNode<T> *temp_this = NULL;
+		if (temp_other){
+			temp_this = root = new treeNode<T>(temp_other->data, temp_other->height);
 			Stack_other.push(temp_other);
+			Stack_this.push(temp_this);
 			temp_other = temp_other->left;
 		}
-		if (!Stack_other.isEmpty())//Íù»ØÈ¡Ò»¸öµã¡£ÏòÓÒ×ßÒ»²½¡£
+		else root = NULL;
+		while (temp_other != NULL || !Stack_other.isEmpty())
 		{
-			temp_other = Stack_other.pop()->right;
-			temp_this = Stack_this.pop();
-			if (temp_other)
+			while (temp_other != NULL)//´ËÊ±Ò»¶¨ÊÇÏò×ó×ßµÄ¡£
 			{
-				temp_this->right = new treeNode<T>(temp_other->data, temp_other->height, temp_this);
-				temp_this = temp_this->right;
-				Stack_other.push(temp_other);
+				temp_this->left = new treeNode<T>(temp_other->data, temp_other->height, temp_this);
+				temp_this = temp_this->left;//¸úÉÏtemp_otherµÄ²½·¥
 				Stack_this.push(temp_this);
-				temp_other = temp_other->left;//Íù×ó×ß¡£
+				Stack_other.push(temp_other);
+				temp_other = temp_other->left;
+			}
+			if (!Stack_other.isEmpty())//Íù»ØÈ¡Ò»¸öµã¡£ÏòÓÒ×ßÒ»²½¡£
+			{
+				temp_other = Stack_other.pop()->right;
+				temp_this = Stack_this.pop();
+				if (temp_other)
+				{
+					temp_this->right = new treeNode<T>(temp_other->data, temp_other->height, temp_this);
+					temp_this = temp_this->right;
+					Stack_other.push(temp_other);
+					Stack_this.push(temp_this);
+					temp_other = temp_other->left;//Íù×ó×ß¡£
+				}
 			}
 		}
 	}
-}
 
-//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 
-TEMP NormalTree<T>& NormalTree<T>::operator=(NormalTree<T> const & other)
-{
-	if (this == &other)return *this;
-	root->Del(root);
-	root->Copy(root, other.root);
-	return *this;
-}
-TEMP  NormalTree<T>::NormalTree(const NormalTree<T> & other)
-{
-	root->Copy(root, other.root);
-}
-TEMP NormalTree<T>::~NormalTree()
-{
-	root->Del(root);
-}
-
-TEMP unsigned int NormalTree<T>::NodeNum()const
-{
-	stack<const treeNode<T>*> Stack;
-	const treeNode<T>* temp = root;
-	unsigned int ans=0;
-	while (temp != NULL || !Stack.isEmpty())
+	TEMP NormalTree<T>& NormalTree<T>::operator=(NormalTree<T> const & other)
 	{
-		while (temp != NULL)
-		{
-			ans++;//Êä³ö²¿·Ö
-			Stack.push(temp);
-			temp = temp->left;
-		}
-		if (!Stack.isEmpty())
-		{
-			temp = Stack.pop();
-			temp = temp->right;
-		}
+		if (this == &other)return *this;
+		root->Del(root);
+		root->Copy(root, other.root);
+		return *this;
 	}
-	return ans;
-}
-
-TEMP void NormalTree<T>::pre()const
-{
-	stack<const treeNode<T>*> Stack;
-	const treeNode<T>* temp = root;
-	while (temp != NULL || !Stack.isEmpty())
+	TEMP  NormalTree<T>::NormalTree(const NormalTree<T> & other)
 	{
-		while (temp != NULL)//²»¶ÏÏò×ó±éÀú£¬²¢¼ÇÂ¼Â·¾¶
-		{
-			std::cout << (temp->data) << " ";//¹Ø¼ü£ºÊä³ö²¿·Ö
-			Stack.push(temp);
-			temp = temp->left;
-		}
-		if (!Stack.isEmpty())//Íù»ØÈ¡Ò»¸öµã¡£ÏòÓÒ×ßÒ»²½¡£
-		{
-			temp = Stack.pop()->right;
-		}
+		root->Copy(root, other.root);
 	}
-	std::cout << std::endl;
-}
-
-TEMP void NormalTree<T>::mid()const
-{
-	stack<const treeNode<T>*> Stack;
-	const treeNode<T>* temp = root;
-	while (temp != NULL || !Stack.isEmpty())
+	TEMP NormalTree<T>::~NormalTree()
 	{
-		while (temp != NULL)//²»¶ÏÏò×ó×ß£¬µ½¾¡Í·ÁË²ÅÊä³ö
-		{
-			Stack.push(temp);
-			temp = temp->left;
-		}
-		if (!Stack.isEmpty())//µ½ÁËÖÐ¼ä¡£Êä³ö¡£È»ºóÊä³öÓÒ±ß¡£
-		{
-			temp = Stack.pop();
-			std::cout << (temp->data) << " ";
-			temp = temp->right;
-		}
+		root->Del(root);
 	}
-	std::cout << std::endl;
-}
 
-TEMP void NormalTree<T>::post()const
-{
-	stack<const treeNode<T>*> Stack;
-	const treeNode<T>* temp = root;
-	if (root == NULL)return;
-	while (temp != NULL)
+	TEMP unsigned int NormalTree<T>::NodeNum()const
 	{
-		while (temp != NULL)
+		stack<const treeNode<T>*> Stack;
+		const treeNode<T>* temp = root;
+		unsigned int ans = 0;
+		while (temp != NULL || !Stack.isEmpty())
 		{
-			Stack.push(temp);
-			temp = temp->left;
-		}
-		temp = Stack.topData()->right;
-	}
-	temp = Stack.pop();
-	while (temp != NULL)
-	{
-		std::cout << (temp->data) << " ";
-		if (Stack.isEmpty())break;
-		if(temp == Stack.topData()->left)
-		{
-			temp = Stack.topData()->right;
 			while (temp != NULL)
 			{
-				while (temp != NULL)
-				{
-					Stack.push(temp);
-					temp = temp->left;
-				}
-				temp = Stack.topData()->right;
+				ans++;//Êä³ö²¿·Ö
+				Stack.push(temp);
+				temp = temp->left;
+			}
+			if (!Stack.isEmpty())
+			{
+				temp = Stack.pop();
+				temp = temp->right;
 			}
 		}
+		return ans;
+	}
+
+	TEMP void NormalTree<T>::pre()const
+	{
+		stack<const treeNode<T>*> Stack;
+		const treeNode<T>* temp = root;
+		while (temp != NULL || !Stack.isEmpty())
+		{
+			while (temp != NULL)//²»¶ÏÏò×ó±éÀú£¬²¢¼ÇÂ¼Â·¾¶
+			{
+				std::cout << (temp->data) << " ";//¹Ø¼ü£ºÊä³ö²¿·Ö
+				Stack.push(temp);
+				temp = temp->left;
+			}
+			if (!Stack.isEmpty())//Íù»ØÈ¡Ò»¸öµã¡£ÏòÓÒ×ßÒ»²½¡£
+			{
+				temp = Stack.pop()->right;
+			}
+		}
+		std::cout << std::endl;
+	}
+
+	TEMP void NormalTree<T>::mid()const
+	{
+		stack<const treeNode<T>*> Stack;
+		const treeNode<T>* temp = root;
+		while (temp != NULL || !Stack.isEmpty())
+		{
+			while (temp != NULL)//²»¶ÏÏò×ó×ß£¬µ½¾¡Í·ÁË²ÅÊä³ö
+			{
+				Stack.push(temp);
+				temp = temp->left;
+			}
+			if (!Stack.isEmpty())//µ½ÁËÖÐ¼ä¡£Êä³ö¡£È»ºóÊä³öÓÒ±ß¡£
+			{
+				temp = Stack.pop();
+				std::cout << (temp->data) << " ";
+				temp = temp->right;
+			}
+		}
+		std::cout << std::endl;
+	}
+
+	TEMP void NormalTree<T>::post()const
+	{
+		stack<const treeNode<T>*> Stack;
+		const treeNode<T>* temp = root;
+		if (root == NULL)return;
+		while (temp != NULL)
+		{
+			while (temp != NULL)
+			{
+				Stack.push(temp);
+				temp = temp->left;
+			}
+			temp = Stack.topData()->right;
+		}
 		temp = Stack.pop();
-	}
-	std::cout << std::endl;
-}
-
-TEMP void NormalTree<T>::print()const
-{
-	if (root==NULL)return;
-	const treeNode<T>* temp;
-	queue<const treeNode<T>*> Queue;
-	Queue.push(root);
-	while (!Queue.isEmpty())
-	{
-		temp = Queue.pop();
-		if (temp->left)
-			Queue.push(temp->left);
-		if (temp->right)
-			Queue.push(temp->right);
-		std::cout << (temp->data) << " ";
-	}
-	std::cout << std::endl;
-}
-
-TEMP treeNode<T>* NormalTree<T>::find(T const & x)const
-{
-	stack<treeNode<T>*> Stack;
-	treeNode<T>* temp = root;
-	while (temp != NULL || !Stack.isEmpty())
-	{
-		while (temp != NULL)//²»¶ÏÏò×ó±éÀú£¬²¢¼ÇÂ¼Â·¾¶
+		while (temp != NULL)
 		{
-			if (temp->data == x)
-				return temp;
-			Stack.push(temp);
-			temp = temp->left;
-		}
-		if (!Stack.isEmpty())//Íù»ØÈ¡Ò»¸öµã¡£ÏòÓÒ×ßÒ»²½¡£
-		{
+			std::cout << (temp->data) << " ";
+			if (Stack.isEmpty())break;
+			if (temp == Stack.topData()->left)
+			{
+				temp = Stack.topData()->right;
+				while (temp != NULL)
+				{
+					while (temp != NULL)
+					{
+						Stack.push(temp);
+						temp = temp->left;
+					}
+					temp = Stack.topData()->right;
+				}
+			}
 			temp = Stack.pop();
-			temp = temp->right;
 		}
+		std::cout << std::endl;
 	}
-	return NULL;
-}
 
-TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
-{
-	Swap(a->root,b->root);
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-TEMP
-const T& NormalTree<T>::m_iterator::operator*()const
-{
-	if (pCurrent == NULL)
-		throw "iterator range error\n";
-	return pCurrent->Data();
-}
-
-TEMP
-const T* NormalTree<T>::m_iterator::operator->()const
-{
-	if (pCurrent == NULL)
-		throw "iterator out of range\n";
-	return &(pCurrent->Data());
-}
-
-
-TEMP
-const Pre<T>& NormalTree<T>::Pre_iterator::operator++()
-{
-	if (pCurrent == NULL)	throw "Pre_iterator range error\n";
-	Stack.push(pCurrent);
-	pCurrent = pCurrent->Left();
-	while (pCurrent == NULL&&!Stack.isEmpty())//ÄÜ·ñ»ØÈ¥
-		pCurrent = Stack.pop()->Right();
-	return *this;//¿ÉÒÔÏò×ó×ß¡£ÍË³ö£¬»òÕß´ËÊ±²»ÄÜ»ØÈ¥ÇÒPÎª¿Õ¡£½áÊø¡£
-}
-
-TEMP
-void NormalTree<T>::Mid_iterator::goFirst()
-{
-	pCurrent = m_root;
-	Stack.clear();
-	while (pCurrent != NULL)
+	TEMP void NormalTree<T>::print()const
 	{
+		if (root == NULL)return;
+		const treeNode<T>* temp;
+		queue<const treeNode<T>*> Queue;
+		Queue.push(root);
+		while (!Queue.isEmpty())
+		{
+			temp = Queue.pop();
+			if (temp->left)
+				Queue.push(temp->left);
+			if (temp->right)
+				Queue.push(temp->right);
+			std::cout << (temp->data) << " ";
+		}
+		std::cout << std::endl;
+	}
+
+	TEMP treeNode<T>* NormalTree<T>::find(T const & x)const
+	{
+		stack<treeNode<T>*> Stack;
+		treeNode<T>* temp = root;
+		while (temp != NULL || !Stack.isEmpty())
+		{
+			while (temp != NULL)//²»¶ÏÏò×ó±éÀú£¬²¢¼ÇÂ¼Â·¾¶
+			{
+				if (temp->data == x)
+					return temp;
+				Stack.push(temp);
+				temp = temp->left;
+			}
+			if (!Stack.isEmpty())//Íù»ØÈ¡Ò»¸öµã¡£ÏòÓÒ×ßÒ»²½¡£
+			{
+				temp = Stack.pop();
+				temp = temp->right;
+			}
+		}
+		return NULL;
+	}
+
+	TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
+	{
+		Swap(a->root, b->root);
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	TEMP
+		const T& NormalTree<T>::m_iterator::operator*()const
+	{
+		if (pCurrent == NULL)
+			throw "iterator range error\n";
+		return pCurrent->Data();
+	}
+
+	TEMP
+		const T* NormalTree<T>::m_iterator::operator->()const
+	{
+		if (pCurrent == NULL)
+			throw "iterator out of range\n";
+		return &(pCurrent->Data());
+	}
+
+
+	TEMP
+		const Pre<T>& NormalTree<T>::Pre_iterator::operator++()
+	{
+		if (pCurrent == NULL)	throw "Pre_iterator range error\n";
 		Stack.push(pCurrent);
 		pCurrent = pCurrent->Left();
+		while (pCurrent == NULL&&!Stack.isEmpty())//ÄÜ·ñ»ØÈ¥
+			pCurrent = Stack.pop()->Right();
+		return *this;//¿ÉÒÔÏò×ó×ß¡£ÍË³ö£¬»òÕß´ËÊ±²»ÄÜ»ØÈ¥ÇÒPÎª¿Õ¡£½áÊø¡£
 	}
-	pCurrent = Stack.topData();
-	return;
-}
 
-TEMP
-NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
-{
-	goFirst();
-}
-
-TEMP
-const Mid<T>& NormalTree<T>::Mid_iterator::operator++()
-{
-	if (Stack.isEmpty())
-		throw "Mid_iterator range error\n";
-	pCurrent = Stack.pop();//Õâ¸öÒÑ¾­±»Êä³öÁË¡£ËµÃ÷Õâ¸öµÄ×ó±ßÒÑ¾­²»ÓÃ¹ÜÁË¡£
-	if (pCurrent->Right() != NULL)
+	TEMP
+		void NormalTree<T>::Mid_iterator::goFirst()
 	{
-		treeNode<T>* temp = pCurrent->Right();//ÍùÓÒ±ß×ßÒ»²½
-		while (temp != NULL)//½Ó×ÅÒ»Ö±Íù×ó×ß
-		{
-			Stack.push(temp);
-			temp = temp->Left();
-		}
-	}
-	if (Stack.isEmpty())
-		pCurrent = NULL;
-	else
-		pCurrent = Stack.topData();
-	return *this;
-}
-
-TEMP 
-const Level<T>& NormalTree<T>::Level_iterator::operator++()
-{
-	if (pCurrent->Left())
-		Queue.push(pCurrent->Left());
-	if (pCurrent->Right())
-		Queue.push(pCurrent->Right());
-	if (!Queue.isEmpty())
-		pCurrent = Queue.pop();
-	else
-		pCurrent = NULL;//·ñÔòÖÃÎª¿Õ
-	return *this;
-}
-
-TEMP
-void NormalTree<T>::Post_iterator::goFirst()
-{
-	pCurrent = m_root;
-	Stack.clear();
-	while (pCurrent != NULL)
-	{
+		pCurrent = m_root;
+		Stack.clear();
 		while (pCurrent != NULL)
 		{
 			Stack.push(pCurrent);
 			pCurrent = pCurrent->Left();
 		}
-		pCurrent = Stack.topData()->Right();
+		pCurrent = Stack.topData();
+		return;
 	}
-	if (Stack.isEmpty())//ÖÃÎª¿Õ
-		pCurrent = NULL;
-	else
-		pCurrent = Stack.pop();
-}
 
-TEMP
-NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
-{
-	goFirst();
-}
-
-TEMP
-const Post<T>& NormalTree<T>::Post_iterator::operator++()//Êä³ö×î×ó±ßµÄÒ¶×Ó½Úµã¡£
-{
-	if (pCurrent == NULL)
-		throw "Post_iterator range error\n";
-	if (Stack.isEmpty())//ÖÃÎª¿Õ
-		return pCurrent = NULL;
-	if (pCurrent == Stack.topData()->Left())
+	TEMP
+		NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
 	{
-		pCurrent = Stack.topData()->Right();//¶ÔÆäÓÒ±ßgoFirst
+		goFirst();
+	}
+
+	TEMP
+		const Mid<T>& NormalTree<T>::Mid_iterator::operator++()
+	{
+		if (Stack.isEmpty())
+			throw "Mid_iterator range error\n";
+		pCurrent = Stack.pop();//Õâ¸öÒÑ¾­±»Êä³öÁË¡£ËµÃ÷Õâ¸öµÄ×ó±ßÒÑ¾­²»ÓÃ¹ÜÁË¡£
+		if (pCurrent->Right() != NULL)
+		{
+			treeNode<T>* temp = pCurrent->Right();//ÍùÓÒ±ß×ßÒ»²½
+			while (temp != NULL)//½Ó×ÅÒ»Ö±Íù×ó×ß
+			{
+				Stack.push(temp);
+				temp = temp->Left();
+			}
+		}
+		if (Stack.isEmpty())
+			pCurrent = NULL;
+		else
+			pCurrent = Stack.topData();
+		return *this;
+	}
+
+	TEMP
+		const Level<T>& NormalTree<T>::Level_iterator::operator++()
+	{
+		if (pCurrent->Left())
+			Queue.push(pCurrent->Left());
+		if (pCurrent->Right())
+			Queue.push(pCurrent->Right());
+		if (!Queue.isEmpty())
+			pCurrent = Queue.pop();
+		else
+			pCurrent = NULL;//·ñÔòÖÃÎª¿Õ
+		return *this;
+	}
+
+	TEMP
+		void NormalTree<T>::Post_iterator::goFirst()
+	{
+		pCurrent = m_root;
+		Stack.clear();
 		while (pCurrent != NULL)
 		{
 			while (pCurrent != NULL)
@@ -369,7 +339,39 @@ const Post<T>& NormalTree<T>::Post_iterator::operator++()//Êä³ö×î×ó±ßµÄÒ¶×Ó½Úµã¡
 			}
 			pCurrent = Stack.topData()->Right();
 		}
+		if (Stack.isEmpty())//ÖÃÎª¿Õ
+			pCurrent = NULL;
+		else
+			pCurrent = Stack.pop();
 	}
-	pCurrent = Stack.pop();
-	return *this;
+
+	TEMP
+		NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
+	{
+		goFirst();
+	}
+
+	TEMP
+		const Post<T>& NormalTree<T>::Post_iterator::operator++()//Êä³ö×î×ó±ßµÄÒ¶×Ó½Úµã¡£
+	{
+		if (pCurrent == NULL)
+			throw "Post_iterator range error\n";
+		if (Stack.isEmpty())//ÖÃÎª¿Õ
+			return pCurrent = NULL;
+		if (pCurrent == Stack.topData()->Left())
+		{
+			pCurrent = Stack.topData()->Right();//¶ÔÆäÓÒ±ßgoFirst
+			while (pCurrent != NULL)
+			{
+				while (pCurrent != NULL)
+				{
+					Stack.push(pCurrent);
+					pCurrent = pCurrent->Left();
+				}
+				pCurrent = Stack.topData()->Right();
+			}
+		}
+		pCurrent = Stack.pop();
+		return *this;
+	}
 }

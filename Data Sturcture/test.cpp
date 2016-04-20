@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <math.h>
 using namespace std;
-
+using namespace ME;
 void TestOfArray()
 {
 	int a[1000] = { 0 };
