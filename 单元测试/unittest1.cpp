@@ -205,9 +205,9 @@ namespace UnitTest
 				re(i, SizeOfTest)//earse test
 					one.delNode(a[i]);
 				re(i, SizeOfTest)
-					one.RearInsert(a[i]);
+					one.push_back(a[i]);
 				re(i, SizeOfTest)
-					one.HeadInsert(a[i]);
+					one.push_front(a[i]);
 				list<int> two = one;
 				one = two;
 				Swap(one, two);

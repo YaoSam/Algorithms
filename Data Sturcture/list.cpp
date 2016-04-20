@@ -7,15 +7,18 @@ head(new node<T>),
 length(n)
 {
 	node<T>* temp=head; 
-	re(i, n)
+	re(i, n-1)
 		temp = (temp->next = new node<T>(a[i]));
+	if (n - 1 >= 0)
+		last = temp->next = new node<T>(a[n-1]);
 	return;
 }
 
 TEMP
 list<T>::list(list<T> const & other):
 head(new node<T>),
-length(other.length)
+length(other.length),
+last(head)
 {
 	node<T>* othertemp = other.head->next,*temp=head;
 	while (othertemp != NULL)
@@ -24,6 +27,7 @@ length(other.length)
 		temp = temp->next;
 		othertemp = othertemp->next;
 	}
+	check_last();
 	return;
 }
 
@@ -53,7 +57,7 @@ list<T>& list<T>::operator=(list<T> const & other)
 		temp = head;
 	}
 	delete temp;
-	temp=head = new node < T > ;
+	last=temp=head = new node < T > ;
 	while (othertemp != NULL)
 	{
 		temp->next = new node<T>(othertemp->data);
@@ -61,31 +65,33 @@ list<T>& list<T>::operator=(list<T> const & other)
 		othertemp = othertemp->next;
 	}
 	length = other.length;
+	check_last();
 	return *this;
 }
 
 TEMP
-void list<T>::HeadInsert(T const &x)
+void list<T>::push_front(T const &x)
 {
 	node<T>* temp = head->next;
 	head->next = new node<T>(x, temp);
 	length++;
+	if (last->next != nullptr)
+		last = last->next;
 	return;
 }
 
 TEMP
-node<T>* list<T>::last()const
+void list<T>::check_last()
 {
-	node<T>* temp = head;
-	while (temp->next != NULL)
-		temp = temp->next;
-	return temp;
+	while (last->next != NULL)
+		last = last->next;
 }
 
 TEMP
-void list<T>::RearInsert(T const &x)
+void list<T>::push_back(T const &x)
 {
-	last()->next = new node<T>(x);
+	last->next = new node<T>(x);
+	last = last->next;
 	length++;
 }
 
@@ -109,6 +115,7 @@ void list<T>::delNode(T const &x)
 	{
 		if (temp->next->data == x)
 		{
+			if (last == temp->next)last = temp;
 			delP = temp->next;
 			temp->next = temp->next->next;
 			delete delP;

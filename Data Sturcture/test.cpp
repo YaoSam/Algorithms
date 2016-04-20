@@ -85,17 +85,22 @@ void TestOfList()
 	}
 	cout << one;
 	re(i, SizeOfTest)
-		one.RearInsert(rand() % 1000);
+		one.push_back(rand() % 1000);
 	cout << one;
 	re(i, SizeOfTest)
-		one.HeadInsert(rand() % 1000);
+		one.push_front(rand() % 1000);
 	cout << one;
 	const list<int> two = one;
+	list < int > ::back_inserter iter(one);
+	//iter.reset();
+	//re(i, one.Length()-1)++iter;
+	re(i,10) iter = 1000;
 	for (auto& i : two)
 	{
 		cout << i << " ";
 	}
-	cout << two;
+	cout << endl;
+	cout << one;
 	
 }
 
