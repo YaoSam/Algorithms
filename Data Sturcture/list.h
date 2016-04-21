@@ -7,7 +7,9 @@
 namespace ME
 {
 	TEMP struct node;
+	TEMP struct bnode;
 	TEMP class list;
+	TEMP class blist;
 	TEMP void Swap(list<T>& a, list<T>&b);
 	TEMP
 	struct node
@@ -26,6 +28,7 @@ namespace ME
 	public:
 		list(T const a[] = NULL, unsigned int n = 0);
 		list(list<T> const & other);
+		list(blist<T> const& other);
 		~list();
 		list<T>& operator=(list<T> const &other);
 		unsigned int Length()const { return length; }
@@ -133,18 +136,19 @@ namespace ME
 	class blist
 	{
 		bnode<T>* head,*last;
-		unsigned int lenght;
+		unsigned int length;
 	public:
 		blist(const T* a = nullptr, unsigned int n = 0);
 		blist(const blist<T>& other);
+		blist(const list<T>& other);
 		~blist();
 		blist<T>& operator=(const blist<T>& other);
-		const unsigned int &Length()const{ return lenght; }
+		const unsigned int &Length()const{ return length; }
 		void push_back(const T& x)
 		{
 			last->post = new bnode<T>(x, last);
 			last = last->post;
-			lenght++;
+			length++;
 		}
 		void push_front(const T& x);
 		void DelNode(const T &x);
@@ -193,6 +197,8 @@ namespace ME
 			void reset()					{ P = Head->post; }
 			bool operator==(const const_iterator& other)const{ return P == other.P; }
 		};
+		iterator find(const T& x);
+		const_iterator find(const T& x)const;
 		iterator begin()			{ return iterator(head,head->post); }
 		const_iterator begin()const	{ return const_iterator(head, head->post); }
 		const_iterator cbegin()		{ return const_iterator(head, head->post); }

@@ -29,6 +29,18 @@ namespace ME
 	}
 
 	TEMP
+		list<T>::list(const blist<T>& other):
+		head(new node<T>),
+		length(other.Length()),
+		last(head)
+	{
+		for (const auto &i:other)
+		{
+			last->next = new node<T>(i);
+			last = last->next;
+		}
+	}
+	TEMP
 		list<T>::~list()
 	{
 		node<T>* temp = head;
@@ -146,7 +158,7 @@ namespace ME
 	TEMP
 	blist<T>::blist(const T* a, unsigned int n):
 	head(new bnode<T>),
-	lenght(n),
+	length(n),
 	last(head)
 	{
 		re(i, n)
@@ -159,15 +171,28 @@ namespace ME
 	TEMP
 		blist<T>::blist(const blist<T>& other):
 		head(new bnode<T>), 
-		lenght(other.lenght),
+		length(other.length),
 		last(head)
 	{
 		bnode<T>* temp = other.head->post;
-		re(i, lenght)
+		re(i, length)
 		{
 			last->post = new bnode<T>(temp->data, last);
 			last = last->post;
 			temp = temp->post;
+		}
+	}
+
+	TEMP
+		blist<T>::blist(const list<T>& other):
+		head(new bnode<T>),
+		length(other.Length()),
+		last(head)
+	{
+		for (const auto& i : other)
+		{
+			last->post = new bnode<T>(i, last);
+			last = last->post;
 		}
 	}
 
@@ -188,8 +213,8 @@ namespace ME
 		bnode<T>* temp = new bnode<T>(x, head, head->post);
 		if (head->post)head->post->pre = temp;
 		head->post = temp;
-		if (lenght == 0)last = last->post;
-		lenght++;
+		if (length == 0)last = last->post;
+		length++;
 	}
 
 	TEMP
@@ -204,14 +229,40 @@ namespace ME
 		}
 		head = last = new bnode < T > ;
 		bnode<T>* temp = other.head->post;
-		lenght = other.lenght;
-		re(i, lenght)
+		length = other.length;
+		re(i, length)
 		{
 			last->post = new bnode<T>(temp->data, last);
 			last = last->post;
 			temp = temp->post;
 		}
 		return *this;
+	}
+
+	TEMP
+		typename blist<T>::iterator blist<T>::find(T const& x)
+	{
+		bnode<T>* temp = head->post;
+		while (temp)
+		{
+			if (temp->data == x)
+				return iterator(head, temp);
+			temp = temp->post;
+		}
+		return end();
+	}
+
+	TEMP
+		typename blist<T>::const_iterator blist<T>::find(T const& x)const
+	{
+		bnode<T>* temp = head->post;
+		while (temp)
+		{
+			if (temp->data == x)
+				return const_iterator(head, temp);
+			temp = temp->post;
+		}
+		return cend();
 	}
 
 	TEMP
@@ -222,7 +273,7 @@ namespace ME
 		{
 			if (temp->data == x)
 			{
-				lenght--;
+				length--;
 				temp->pre->post = temp->post;//肯定存在temp->pre
 				if (temp->post)
 					temp->post->pre = temp->pre;
@@ -244,7 +295,7 @@ namespace ME
 			temp2 = temp->post;
 			if (temp->data == x)
 			{
-				lenght--;
+				length--;
 				temp->pre->post = temp->post;//肯定存在temp->pre
 				if (temp->post)
 					temp->post->pre = temp->pre;

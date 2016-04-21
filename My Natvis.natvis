@@ -2,12 +2,12 @@
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
 
-  <Type Name="Vector">
+  <Type Name="ME::Vector">
     <DisplayString>{{({x},{y}),  i={i}}}</DisplayString>
   </Type>
 
 
-  <Type Name="queue&lt;*&gt;">
+  <Type Name="ME::queue&lt;*&gt;">
     <DisplayString>{{size={size}, front={front},rear={rear}}}</DisplayString>
     <Expand>
       <ArrayItems Condition="rear>front">
@@ -30,7 +30,7 @@
 
 
 
-  <Type Name="Heap&lt;*&gt;">
+  <Type Name="ME::Heap&lt;*&gt;">
     <DisplayString>{{size={size}, Current={Current}}}</DisplayString>
     <Expand>
       <ArrayItems Condition="Current>=0">
@@ -42,7 +42,7 @@
 
 
 
-  <Type Name="stack&lt;*&gt;">
+  <Type Name="ME::stack&lt;*&gt;">
     <DisplayString>{{size={size}, top={top}}}</DisplayString>
     <Expand>
       <ArrayItems Condition="top>=0">
@@ -53,7 +53,7 @@
   </Type>
 
 
-  <Type Name="array&lt;*&gt;">
+  <Type Name="ME::array&lt;*&gt;">
     <DisplayString >{{size={size}, top={top}}}</DisplayString>
     <Expand>
       <ArrayItems Condition="top>=0">
@@ -63,7 +63,7 @@
     </Expand>
   </Type>
 
-  <Type Name="array&lt;*&gt;::array_iterator">
+  <Type Name="ME::array&lt;*&gt;::array_iterator">
     <DisplayString >{{current={*pointer},size={end-root}}</DisplayString>
     <Expand>
       <ArrayItems>
@@ -74,7 +74,7 @@
   </Type>
 
 
-  <Type Name="list&lt;*&gt;">
+  <Type Name="ME::list&lt;*&gt;">
     <DisplayString>{{Length = {length},last={last-&gt;data}}}</DisplayString>
     <Expand>
       <Item Name="Length">length</Item>
@@ -87,9 +87,20 @@
     </Expand>
   </Type>
 
+  <Type Name="ME::blist&lt;*&gt;">
+    <DisplayString>{{Length = {length},last={last-&gt;data}}}</DisplayString>
+    <Expand>
+      <Item Name="Length">length</Item>
+      <LinkedListItems>
+        <Size>length</Size>
+        <HeadPointer>head-&gt;post</HeadPointer>
+        <NextPointer>post</NextPointer>
+        <ValueNode>data</ValueNode>
+      </LinkedListItems>
+    </Expand>
+  </Type>
 
-
-  <Type Name="NormalTree&lt;*&gt;">
+  <Type Name="ME::NormalTree&lt;*&gt;">
     <DisplayString Condition="root!=0">{{height = {root-&gt;height}}}</DisplayString>
     <Expand>
       <TreeItems>
@@ -103,7 +114,7 @@
 
 
 
-  <Type Name="treeNode&lt;*&gt;">
+  <Type Name="ME::treeNode&lt;*&gt;">
     <DisplayString Condition="this!=0">{{data = {data}, height = {height}}}</DisplayString>
     <Expand>
       <Item Name="left" Condition="left!=0">*left</Item>

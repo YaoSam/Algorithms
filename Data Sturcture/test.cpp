@@ -104,17 +104,19 @@ void TestOfList()
 	}
 	cout << endl;
 	cout << one;
-	blist<int> Blist(a, SizeOfTest); re(i, 10)Blist.push_back(123);
+	const blist<int> Blist(one);
+	//re(i, 10)Blist.push_back(123);
 	cout << Blist;
-	for (const auto& i : two)
-		Blist.push_front(i);
-	cout << Blist;
-	Blist.erase(123);
-	for (const auto& i : two)
-	{
-		Blist.DelNode(i);
-		cout << Blist;
-	}
+	//for (const auto& i : two)
+	//	Blist.push_front(i);
+	for (auto & i : Blist)
+		cout << i << " ";
+	//Blist.erase(123);
+	//for (const auto& i : two)
+	//{
+	//	Blist.DelNode(i);
+	//	cout << Blist;
+	//}
 }
 
 
