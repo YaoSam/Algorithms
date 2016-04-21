@@ -5,14 +5,11 @@ namespace ME
 	TEMP
 		list<T>::list(T const a[] /* = NULL */, unsigned int n /* = 0 */) :
 		head(new node<T>),
-		length(n)
+		length(n),
+		last(head)
 	{
-		node<T>* temp = head;
-		re(i, n - 1)
-			temp = (temp->next = new node<T>(a[i]));
-		if (n - 1 >= 0)
-			last = temp->next = new node<T>(a[n - 1]);
-		return;
+		re(i, n)
+			last = (last->next = new node<T>(a[i]));
 	}
 
 	TEMP
@@ -21,14 +18,13 @@ namespace ME
 		length(other.length),
 		last(head)
 	{
-		node<T>* othertemp = other.head->next, *temp = head;
+		node<T>* othertemp = other.head->next;
 		while (othertemp != NULL)
 		{
-			temp->next = new node<T>(othertemp->data);
-			temp = temp->next;
+			last->next = new node<T>(othertemp->data);
+			last = last->next;
 			othertemp = othertemp->next;
 		}
-		check_last();
 		return;
 	}
 
@@ -89,15 +85,7 @@ namespace ME
 	}
 
 	TEMP
-		void list<T>::push_back(T const &x)
-	{
-		last->next = new node<T>(x);
-		last = last->next;
-		length++;
-	}
-
-	TEMP
-		node<T>* list<T>::find(T const &x)
+		typename list<T>::iterator list<T>::find(T const &x)
 	{
 		node<T>* temp = head->next;
 		while (temp != NULL)
@@ -105,7 +93,7 @@ namespace ME
 			if (temp->data == x)
 				break;
 		}
-		return temp;//找不到的时候就是NULL
+		return iterator(head,temp);//找不到的时候就是NULL
 	}
 
 	TEMP
@@ -151,5 +139,120 @@ namespace ME
 			else temp = temp->next;
 		}
 		return;
+	}
+
+	//////////////////////////////////////////////////////
+
+	TEMP
+	blist<T>::blist(const T* a, unsigned int n):
+	head(new bnode<T>),
+	lenght(n),
+	last(head)
+	{
+		re(i, n)
+		{
+			last->post = new bnode<T>(a[i], last);
+			last = last->post;
+		}
+	}
+
+	TEMP
+		blist<T>::blist(const blist<T>& other):
+		head(new bnode<T>), 
+		lenght(other.lenght),
+		last(head)
+	{
+		bnode<T>* temp = other.head->post;
+		re(i, lenght)
+		{
+			last->post = new bnode<T>(temp->data, last);
+			last = last->post;
+			temp = temp->post;
+		}
+	}
+
+	TEMP
+		blist<T>::~blist()
+	{
+		head = head->post;
+		while (head)
+		{
+			delete head->pre;
+			head = head->post;
+		}
+	}
+
+	TEMP
+	void blist<T>::push_front(const T& x)
+	{
+		bnode<T>* temp = new bnode<T>(x, head, head->post);
+		if (head->post)head->post->pre = temp;
+		head->post = temp;
+		if (lenght == 0)last = last->post;
+		lenght++;
+	}
+
+	TEMP
+		blist<T>& blist<T>::operator=(const blist<T>& other)
+	{
+		if (this == &other)	return *this;
+		head = head->post;
+		while (head)
+		{
+			delete head->pre;
+			head = head->post;
+		}
+		head = last = new bnode < T > ;
+		bnode<T>* temp = other.head->post;
+		lenght = other.lenght;
+		re(i, lenght)
+		{
+			last->post = new bnode<T>(temp->data, last);
+			last = last->post;
+			temp = temp->post;
+		}
+		return *this;
+	}
+
+	TEMP
+		void blist<T>::DelNode(const T& x)
+	{
+		bnode<T>* temp = head->post;
+		while (temp)
+		{
+			if (temp->data == x)
+			{
+				lenght--;
+				temp->pre->post = temp->post;//肯定存在temp->pre
+				if (temp->post)
+					temp->post->pre = temp->pre;
+				else
+					last = temp->pre;
+				delete temp;
+				return;
+			}
+			temp = temp->post;
+		}
+	}
+
+	TEMP
+		void blist<T>::erase(const T& x)
+	{
+		bnode<T>* temp = head->post,*temp2;
+		while (temp)
+		{
+			temp2 = temp->post;
+			if (temp->data == x)
+			{
+				lenght--;
+				temp->pre->post = temp->post;//肯定存在temp->pre
+				if (temp->post)
+					temp->post->pre = temp->pre;
+				else
+					last = temp->pre;
+				delete temp;
+			}
+			temp = temp2;
+		}
 	}
 }

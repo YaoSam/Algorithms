@@ -77,7 +77,10 @@ void TestOfList()
 	re(i, SizeOfTest)
 		a[i] = rand() % 100;
 	list<int> one(a, SizeOfTest);
+	cout << one;
 	Qsort(a, 0, SizeOfTest - 1);
+	auto ans = std::find(one.begin(), one.end(), a[6]);
+	cout << *ans << endl;
 	re(i, SizeOfTest)//earse test
 	{
 		one.delNode(a[i]);
@@ -101,7 +104,17 @@ void TestOfList()
 	}
 	cout << endl;
 	cout << one;
-	
+	blist<int> Blist(a, SizeOfTest); re(i, 10)Blist.push_back(123);
+	cout << Blist;
+	for (const auto& i : two)
+		Blist.push_front(i);
+	cout << Blist;
+	Blist.erase(123);
+	for (const auto& i : two)
+	{
+		Blist.DelNode(i);
+		cout << Blist;
+	}
 }
 
 

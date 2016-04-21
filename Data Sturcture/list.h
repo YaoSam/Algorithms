@@ -14,7 +14,6 @@ namespace ME
 	{
 		T data;
 		node<T>* next;
-	public:
 		node<T>(T const & D = T(), node<T>* N = NULL) : data(D), next(N){}
 	};
 
@@ -31,8 +30,12 @@ namespace ME
 		list<T>& operator=(list<T> const &other);
 		unsigned int Length()const { return length; }
 		void push_front(T const &x);
-		void push_back(T const &x);
-		node<T>* find(T const &x);
+		void push_back(T const &x)
+		{
+			last->next = new node<T>(x);
+			last = last->next;
+			length++;
+		}
 		void delNode(T const &x);//删除一个x的点
 		void erase(T const & x);//删除所有为x的点。
 		TEMP friend void Swap(list<T>& a, list<T>&b);
@@ -48,7 +51,7 @@ namespace ME
 		}
 		class iterator :public std::iterator<std::forward_iterator_tag, T>
 		{
-			node<T>*const Head;
+			node<T>* Head;
 			node<T>* P;
 		public:
 			iterator(list<T>& other) :Head(other.head), P(other.head->next){}
@@ -63,7 +66,7 @@ namespace ME
 		};
 		class const_iterator :public std::iterator<std::input_iterator_tag, T>
 		{
-			const node<T>* const Head;
+			const node<T>* Head;
 			const node<T>* P;
 		public:
 			const_iterator(const list<T>& other) :Head(other.head), P(other.head->next){}
@@ -82,7 +85,7 @@ namespace ME
 			node<T>* P;
 		public:
 			back_inserter(list<T>& other) :me(other), P(other.head->next){}
-			back_inserter(list<T>& other, node<T>* p) :me(other), P(p), lenght(l){}
+			back_inserter(list<T>& other, node<T>* p) :me(other), P(p){}
 			back_inserter& operator=(const T&x)
 			{
 				me.push_back(x);
@@ -103,10 +106,58 @@ namespace ME
 		//	front_inseter(list<T>& other) :iterator(other.head->next), me(&other){}
 		//	front_inseter& operator=(const T& x){ me->push_front(x); return *this; }
 		//};
+		iterator find(T const &x);
 		iterator begin(){ return iterator(head, head->next); }
 		iterator end(){ return iterator(head, nullptr); }
 		const_iterator begin()const	{ return const_iterator(head, head->next); }
 		const_iterator end()const	{ return const_iterator(head, nullptr); }
 	};
+	
 
+	TEMP
+	struct bnode
+	{
+		T data;
+		bnode<T>* pre,*post;
+		bnode(const T& data=T(), bnode<T>*Pre=nullptr, bnode<T>* Post=nullptr) :data(data), pre(Pre), post(Post){}
+		void link(bnode<T>* next)
+		{
+			if (this!=nullptr)
+				post = next;
+			if (next != nullptr)
+				next->pre = this;
+		}
+	};
+
+	TEMP
+	class blist
+	{
+		bnode<T>* head,*last;
+		unsigned int lenght;
+	public:
+		blist(const T* a = nullptr, unsigned int n = 0);
+		blist(const blist<T>& other);
+		~blist();
+		blist<T>& operator=(const blist<T>& other);
+		const unsigned int &Length()const{ return lenght; }
+		void push_back(const T& x)
+		{
+			last->post = new bnode<T>(x, last);
+			last = last->post;
+			lenght++;
+		}
+		void push_front(const T& x);
+		void DelNode(const T &x);
+		void erase(const T& x);
+		friend std::ostream& operator<<(std::ostream& out, const blist<T>& other)
+		{
+			bnode<T>* temp = other.head->post;
+			while (temp)
+			{
+				out << temp->data << " ";
+				temp = temp->post;
+			}
+			return out << std::endl;
+		}
+	};
 }
