@@ -86,7 +86,6 @@ namespace ME
 		length++;
 		if (last->next != nullptr)
 			last = last->next;
-		return;
 	}
 
 	TEMP
@@ -111,7 +110,7 @@ namespace ME
 	TEMP
 		void list<T>::delNode(T const &x)
 	{
-		node<T>* temp = head, *delP = NULL;
+		node<T>* temp = head, *delP;
 		while (temp->next)
 		{
 			if (temp->next->data == x)
@@ -123,22 +122,20 @@ namespace ME
 				length--;
 				break;//跟下面就一个差别。
 			}
-			else temp = temp->next;
+			temp = temp->next;
 		}
-		return;
 	}
 
 	TEMP void Swap(list<T>& a, list<T>&b)
 	{
 		Swap(a.head, b.head);
 		Swap(a.length, b.length);
-		return;
 	}
 
 	TEMP
 		void list<T>::erase(T const & x)
 	{
-		node<T>* temp = head, *delP = NULL;
+		node<T>* temp = head, *delP;
 		while (temp->next)
 		{
 			if (temp->next->data == x)
@@ -150,7 +147,6 @@ namespace ME
 			}
 			else temp = temp->next;
 		}
-		return;
 	}
 
 	//////////////////////////////////////////////////////
@@ -306,4 +302,13 @@ namespace ME
 			temp = temp2;
 		}
 	}
+
+	TEMP 
+		void Swap(blist<T>& a, blist<T>&b)
+	{
+		Swap(a.head, b.head);
+		Swap(a.length, b.length);
+		Swap(a.last, b.last);
+	}
+
 }

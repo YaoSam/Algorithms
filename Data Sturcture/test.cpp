@@ -77,6 +77,9 @@ void TestOfList()
 	re(i, SizeOfTest)
 		a[i] = rand() % 100;
 	list<int> one(a, SizeOfTest);
+	std::back_insert_iterator<list<int>> inserter(one);
+	re(i, 5)
+		inserter = i;
 	cout << one;
 	Qsort(a, 0, SizeOfTest - 1);
 	auto ans = std::find(one.begin(), one.end(), a[6]);
@@ -97,11 +100,13 @@ void TestOfList()
 	list < int > ::back_inserter iter(one);
 	//iter.reset();
 	//re(i, one.Length()-1)++iter;
+	//auto fun = [](const int &temp){if (temp > 100)cout << temp << " "; };
 	re(i,10) iter = 1000;
-	for (auto& i : two)
-	{
-		cout << i << " ";
-	}
+	//for_each(one.begin(), one.end(),fun);
+	//for (auto& i : two)
+	//{
+	//	cout << i << " ";
+	//}
 	cout << endl;
 	cout << one;
 	const blist<int> Blist(one);

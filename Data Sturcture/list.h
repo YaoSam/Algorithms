@@ -11,6 +11,7 @@ namespace ME
 	TEMP class list;
 	TEMP class blist;
 	TEMP void Swap(list<T>& a, list<T>&b);
+	TEMP void Swap(blist<T>& a, blist<T>&b);
 	TEMP
 	struct node
 	{
@@ -26,6 +27,7 @@ namespace ME
 		unsigned int length;
 		void check_last();
 	public:
+		typedef T value_type;
 		list(T const a[] = NULL, unsigned int n = 0);
 		list(list<T> const & other);
 		list(blist<T> const& other);
@@ -102,13 +104,26 @@ namespace ME
 			void reset()					{ P = me.head->next; }
 			bool operator==(const back_inserter& other)const { return P == other.P; }
 		};
-		//class front_inseter:public iterator
-		//{
-		//	list<T>*const me;
-		//public:
-		//	front_inseter(list<T>& other) :iterator(other.head->next), me(&other){}
-		//	front_inseter& operator=(const T& x){ me->push_front(x); return *this; }
-		//};
+		class front_inserter :public std::iterator<std::forward_iterator_tag, T>
+		{
+			list<T>& me;
+			node<T>* P;
+		public:
+			front_inserter(list<T>& other) :me(other), P(other.head->next){}
+			front_inserter(list<T>& other, node<T>* p) :me(other), P(p){}
+			front_inserter& operator=(const T&x)
+			{
+				me.push_front(x);//跟上面的惟一差别。
+				return *this;
+			}
+			front_inserter& operator++()	{ P = P->next; return*this; }
+			front_inserter operator++(int)	{ front_inserter ans(P); P = P->next; return ans; }
+			T& operator*()const				{ return P->data; }
+			T* operator->()const			{ return &(P->data); }
+			bool isEnd()const				{ return P == nullptr; }
+			void reset()					{ P = me.head->next; }
+			bool operator==(const front_inserter& other)const { return P == other.P; }
+		};
 		iterator find(T const &x);
 		iterator begin(){ return iterator(head, head->next); }
 		iterator end(){ return iterator(head, nullptr); }
@@ -123,13 +138,6 @@ namespace ME
 		T data;
 		bnode<T>* pre,*post;
 		bnode(const T& data=T(), bnode<T>*Pre=nullptr, bnode<T>* Post=nullptr) :data(data), pre(Pre), post(Post){}
-		void link(bnode<T>* next)
-		{
-			if (this!=nullptr)
-				post = next;
-			if (next != nullptr)
-				next->pre = this;
-		}
 	};
 
 	TEMP
@@ -138,6 +146,7 @@ namespace ME
 		bnode<T>* head,*last;
 		unsigned int length;
 	public:
+		typedef T value_type;
 		blist(const T* a = nullptr, unsigned int n = 0);
 		blist(const blist<T>& other);
 		blist(const list<T>& other);
@@ -205,6 +214,6 @@ namespace ME
 		iterator end()				{ return iterator(head,nullptr); }
 		const_iterator end()const	{ return const_iterator(head, nullptr); }
 		const_iterator cend()		{ return const_iterator(head, head); }
-
+		friend void Swap(blist<T>& a, blist<T>& b);
 	};
 }
