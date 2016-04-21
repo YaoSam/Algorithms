@@ -159,5 +159,46 @@ namespace ME
 			}
 			return out << std::endl;
 		}
+		class iterator:public std::iterator<std::bidirectional_iterator_tag,T>
+		{
+			bnode<T>* Head;
+			bnode<T>* P;
+		public:
+			iterator(blist<T>& other) :Head(other.head), P(other.head->post){}
+			iterator(bnode<T>*const H, bnode<T>* p) :Head(H), P(p){}
+			iterator& operator++()	{ P = P->post; return*this; }
+			iterator operator++(int){ iterator ans(Head,P); P = P->post; return ans; }
+			iterator& operator--()	{ P = P->pre; return *this; }
+			iterator operator--(int){ iterator ans(Head,P); P = P->pre; return ans; }
+			T& operator*()const		{ return P->data; }
+			T* operator->()const	{ return &(P->data); }
+			bool isEnd()const		{ return P == NULL; }
+			void reset()			{ P = Head->post; }
+			bool operator==(const iterator& other)const{ return P == other.P; }
+		};
+		class const_iterator :public std::iterator<std::input_iterator_tag,T>
+		{
+			const bnode<T>* Head;
+			const bnode<T>* P;
+		public:
+			const_iterator(const blist<T>& other) :Head(other.head), P(other.head->post){}
+			const_iterator(const bnode<T>*const H, const bnode<T>* p) :Head(H), P(p){}
+			const_iterator& operator++()	{ P = P->post; return *this; }
+			const_iterator operator++(int)	{ const_iterator ans(Head,P); P = P->post; return ans; }
+			const_iterator operator--()		{ P = P->pre; return*this; }
+			const_iterator operator--(int)	{ const_iterator ans(Head, P); P = P->pre; return*this; }
+			const T& operator*()const		{ return P->data; }
+			const T* operator->()const		{ return &(P->data); }
+			bool isEnd()const				{ return P == NULL; }
+			void reset()					{ P = Head->post; }
+			bool operator==(const const_iterator& other)const{ return P == other.P; }
+		};
+		iterator begin()			{ return iterator(head,head->post); }
+		const_iterator begin()const	{ return const_iterator(head, head->post); }
+		const_iterator cbegin()		{ return const_iterator(head, head->post); }
+		iterator end()				{ return iterator(head,nullptr); }
+		const_iterator end()const	{ return const_iterator(head, nullptr); }
+		const_iterator cend()		{ return const_iterator(head, head); }
+
 	};
 }
