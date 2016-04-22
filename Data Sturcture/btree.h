@@ -95,6 +95,7 @@ namespace ME
 		class Mid_iterator :public m_iterator
 		{
 			stack<const treeNode<T>*> Stack;
+			stack<const treeNode<T>*> StackRight;
 			using m_iterator::pCurrent;
 			using m_iterator::m_root;
 		public:
@@ -102,6 +103,7 @@ namespace ME
 			Mid_iterator(const NormalTree<T>* tree);
 			void goFirst()override;
 			const Mid_iterator& operator++();
+			const Mid_iterator& operator--();
 			bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
 		};
 

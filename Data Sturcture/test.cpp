@@ -212,19 +212,41 @@ void TestOfIterator()
 	unsigned int SizeOfTest = 1000;
 	re(i, SizeOfTest)
 		a[i] = rand() % 10000;
-	const bstree<int> one(a, SizeOfTest);
+	const AVLtree<int> one(a, SizeOfTest);
 	for (auto& i : one)
 		cout << i << " ";
 	cout << endl;
 	one.mid();
-	Pre<int> wer(&one);
-	while (!wer.isEnd())
-	{
-		cout << *wer << " ";
-		++wer;
-	}
+	sort(a, a + SizeOfTest);
+	re(i, SizeOfTest)
+		cout << a[i] << " ";
 	cout << endl;
-	one.pre();
+	Mid<int> wer(&one);
+	int current_i = 0;
+	re(i,100)
+	{
+		cout << i << " ";
+		int j = rand()%(SizeOfTest - current_i);
+		current_i += j;
+		cout << current_i << " ";
+		re(k, j)
+			++wer;
+		j = rand() % (current_i);
+		current_i -= j;
+		cout << current_i << " ";
+		re(k, j)
+			--wer;
+		if (a[current_i] != *(wer))
+			cout << "ERROR" << endl;
+	}
+	//--wer;
+	//while (!wer.isEnd())
+	//{
+	//	cout << *wer << " ";
+	//	--wer;
+	//}
+	cout << endl;
+	//one.pre();
 }
 
 void TestOfHeap()

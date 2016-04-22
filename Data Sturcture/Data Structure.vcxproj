@@ -72,14 +72,12 @@
     <Text Include="out.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="array.cpp" />
-    <ClCompile Include="list.cpp" />
+    <ClCompile Include="btree.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="array.h" />
-    <ClInclude Include="list.h" />
+    <ClInclude Include="btree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

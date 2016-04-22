@@ -274,13 +274,11 @@ namespace ME{
 	{
 		pCurrent = m_root;
 		Stack.clear();
-		while (pCurrent != NULL)
+		while (pCurrent->Left() != NULL)
 		{
 			Stack.push(pCurrent);
 			pCurrent = pCurrent->Left();
 		}
-		pCurrent = Stack.topData();
-		return;
 	}
 
 	TEMP
@@ -292,24 +290,51 @@ namespace ME{
 	TEMP
 		const Mid<T>& NormalTree<T>::Mid_iterator::operator++()
 	{
-		if (Stack.isEmpty())
-			throw "Mid_iterator range error\n";
-		pCurrent = Stack.pop();//这个已经被输出了。说明这个的左边已经不用管了。
 		if (pCurrent->Right() != NULL)
 		{
-			treeNode<T>* temp = pCurrent->Right();//往右边走一步
-			while (temp != NULL)//接着一直往左走
+			StackRight.push(pCurrent);
+			pCurrent = pCurrent->Right();
+			while (pCurrent->Left() != NULL)//接着一直往左走
 			{
-				Stack.push(temp);
-				temp = temp->Left();
+				Stack.push(pCurrent);
+				pCurrent = pCurrent->Left();
 			}
 		}
-		if (Stack.isEmpty())
+		else if (Stack.isEmpty())
 			pCurrent = NULL;
 		else
-			pCurrent = Stack.topData();
+		{
+			pCurrent = Stack.pop();
+			while (!StackRight.isEmpty()
+				&&pCurrent->Height() > StackRight.topData()->Height())//将多余的right删除掉。
+				StackRight.pop();
+		}
 		return *this;
 	}
+
+	TEMP
+		const typename NormalTree<T>::Mid_iterator& NormalTree<T>::Mid_iterator:: operator--()
+	{
+		if (pCurrent->Left()!=NULL)
+		{
+			Stack.push(pCurrent);
+			pCurrent = pCurrent->Left();
+			while (pCurrent->Right()!=NULL)
+			{
+				StackRight.push(pCurrent);
+				pCurrent = pCurrent->Right();
+			}
+		}
+		else if (!StackRight.isEmpty())
+		{
+			pCurrent = StackRight.pop();
+			while (!Stack.isEmpty() &&
+				pCurrent->Height() > Stack.topData()->Height())
+				Stack.pop();
+		}
+		return *this;
+	}
+
 
 	TEMP
 		const Level<T>& NormalTree<T>::Level_iterator::operator++()
