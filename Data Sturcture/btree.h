@@ -68,8 +68,8 @@ namespace ME
 		public:
 			m_iterator(treeNode<T>* P, treeNode<T>* R) :pCurrent(P), m_root(R){}
 			virtual ~m_iterator(){}
-			const T& operator*()const;
-			const T* operator->()const;
+			const T& operator*()const{return pCurrent->Data();}
+			const T* operator->()const{return &(pCurrent->Data());}
 			bool isEnd()const{ return pCurrent == NULL; }
 			const treeNode<T>* operator()()const{ return pCurrent; }
 			virtual void goFirst() = 0;

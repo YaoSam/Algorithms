@@ -209,7 +209,7 @@ void TestOfIterator()
 {
 	srand(int(time(NULL)));
 	int a[10000];
-	unsigned int SizeOfTest = 1000;
+	unsigned int SizeOfTest = 100;
 	re(i, SizeOfTest)
 		a[i] = rand() % 10000;
 	const AVLtree<int> one(a, SizeOfTest);
@@ -221,14 +221,16 @@ void TestOfIterator()
 	re(i, SizeOfTest)
 		cout << a[i] << " ";
 	cout << endl;
-	//--wer;
-	//while (!wer.isEnd())
+	Mid<int> iter(&one);
+	//bool flag;
+	//while (cin>>flag)
 	//{
-	//	cout << *wer << " ";
-	//	--wer;
+	//	if (flag)
+	//		++iter;
+	//	else
+	//		--iter;
+	//	cout << *iter << endl;
 	//}
-	cout << endl;
-	//one.pre();
 }
 
 void TestOfHeap()

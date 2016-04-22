@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "CppUnitTest.h"
+#include <algorithm>
 using namespace std;
 using namespace ME;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -104,8 +105,8 @@ namespace UnitTest
 		TEST_METHOD(Test_HuffmanTree)
 		{
 			try
-				//¼òµ¥²âÊÔ
 			{
+				//¼òµ¥²âÊÔ
 				int num[100] = { 35, 25, 15, 15, 10 };
 				int check[100] = { 100, 40, 60, 15, 25, 25, 35, 10, 15 };
 				HuffmanTree<int> one(num, 5);
@@ -264,6 +265,21 @@ namespace UnitTest
 						debug("pop²»Æ¥Åä");
 			}
 			catch (const char * err){ debug(err); }
+		}
+		TEST_METHOD(Test_Array)
+		{
+			srand(int(time(NULL)));
+			int a[1000];
+			unsigned int SizeOfTest = 1000;
+			re(i, SizeOfTest)
+				a[i] = rand() % SizeOfTest;
+			array<int> one(a, 1000);
+			//²âÊÔËæ»úµü´úÆ÷¡£
+			sort(one.begin(), one.end());
+			sort(a, a + SizeOfTest);
+			re(i, SizeOfTest)
+				if (a[i] != one[i])
+					debug("ÅÅÐò³ö´í");
 		}
 	};
 }

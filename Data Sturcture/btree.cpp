@@ -242,26 +242,8 @@ namespace ME{
 
 	//////////////////////////////////////////////////////////////////////////
 	TEMP
-		const T& NormalTree<T>::m_iterator::operator*()const
-	{
-		if (pCurrent == NULL)
-			throw "iterator range error\n";
-		return pCurrent->Data();
-	}
-
-	TEMP
-		const T* NormalTree<T>::m_iterator::operator->()const
-	{
-		if (pCurrent == NULL)
-			throw "iterator out of range\n";
-		return &(pCurrent->Data());
-	}
-
-
-	TEMP
 		const Pre<T>& NormalTree<T>::Pre_iterator::operator++()
 	{
-		if (pCurrent == NULL)	throw "Pre_iterator range error\n";
 		Stack.push(pCurrent);
 		pCurrent = pCurrent->Left();
 		while (pCurrent == NULL&&!Stack.isEmpty())//能否回去
@@ -379,11 +361,9 @@ namespace ME{
 	TEMP
 		const Post<T>& NormalTree<T>::Post_iterator::operator++()//输出最左边的叶子节点。
 	{
-		if (pCurrent == NULL)
-			throw "Post_iterator range error\n";
 		if (Stack.isEmpty())//置为空
-			return pCurrent = NULL;
-		if (pCurrent == Stack.topData()->Left())
+			pCurrent = NULL;
+		else if (pCurrent == Stack.topData()->Left())
 		{
 			pCurrent = Stack.topData()->Right();//对其右边goFirst
 			while (pCurrent != NULL)
@@ -395,8 +375,8 @@ namespace ME{
 				}
 				pCurrent = Stack.topData()->Right();
 			}
+			pCurrent = Stack.pop();
 		}
-		pCurrent = Stack.pop();
 		return *this;
 	}
 }
