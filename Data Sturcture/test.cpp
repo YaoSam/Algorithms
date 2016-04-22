@@ -221,24 +221,6 @@ void TestOfIterator()
 	re(i, SizeOfTest)
 		cout << a[i] << " ";
 	cout << endl;
-	Mid<int> wer(&one);
-	int current_i = 0;
-	re(i,100)
-	{
-		cout << i << " ";
-		int j = rand()%(SizeOfTest - current_i);
-		current_i += j;
-		cout << current_i << " ";
-		re(k, j)
-			++wer;
-		j = rand() % (current_i);
-		current_i -= j;
-		cout << current_i << " ";
-		re(k, j)
-			--wer;
-		if (a[current_i] != *(wer))
-			cout << "ERROR" << endl;
-	}
 	//--wer;
 	//while (!wer.isEnd())
 	//{

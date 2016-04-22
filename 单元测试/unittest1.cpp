@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 using namespace std;
+using namespace ME;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 void debug(const char * errorInfo)
@@ -27,7 +28,7 @@ namespace UnitTest
 				AVLtree<int> two(one);//测试复制构造
 				one = two;//测试赋值函数
 				Qsort(a, 0, SizeOfTest - 1);
-				Mid_iterator<int> iterM(&one);
+				Mid<int> iterM(&one);
 				re(i, SizeOfTest)
 				{
 					if (*iterM != a[i])
@@ -56,7 +57,7 @@ namespace UnitTest
 					a[i] = rand() % (SizeOfTest / 2);
 				bstree<int> one(a, SizeOfTest);
 				Qsort(a, 0, SizeOfTest - 1);
-				Mid_iterator<int> iterM(&one);
+				Mid<int> iterM(&one);
 				re(i, SizeOfTest)
 				{
 					if (*iterM != a[i])
@@ -108,7 +109,7 @@ namespace UnitTest
 				int num[100] = { 35, 25, 15, 15, 10 };
 				int check[100] = { 100, 40, 60, 15, 25, 25, 35, 10, 15 };
 				HuffmanTree<int> one(num, 5);
-				Level_iterator<int> iterL(&one);
+				Level<int> iterL(&one);
 				re(i, 9)
 				{
 					if (*iterL != check[i])
@@ -124,7 +125,7 @@ namespace UnitTest
 				if (Count != 2 * SizeOfTest - 1)
 					debug("所有的点数目不对");
 				Count = 0;
-				Pre_iterator<int> iterP(&two);
+				Pre<int> iterP(&two);
 				while (!iterP.isEnd())
 				{
 					if (iterP()->Height() == 1)
@@ -141,6 +142,31 @@ namespace UnitTest
 			}
 			catch (const char *err){ debug(err); }
 		}
+		TEST_METHOD(BiDirectionIterator)
+		{
+			srand(int(time(NULL)));
+			int a[10000];
+			unsigned int SizeOfTest = 1000;
+			re(i, SizeOfTest)
+				a[i] = rand() % SizeOfTest;
+			AVLtree<int> one(a, SizeOfTest);
+			Qsort(a, 0, SizeOfTest - 1);
+			Mid<int> iterM(&one);
+			int current_i = 0;
+			re(i,100)
+			{
+				int j = rand() % (SizeOfTest - current_i);
+				current_i += j;
+				re(k, j)
+					++iterM;
+				j = rand() % (current_i);
+				current_i -= j;
+				re(k, j)
+					--iterM;
+				if (a[current_i] != *(iterM))
+					debug("不一致");
+			}
+		}
 	};
 	TEST_CLASS(UnitTest2)
 	{
@@ -151,7 +177,7 @@ namespace UnitTest
 			{
 				srand(int(time(NULL)));
 				int a[10000];
-				unsigned int SizeOfTest = 2000;
+				unsigned int SizeOfTest = 200;
 				stack<int> one, two;
 				re(i, SizeOfTest)
 					one.push(rand() % SizeOfTest);
@@ -212,21 +238,6 @@ namespace UnitTest
 				one = two;
 				Swap(one, two);
 				Swap(one, two);
-				one.resetPointer();
-				std::stringstream ss;
-				std::string str;
-				re(i, SizeOfTest)
-				{
-					if (*one.pointer != a[SizeOfTest - i - 1])
-						debug("前序插入错了");
-					++one.pointer;
-				}
-				re(i, SizeOfTest)
-				{
-					if (*one.pointer != a[i])
-						debug("后序插入错了");
-					++one.pointer;
-				}
 			}
 			catch (const char * err){ debug(err); }
 		}
