@@ -29,18 +29,12 @@
     <ClCompile Include="test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="array.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="list.cpp">
+    <ClCompile Include="btree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="array.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="list.h">
+    <ClInclude Include="btree.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include "../Data Sturcture/array.cpp"
 #include <ostream>
 const int MaxNumber = 1000;
-
+using namespace ME;
 struct object
 {
 	unsigned int num,weight;

@@ -209,22 +209,28 @@ void TestOfIterator()
 {
 	srand(int(time(NULL)));
 	int a[10000];
-	unsigned int SizeOfTest = 1000;
+	unsigned int SizeOfTest = 100;
 	re(i, SizeOfTest)
 		a[i] = rand() % 10000;
-	const bstree<int> one(a, SizeOfTest);
+	const AVLtree<int> one(a, SizeOfTest);
 	for (auto& i : one)
 		cout << i << " ";
 	cout << endl;
 	one.mid();
-	Pre<int> wer(&one);
-	while (!wer.isEnd())
-	{
-		cout << *wer << " ";
-		++wer;
-	}
+	sort(a, a + SizeOfTest);
+	re(i, SizeOfTest)
+		cout << a[i] << " ";
 	cout << endl;
-	one.pre();
+	Mid<int> iter(&one);
+	//bool flag;
+	//while (cin>>flag)
+	//{
+	//	if (flag)
+	//		++iter;
+	//	else
+	//		--iter;
+	//	cout << *iter << endl;
+	//}
 }
 
 void TestOfHeap()

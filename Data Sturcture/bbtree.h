@@ -50,6 +50,6 @@ namespace ME{
 	public:
 		SearchTree(A const *Index = NULL, B const * Data = NULL, unsigned int n = 0);
 		SearchTree(SearchTree<A, B> const *node, unsigned int n);
-		treeNode<SearchNode<A, B>>* find(A const & index)const override;
+		treeNode<SearchNode<A, B>>* find(A const & index)const;
 	};
 }
