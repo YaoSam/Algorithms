@@ -190,3 +190,5 @@ ModelManifest.xml
 *.txt
 /Knn/__pycache__
 *.pyc
+/Algorithms.VC.db
+/Algorithms.VC.VC.opendb
