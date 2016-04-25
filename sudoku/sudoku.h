@@ -17,7 +17,7 @@ class sudoku{
 	std::bitset<10> visit[10][10];//代表是否能填某个数。
 	point Find()const;
 	void Write(int x, int y, int value);
-	void solve();//常规推理。最多推理两层。
+	void logic_solve();//常规推理。最多推理两层。
 	point FindEmpty()const;
 public:
 	sudoku();
@@ -26,11 +26,10 @@ public:
 	bool isSolved()const{ return empty == 0; }
 	friend std::istream& operator>>(std::istream &in, sudoku &other);
 	friend std::ostream& operator<<(std::ostream &out, sudoku const &other);
-	friend sudoku Solve(sudoku one);
 	friend int main();
+	void Solve();
 };
 
 std::istream& operator>>(std::istream &in, sudoku &other);
 std::ostream& operator<<(std::ostream &out, sudoku const &other);
 
-sudoku Solve(sudoku one);

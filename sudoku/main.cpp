@@ -44,9 +44,9 @@ int main()
 		sudoku one;
 		re(i,5){
 			cin >> one;
-			//cout << one;
-			sudoku ans = Solve(one);
-			cout << ans;
+			cout << one;
+			one.Solve();
+			cout << one;
 		}
 		//one.PrintVisit();
 		cout << TIME << endl;

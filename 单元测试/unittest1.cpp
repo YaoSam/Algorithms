@@ -273,7 +273,7 @@ namespace UnitTest
 			unsigned int SizeOfTest = 1000;
 			re(i, SizeOfTest)
 				a[i] = rand() % SizeOfTest;
-			array<int> one(a, 1000);
+			ME:array<int> one(a, 1000);
 			//²âÊÔËæ»úµü´úÆ÷¡£
 			sort(one.begin(), one.end());
 			sort(a, a + SizeOfTest);

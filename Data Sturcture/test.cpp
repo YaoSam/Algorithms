@@ -18,7 +18,7 @@ void TestOfArray()
 		a[i] = rand() % SizeOfTest;
 		//hello.push(a[i]);
 	}
-	const array<int> hello(a,SizeOfTest);
+	const ME::array<int> hello(a,SizeOfTest);
 	//sort(hello.begin(), hello.end());
 	for (const auto& i : hello)
 	{

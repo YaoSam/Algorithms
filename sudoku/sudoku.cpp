@@ -1,5 +1,7 @@
 #pragma once
 #include "sudoku.h"
+#include <vector>
+#include <algorithm>
 int TIME = 0;
 sudoku::sudoku(){
 	clean();
@@ -16,50 +18,56 @@ void sudoku::Write(int x, int y, int value){
 	int X, Y;
 	Re(i, 9){
 		if (i!= y){
-			if (map[i][x] == map[y][x]){
+			visit[i][x].set(value);
+			if (map[i][x] == map[y][x] || visit[i][x].count() == 9) {
 				empty = -1;
 				return;
 			}
-			visit[i][x].set(map[y][x]);
 		}
 		if (i!= x){
-			if (map[y][i] == map[y][x]){
+			visit[y][i].set(value);
+			if (map[y][i] == map[y][x] || visit[y][i].count() == 9){
 				empty = -1;
 				return;
 			}
-			visit[y][i].set(map[y][x]);
 		}
 		X = tempX + (i-1) / 3, Y = tempY + (i-1) % 3;
 		if (!(Y== y&&X== x)){
-			if (map[Y][X] == map[y][x]){
+			visit[Y][X].set(value);
+			if (map[Y][X] == map[y][x] || visit[Y][X].count() == 9){
 				empty = -1;
 				return;
 			}
-			visit[Y][X].set(map[y][x]);
 		}		
 	}
 
 }
 
-point sudoku::FindEmpty()const{
-	Re(i, 9)
-		Re(j, 9){
-		if (map[j][i] == 0)
-			return point(i, j);
+point sudoku::FindEmpty()const{//查找不能确定的空位。
+	int max_count = 0;
+	point ans;
+	Re(j, 9)
+		Re(i, 9){
+		if (map[i][j] == 0&&visit[i][j].count()>max_count)//筛选出不能填的数字最多的位置
+			{
+				max_count = visit[i][j].count();
+				if (max_count == 2)//不可能更少了。
+					return point(j, i);
+				ans = point(j, i);
+			}
 	}
-	return point(0, 0);
+	return ans;
 }
 
-point sudoku::Find()const{
+point sudoku::Find()const{//查找能确定的空位
 	Re(x, 9)//最简单的情况
 		Re(y, 9){
-		if (map[y][x] == 0 && visit[y][x].count() == 8){
+		if (map[y][x] == 0 && visit[y][x].count() == 8)
 			Re(i, 9)
 				if (visit[y][x].test(i) == 0)
 					return point(x, y, i);
-		}
 	}
-	//二层搜索。感觉还可以搞三层四层。不过好像会很复杂……
+	//二层搜索。
 	Re(x, 9)
 		Re(y, 9){
 		if (map[y][x] == 0)//寻找空格。
@@ -87,8 +95,8 @@ point sudoku::Find()const{
 	return point();
 }
 
-void sudoku::solve(){
-	const point NoPoint(0, 0);
+void sudoku::logic_solve(){
+	static const point NoPoint(0, 0);
 	point target;
 	target = Find();
 	while (!(target == NoPoint)){
@@ -96,7 +104,6 @@ void sudoku::solve(){
 		if (empty == -1)return;
 		target = Find();
 	}
-	return;
 }
 
 void sudoku::clean(){
@@ -125,30 +132,25 @@ std::ostream& operator<<(std::ostream &out, sudoku const &other){
 	}
 	return out;
 }
-sudoku Solve(sudoku one){
+void sudoku::Solve() {
 	TIME++;
-	one.solve();
-	if (one.empty == 0)
-		return one;
-	else{
-		//常规方法不能解决，则暴力。
-		point temp = one.FindEmpty();//找到空格
-		int list[10] = { 0 }, count = 0;
-		Re(i, 9)//记录能填的数字
-			if (one.visit[temp.y][temp.x].test(i) == 0)
-				list[count++] = i;
-		if (count == 0){ 
-			one.empty = -1; 
-			return one;
+	logic_solve();
+	if (empty == 0 || empty == -1)//得到答案或者错误答案
+		return ;
+	//常规方法不能解决，则暴力。
+	point temp = FindEmpty();//找到空格
+	sudoku tempAns;
+	Re(i, 9)
+		if (visit[temp.y][temp.x].test(i) == 0)//填上能填的数字
+		{
+			tempAns = *this;//临时状态
+			tempAns.Write(temp.x, temp.y, i);
+			//这里肯定是无法判断是否正确的。所以不用判断empty==-1
+			tempAns.Solve();//进入递归
+			if (tempAns.empty == 0)
+			{
+				*this = tempAns;
+				return;
+			}
 		}
-		sudoku tempAns;
-		re(i, count){
-			tempAns = one;//临时状态
-			tempAns.Write(temp.x, temp.y, list[i]);//填上能填的数字
-			sudoku two=Solve(tempAns);//进入递归
-			if (two.empty == 0)
-				return two;
-		}
-		return one;
-	}
 }
