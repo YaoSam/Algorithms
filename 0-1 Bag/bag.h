@@ -25,7 +25,7 @@ class BagState
 {
 	double MaxValue, MyValue, RestRoom;
 	unsigned int RestNum;
-	treeNode<bool>* MyLocation;
+	ME::treeNode<bool>* MyLocation;
 	//一下的要慎重delete
 	FreeTree<bool>* SolutionTree;
 	object* AllObject;

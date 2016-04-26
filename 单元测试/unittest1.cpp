@@ -249,14 +249,14 @@ namespace UnitTest
 				int abc[10000] = { 0 }, bcd[10000] = { 0 };
 				re(i, SizeOfTest)
 					abc[i] = rand() % SizeOfTest;
-				MaxHeap<int> one(abc, SizeOfTest);
-				MaxHeap<int> two = one;
+				MinHeap<int> one(abc, SizeOfTest);
+				MinHeap<int> two = one;
 				one = two;
 				Swap(&one, &two);
 				Swap(&two, &one);
 				memcpy(bcd, abc, SizeOfTest*sizeof(int));
-				heapSort(abc, SizeOfTest);
-				Qsort_MaxToMin(bcd, 0, SizeOfTest - 1);
+				ME::heapSort(abc, SizeOfTest);
+				sort(bcd, bcd + SizeOfTest);
 				re(i, SizeOfTest)
 					if (abc[i] != bcd[i])
 						debug("ÅÅÐò²»Æ¥Åä");
@@ -273,7 +273,7 @@ namespace UnitTest
 			unsigned int SizeOfTest = 1000;
 			re(i, SizeOfTest)
 				a[i] = rand() % SizeOfTest;
-			ME:array<int> one(a, 1000);
+			ME::array<int> one(a, 1000);
 			//²âÊÔËæ»úµü´úÆ÷¡£
 			sort(one.begin(), one.end());
 			sort(a, a + SizeOfTest);

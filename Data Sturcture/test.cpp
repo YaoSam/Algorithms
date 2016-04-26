@@ -245,7 +245,10 @@ void TestOfHeap()
 	cout << endl;
 	memcpy(bcd, abc, SizeOfTest*sizeof(int));
 	heapSort(abc, SizeOfTest);
-	Qsort_MaxToMin(bcd, 0, SizeOfTest - 1);
+	sort(bcd, bcd+SizeOfTest);
+	for_each(abc, abc + SizeOfTest, [](int a) {cout << a << " "; });
+	cout << endl;
+	for_each(bcd, bcd + SizeOfTest, [](int a) {cout << a << " "; });
 	re(k, SizeOfTest)
 	{
 		if (bcd[k] != abc[k])
@@ -264,22 +267,22 @@ void TestOfHeap()
 void Test()
 {
 	try{
-		cout<<"²âÊÔ¶¯Ì¬Êý×é"<<endl;
-		TestOfArray();
+		//cout<<"²âÊÔ¶¯Ì¬Êý×é"<<endl;
+		//TestOfArray();
 		//cout << "²âÊÔÕ»" << endl;
 		//TestOfStack();
 		//cout << "²âÊÔ¶ÓÁÐ" << endl;
 		//TestOfQueue();
-		cout << "²âÊÔÁ´±í" << endl;
-		TestOfList();
+		//cout << "²âÊÔÁ´±í" << endl;
+		//TestOfList();
 		//cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
 		//TestOfBstree();
-		//cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
-		//TestOfAVLTree();
-		cout << "\n²âÊÔµü´úÆ÷" << endl;
-		TestOfIterator();
-		//cout << "\n²âÊÔ¶Ñ" << endl;
-		//TestOfHeap();
+		cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
+		TestOfAVLTree();
+		//cout << "\n²âÊÔµü´úÆ÷" << endl;
+		//TestOfIterator();
+		cout << "\n²âÊÔ¶Ñ" << endl;
+		TestOfHeap();
 
 	}
 	catch (const char *a){
