@@ -30,7 +30,6 @@ namespace ME
 			Data(m_Allocator.allocate(OriginalHeapSize)),
 			Current(-1),
 			compare(cmp) {}
-		//构造函数。通过不断向下调整节点实现。
 		Heap(T const *data, unsigned int n, bool(*cmp)(T const & a, T const &b));
 		//动态分配内存惯例要打以下三个函数。
 		Heap(Heap<T> const & other) :
@@ -40,14 +39,14 @@ namespace ME
 			compare(other.compare)
 		{
 			std::uninitialized_copy_n(other.Data, Current + 1, Data);
-			//memcpy(Data, other.Data, sizeof(T)*(Current+1));
 		}
 		Heap<T>& operator=(Heap<T> const & other);
-		virtual ~Heap() { /*delete[] Data;*/m_Allocator.deallocate(Data, size); }
+		virtual ~Heap() { m_Allocator.deallocate(Data, size); }
 		//插入
 		void push(T const &X);
-		//弹出节点。即删除
+		//弹出节点。即并删除
 		T pop();
+		T const& Top()const { return Data[Current]; }
 		bool isEmpty()const { return Current < 0; }
 		TEMP friend void Swap(Heap<T>* a, Heap<T>* b);
 	};

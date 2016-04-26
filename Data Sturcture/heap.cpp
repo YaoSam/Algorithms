@@ -30,11 +30,8 @@ namespace ME
 	TEMP void Heap<T>::expend()
 	{
 		size *= 2;
-		//T* temp = new T[size];
 		T* temp = m_Allocator.allocate(size);
-		//memcpy(temp, Data, (Current + 1)*sizeof(T));
 		std::uninitialized_copy_n(Data, Current + 1, temp);
-		//delete Data;
 		m_Allocator.deallocate(Data, size);
 		Data = temp;
 	}
@@ -43,11 +40,9 @@ namespace ME
 		Current(n - 1),
 		size(n),
 		Data(m_Allocator.allocate(size)),
-		//Data(new T[size]),
 		compare(cmp)
 	{
 		std::uninitialized_copy_n(data, n, Data);
-		//memcpy(Data, data, n*sizeof(T));
 		re(i, n / 2 + 2) //从0 到 n/2+1
 			head_Down(n / 2 + 1 - i,Current,Data,compare); //从n/2+1 到 0
 	}
@@ -56,13 +51,10 @@ namespace ME
 	{
 		if (this == &other)return *this;
 		m_Allocator.deallocate(Data, size);
-		//delete[] Data;
 		size = other.size;
-		//Data = new T[other.size];
 		Data = m_Allocator.allocate(other.size);
 		Current = other.Current;
 		std::uninitialized_copy_n(other.Data, Current + 1, Data);
-		//memcpy(Data, other.Data, sizeof(T)*(Current+1));
 		return *this;
 	}
 
@@ -72,7 +64,6 @@ namespace ME
 		Swap(a->compare, b->compare);
 		Swap(a->size, b->size);
 		Swap(a->Data, b->Data);
-		return;
 	}
 
 	TEMP void Heap<T>::push(T const &X)
@@ -81,7 +72,6 @@ namespace ME
 			expend();
 		//直接放在底部。
 		m_Allocator.construct(Data + (++Current), X);
-		//Data[++Current] = X;
 		//向上维护堆。
 		int i = Current;
 		while (i != 0 && compare(Data[(i - 1) >> 1], Data[i]))

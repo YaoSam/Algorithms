@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <time.h>
+#undef TEMP
 #define TEMP template <class T>
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 namespace ME{
