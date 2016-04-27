@@ -43,7 +43,7 @@ int main()
 #endif
 	try{
 		node	 a[100];
-		int n;
+		unsigned n;
 		cin >> n;
 		re(i,n)
 			cin>>a[i];

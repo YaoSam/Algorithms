@@ -1,5 +1,6 @@
 #pragma  once
 #include "list.h"
+#include "normal.cpp"
 namespace ME
 {
 	TEMP

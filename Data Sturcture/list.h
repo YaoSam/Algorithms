@@ -71,7 +71,7 @@ namespace ME
 		};
 		class const_iterator :public std::iterator<std::input_iterator_tag, T>
 		{
-			const node<T>* Head;
+			const node<T>* const Head;
 			const node<T>* P;
 		public:
 			const_iterator(const list<T>& other) :Head(other.head), P(other.head->next){}
@@ -198,7 +198,7 @@ namespace ME
 			const_iterator(const bnode<T>*const H, const bnode<T>* p) :Head(H), P(p){}
 			const_iterator& operator++()	{ P = P->post; return *this; }
 			const_iterator operator++(int)	{ const_iterator ans(Head,P); P = P->post; return ans; }
-			const_iterator operator--()		{ P = P->pre; return*this; }
+			const_iterator& operator--()		{ P = P->pre; return*this; }
 			const_iterator operator--(int)	{ const_iterator ans(Head, P); P = P->pre; return*this; }
 			const T& operator*()const		{ return P->data; }
 			const T* operator->()const		{ return &(P->data); }
