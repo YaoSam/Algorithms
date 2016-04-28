@@ -85,7 +85,7 @@ namespace ME
 			Pre_iterator() :m_iterator(nullptr, nullptr){};
 			Pre_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
 			void goFirst()override{ pCurrent = m_root; Stack.clear(); }
-			const Pre_iterator& operator++();
+			Pre_iterator& operator++();
 			static Pre_iterator end()//返回终点的迭代器。
 			{
 				return Pre_iterator(nullptr, nullptr);
@@ -102,8 +102,8 @@ namespace ME
 			Mid_iterator() :m_iterator(nullptr, nullptr){};
 			Mid_iterator(const NormalTree<T>* tree);
 			void goFirst()override;
-			const Mid_iterator& operator++();
-			const Mid_iterator& operator--();
+			auto operator++();
+			auto operator--();
 			bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
 		};
 
@@ -116,7 +116,7 @@ namespace ME
 			Post_iterator() :m_iterator(nullptr, nullptr){};
 			Post_iterator(const NormalTree<T>* const tree);
 			void goFirst()override;
-			const Post_iterator& operator++();
+			Post_iterator& operator++();
 			bool operator==(const Post_iterator& other)const { return pCurrent == other.pCurrent; }
 		};
 		class Level_iterator :public m_iterator
@@ -132,7 +132,7 @@ namespace ME
 				pCurrent = m_root;
 				Queue.clear();
 			}
-			const Level_iterator& operator++();
+			Level_iterator& operator++();
 			static Level_iterator end()
 			{
 				return Level_iterator(nullptr, nullptr);

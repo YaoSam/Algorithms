@@ -242,7 +242,7 @@ namespace ME{
 
 	//////////////////////////////////////////////////////////////////////////
 	TEMP
-		const Pre<T>& NormalTree<T>::Pre_iterator::operator++()
+		Pre<T>& NormalTree<T>::Pre_iterator::operator++()
 	{
 		Stack.push(pCurrent);
 		pCurrent = pCurrent->Left();
@@ -270,7 +270,7 @@ namespace ME{
 	}
 
 	TEMP
-		const Mid<T>& NormalTree<T>::Mid_iterator::operator++()
+		auto NormalTree<T>::Mid_iterator::operator++()
 	{
 		if (pCurrent->Right() != NULL)
 		{
@@ -295,7 +295,7 @@ namespace ME{
 	}
 
 	TEMP
-		const typename NormalTree<T>::Mid_iterator& NormalTree<T>::Mid_iterator:: operator--()
+		Mid<T>& NormalTree<T>::Mid_iterator:: operator--()
 	{
 		if (pCurrent->Left()!=NULL)
 		{
@@ -319,7 +319,7 @@ namespace ME{
 
 
 	TEMP
-		const Level<T>& NormalTree<T>::Level_iterator::operator++()
+		Level<T>& NormalTree<T>::Level_iterator::operator++()
 	{
 		if (pCurrent->Left())
 			Queue.push(pCurrent->Left());
@@ -359,7 +359,7 @@ namespace ME{
 	}
 
 	TEMP
-		const Post<T>& NormalTree<T>::Post_iterator::operator++()//输出最左边的叶子节点。
+		Post<T>& NormalTree<T>::Post_iterator::operator++()//输出最左边的叶子节点。
 	{
 		if (Stack.isEmpty())//置为空
 			pCurrent = NULL;

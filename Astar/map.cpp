@@ -76,7 +76,7 @@ void Output()
 Vector search()
 {
 	int count = 0;
-	MinHeap<location> Heap;
+	ME::MinHeap<location> Heap;
 	location temp(location::begin.x, location::begin.y);
 	while (!temp.is_reach())
 	{
@@ -110,7 +110,7 @@ Vector search2()
 {
 	memset(visit, 0, sizeof(visit));
 	int count = 0;
-	queue<location> Queue;
+	ME::queue<location> Queue;
 	location temp(location::begin.x, location::begin.y);
 	Queue.push(temp);
 	//while (!Queue.isEmpty())
