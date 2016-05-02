@@ -21,9 +21,6 @@
     <ClCompile Include="map.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\数据结构汇总\Data Structure\Data Sturcture\stack.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\Data Sturcture\heap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

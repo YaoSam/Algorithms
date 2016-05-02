@@ -64,7 +64,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\数据结构汇总\Data Structure\Data Sturcture\stack.cpp" />
     <ClCompile Include="..\Data Sturcture\heap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
