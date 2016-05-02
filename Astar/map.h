@@ -16,7 +16,7 @@ struct Vector
 	}
 	int operator-(const Vector &other)const//计算距离理论最小值
 	{
-		return ME::Max(abs(x - other.x), abs(y - other.y));
+		return Max(abs(x - other.x), abs(y - other.y));
 	}
 };
 std::ostream& operator<<(std::ostream& out,const Vector &other);
@@ -35,7 +35,7 @@ public:
 	Vector my_location_;
 	unsigned int my_distance_, min_distance_;
 	int first_walk;
-	//Vector path[2000];
+	Vector path[100];
 	static Vector end;
 	static Vector begin;
 	location(int x=0, int y=0);
@@ -48,8 +48,8 @@ public:
 	}
 	int dis()const{ return my_distance_; }
 };
-static int map[1000][1000];
-static int visit[1000][1000];
+static int map[100][100];
+static int visit[100][100];
 static unsigned int width, height;
 void Input();
 void Output();

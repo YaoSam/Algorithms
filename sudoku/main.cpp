@@ -33,6 +33,7 @@ using namespace std;
 extern int TIME;
 int main()
 {
+	clock_t BeginTime = clock();
 	srand(unsigned(time(NULL)));
 #ifdef DEBUG
 	FILE *input, *output; //没用的指针... ...
@@ -41,16 +42,15 @@ int main()
 #endif
 	try{
 		sudoku one;
-		re(i,1){
+		re(i,5){
 			cin >> one;
 			cout << one;
-			clock_t BeginTime = clock();
 			one.Solve();
-			cout << endl << "运行时间：" << clock() - BeginTime << endl;
 			cout << one;
 		}
 		//one.PrintVisit();
 		cout << TIME << endl;
+		cout <<endl<<"运行时间："<< clock() - BeginTime << endl;
 	}
 	catch (const char * error){ cout << error << endl; }
 #ifndef DEBUG

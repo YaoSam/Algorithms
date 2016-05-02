@@ -15,17 +15,18 @@ class sudoku{
 	int empty;//记录空格的数目
 	int map[10][10];
 	std::bitset<10> visit[10][10];//代表是否能填某个数。
-	point Find()const;//查找能确定的空位
-	void Write(int x, int y, int value);//向数独写入的唯一接口。
-	void logic_solve();//推理，将能填的都填上。也就是剪枝。
-	point FindEmpty()const;//查找能填数字最少的空格。
+	point Find()const;
+	void Write(int x, int y, int value);
+	void logic_solve();//常规推理。最多推理两层。
+	point FindEmpty()const;
 public:
 	sudoku();
-	void clean();//清空or初始化数独
-	bool isError()const { return empty == -1; }//是否错误
-	bool isSolved()const{ return empty == 0; }//是否已经算出数独。
+	void clean();
+	bool isError()const { return empty == -1; }
+	bool isSolved()const{ return empty == 0; }
 	friend std::istream& operator>>(std::istream &in, sudoku &other);
 	friend std::ostream& operator<<(std::ostream &out, sudoku const &other);
+	friend int main();
 	void Solve();
 };
 

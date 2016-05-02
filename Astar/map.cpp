@@ -24,7 +24,7 @@ location location::walk(int x)const
 	if (x > 8 || x < 0)throw "Error";
 	location ans(*this);
 	ans.my_distance_++;
-	//ans.path[my_distance_] = my_location_;
+	ans.path[my_distance_] = my_location_;
 	//ans.my_distance_ += map[my_location_.y][my_location_.x];//该点的速度。
 	if (first_walk == 9)ans.first_walk = x;
 	ans.my_location_ += direction[x];
@@ -72,7 +72,7 @@ void Output()
 	}
 	std::cout << std::endl;
 }
-int tempmap[1000][1000];
+
 Vector search()
 {
 	int count = 0;
@@ -86,27 +86,23 @@ Vector search()
 				Heap.push(temp.walk(i));
 		temp = Heap.pop();
 	}
-	//re(i,temp.my_distance_)
-	//{
-	//	std::cout << temp.path[i] << " ";
-	//}
-	//std::cout << "\n";
-	//re(i, height)
-	//{
-	//	re(j, width)
-	//		if (visit[i + 1][j + 1]<10)
-	//			std::cout << " " << visit[i + 1][j + 1] << " ";
-	//		else
-	//			std::cout << visit[i + 1][j + 1] << " ";
-	//	std::cout << std::endl;
-	//}
-	//std::cout << std::endl;
-	//memcpy(tempmap, map, sizeof(map));
-	//re(i, temp.my_distance_)
-	//	map[temp.path[i].y][temp.path[i].x] = i;
-	//Output();
-	//memcpy(map, tempmap, sizeof(map));
-	//std::cout << count << std::endl;
+	re(i, height)
+	{
+		re(j, width)
+			if (visit[i + 1][j + 1]<10)
+				std::cout << " " << visit[i + 1][j + 1] << " ";
+			else
+				std::cout << visit[i + 1][j + 1] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+	int tempmap[100][100];
+	memcpy(tempmap, map, sizeof(map));
+	re(i, temp.my_distance_)
+		map[temp.path[i].y][temp.path[i].x] = i;
+	Output();
+	memcpy(map, tempmap, sizeof(map));
+	std::cout << count << std::endl;
 	return temp.First();
 }
 
@@ -126,17 +122,17 @@ Vector search2()
 				Queue.push(temp.walk(i));
 		temp = Queue.pop();
 	}
-	//re(i, height)
-	//{
-	//	re(j, width)
-	//		if (visit[i + 1][j + 1]<10)
-	//			std::cout << " " << visit[i + 1][j + 1] << " ";
-	//		else
-	//			std::cout << visit[i + 1][j + 1] << " ";
-	//	std::cout << std::endl;
-	//}
-	//std::cout << std::endl;
-	//Output();
-	//std::cout << count << std::endl;
+	re(i, height)
+	{
+		re(j, width)
+			if (visit[i + 1][j + 1]<10)
+				std::cout << " " << visit[i + 1][j + 1] << " ";
+			else
+				std::cout << visit[i + 1][j + 1] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+	Output();
+	std::cout << count << std::endl;
 	return Vector(0, 0);
 }

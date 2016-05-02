@@ -1,12 +1,14 @@
 #pragma once
 #include "sudoku.h"
+#include <vector>
+#include <algorithm>
 int TIME = 0;
 sudoku::sudoku(){
 	clean();
 }
 
 void sudoku::Write(int x, int y, int value){
-	if (map[y][x]>0||visit[y][x].test(value)){//对该空格进行检查。
+	if (map[y][x]>0||visit[y][x].test(value)){
 		empty = -1;
 		return;
 	}
@@ -14,24 +16,29 @@ void sudoku::Write(int x, int y, int value){
 	map[y][x] = value;
 	int tempX = (x - 1) / 3 * 3 + 1, tempY = (y - 1) / 3 * 3 + 1;//得到当前方块的左上角。
 	int X, Y;
-	Re(i, 9){//维护其他空格的visit。
-		if (i!= y){//行
+	Re(i, 9){
+		if (i!= y){
 			visit[i][x].set(value);
-			if (map[i][x] == map[y][x] || visit[i][x].count() == 9)//visit.count=9意味着所有数都不能填了。
+			if (map[i][x] == map[y][x] || visit[i][x].count() == 9) {
 				empty = -1;
+				return;
+			}
 		}
-		if (i!= x){//列
+		if (i!= x){
 			visit[y][i].set(value);
-			if (map[y][i] == map[y][x] || visit[y][i].count() == 9)
+			if (map[y][i] == map[y][x] || visit[y][i].count() == 9){
 				empty = -1;
+				return;
+			}
 		}
 		X = tempX + (i-1) / 3, Y = tempY + (i-1) % 3;
-		if (!(Y== y&&X== x)){//方块
+		if (!(Y== y&&X== x)){
 			visit[Y][X].set(value);
-			if (map[Y][X] == map[y][x] || visit[Y][X].count() == 9)
+			if (map[Y][X] == map[y][x] || visit[Y][X].count() == 9){
 				empty = -1;
-		}
-		if (empty == -1)return;
+				return;
+			}
+		}		
 	}
 
 }
@@ -41,11 +48,11 @@ point sudoku::FindEmpty()const{//查找不能确定的空位。
 	point ans;
 	Re(j, 9)
 		Re(i, 9){
-		if (map[i][j] == 0&&visit[i][j].count()>max_count){//筛选出不能填的数字最多的位置
+		if (map[i][j] == 0&&visit[i][j].count()>max_count)//筛选出不能填的数字最多的位置
+			{
 				max_count = visit[i][j].count();
 				if (max_count == 2)//不可能更少了。
 					return point(j, i);
-				//return point(j,i);//直接返回有空格的点。不进行筛选。
 				ans = point(j, i);
 			}
 	}
@@ -53,15 +60,14 @@ point sudoku::FindEmpty()const{//查找不能确定的空位。
 }
 
 point sudoku::Find()const{//查找能确定的空位
-	//唯一性判断
-	Re(x, 9)
+	Re(x, 9)//最简单的情况
 		Re(y, 9){
 		if (map[y][x] == 0 && visit[y][x].count() == 8)
 			Re(i, 9)
 				if (visit[y][x].test(i) == 0)
 					return point(x, y, i);
 	}
-	//存在性判断
+	//二层搜索。
 	Re(x, 9)
 		Re(y, 9){
 		if (map[y][x] == 0)//寻找空格。
@@ -128,7 +134,7 @@ std::ostream& operator<<(std::ostream &out, sudoku const &other){
 }
 void sudoku::Solve() {
 	TIME++;
-	logic_solve();//剪枝
+	logic_solve();
 	if (empty == 0 || empty == -1)//得到答案或者错误答案
 		return ;
 	//常规方法不能解决，则暴力。
