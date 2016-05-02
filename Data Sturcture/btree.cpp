@@ -270,7 +270,7 @@ namespace ME{
 	}
 
 	TEMP
-		auto NormalTree<T>::Mid_iterator::operator++()
+		auto& NormalTree<T>::Mid_iterator::operator++()
 	{
 		if (pCurrent->Right() != NULL)
 		{
@@ -295,7 +295,7 @@ namespace ME{
 	}
 
 	TEMP
-		Mid<T>& NormalTree<T>::Mid_iterator:: operator--()
+		auto& NormalTree<T>::Mid_iterator:: operator--()
 	{
 		if (pCurrent->Left()!=NULL)
 		{

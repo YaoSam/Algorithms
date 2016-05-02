@@ -102,8 +102,8 @@ namespace ME
 			Mid_iterator() :m_iterator(nullptr, nullptr){};
 			Mid_iterator(const NormalTree<T>* tree);
 			void goFirst()override;
-			auto operator++();
-			auto operator--();
+			auto& operator++();
+			auto& operator--();
 			bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
 		};
 
