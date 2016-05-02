@@ -71,7 +71,9 @@ namespace ME
 			void reset()				{ P = Head->next; }
 			bool operator==(const derive_iter& other)const { return P == other.P; }
 		};
-		class iterator:public base_iter<iterator>, public std::iterator<std::forward_iterator_tag, T>
+		class iterator:
+			public base_iter<iterator>, 
+			public std::iterator<std::forward_iterator_tag, T>
 		{
 		public:
 			iterator(list<T>& other):base_iter<iterator>(other){}
@@ -157,39 +159,38 @@ namespace ME
 			}
 			return out << std::endl;
 		}
-		class iterator:public std::iterator<std::bidirectional_iterator_tag,T>
+		template <class deri_iter>
+		class base_iter
 		{
+		protected:
 			bnode<T>* Head;
 			bnode<T>* P;
 		public:
-			iterator(blist<T>& other) :Head(other.head), P(other.head->post){}
-			iterator(bnode<T>*const H, bnode<T>* p) :Head(H), P(p){}
-			iterator& operator++()	{ P = P->post; return*this; }
-			iterator operator++(int){ iterator ans(Head,P); P = P->post; return ans; }
-			iterator& operator--()	{ P = P->pre; return *this; }
-			iterator operator--(int){ iterator ans(Head,P); P = P->pre; return ans; }
+			base_iter(blist<T>& other) :Head(other.head), P(other.head->post){}
+			base_iter(bnode<T>*const H, bnode<T>* p) :Head(H), P(p){}
+			deri_iter& operator++()	{ P = P->post; return static_cast<deri_iter&>(*this); }
+			deri_iter operator++(int){ deri_iter ans(Head,P); P = P->post; return ans; }
+			deri_iter& operator--() { P = P->pre; return static_cast<deri_iter&>(*this); }
+			deri_iter operator--(int){ deri_iter ans(Head,P); P = P->pre; return ans; }
 			T& operator*()const		{ return P->data; }
 			T* operator->()const	{ return &(P->data); }
 			bool isEnd()const		{ return P == NULL; }
 			void reset()			{ P = Head->post; }
-			bool operator==(const iterator& other)const{ return P == other.P; }
+			bool operator==(const deri_iter& other)const{ return P == other.P; }
 		};
-		class const_iterator :public std::iterator<std::input_iterator_tag,T>
+		class iterator:public base_iter<iterator>,public std::iterator<std::bidirectional_iterator_tag, T>
 		{
-			const bnode<T>* Head;
-			const bnode<T>* P;
 		public:
-			const_iterator(const blist<T>& other) :Head(other.head), P(other.head->post){}
-			const_iterator(const bnode<T>*const H, const bnode<T>* p) :Head(H), P(p){}
-			const_iterator& operator++()	{ P = P->post; return *this; }
-			const_iterator operator++(int)	{ const_iterator ans(Head,P); P = P->post; return ans; }
-			const_iterator& operator--()		{ P = P->pre; return*this; }
-			const_iterator operator--(int)	{ const_iterator ans(Head, P); P = P->pre; return*this; }
+			iterator(blist<T>& other) :base_iter<iterator>(other) {}
+			iterator(bnode<T>*const H, bnode<T>* p) :base_iter<iterator>(H,p) {}
+		};
+		class const_iterator :public base_iter<const_iterator>,public std::iterator<std::input_iterator_tag,T>
+		{
+		public:
+			const_iterator(blist<T>& other) :base_iter<const_iterator>(other){}
+			const_iterator(bnode<T>* H, bnode<T>* p) :base_iter<const_iterator>(H,p){}
 			const T& operator*()const		{ return P->data; }
 			const T* operator->()const		{ return &(P->data); }
-			bool isEnd()const				{ return P == NULL; }
-			void reset()					{ P = Head->post; }
-			bool operator==(const const_iterator& other)const{ return P == other.P; }
 		};
 		iterator find(const T& x);
 		const_iterator find(const T& x)const;
