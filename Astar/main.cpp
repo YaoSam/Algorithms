@@ -34,7 +34,6 @@ using namespace std;
 #define DEBUG
 int main()
 {
-	clock_t BeginTime = clock();
 	srand(unsigned(time(NULL)));
 #ifdef DEBUG
 	FILE *input, *output; //没用的指针... ...
@@ -43,10 +42,11 @@ int main()
 #endif
 	try{
 		Input();
-		Output();
-		cout<<search()<<endl;
-		cout << search2()<<endl;
+		//Output();
+		clock_t BeginTime = clock();
+		search();
 		cout << endl << "运行时间：" << clock() - BeginTime << endl;
+		//search2();
 	}
 	catch (const char * error){ cout << error << endl; }
 #ifndef DEBUG
