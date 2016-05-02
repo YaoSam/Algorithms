@@ -54,75 +54,60 @@ namespace ME
 			}
 			return out << std::endl;
 		}
-		class iterator :public std::iterator<std::forward_iterator_tag, T>
+		template <class derive_iter>
+		class base_iter
 		{
+		protected:
 			node<T>* Head;
 			node<T>* P;
 		public:
-			iterator(list<T>& other) :Head(other.head), P(other.head->next){}
-			iterator(node<T>*const H, node<T>* p) :Head(H), P(p){}
-			iterator& operator++()	{ P = P->next; return*this; }
-			iterator operator++(int){ iterator ans(P); P = P->next; return ans; }
-			T& operator*()const		{ return P->data; }
-			T* operator->()const	{ return &(P->data); }
-			bool isEnd()const		{ return P == NULL; }
-			void reset()			{ P = Head->next; }
-			bool operator==(const iterator& other)const{ return P == other.P; }
+			base_iter(list<T>& other):Head(other.head),P(other.head->next){}
+			base_iter(node<T>* H, node<T>* p) :Head(H), P(p){}
+			derive_iter& operator++()	{ P = P->next; return static_cast<derive_iter&>(*this); }
+			derive_iter operator++(int) { derive_iter ans(*this); P = P->next; return ans; }
+			T& operator*()				{ return P->data; }
+			T* operator->()const		{ return &(P->data); }
+			bool isEnd()const			{ return P == nullptr; }
+			void reset()				{ P = Head->next; }
+			bool operator==(const derive_iter& other)const { return P == other.P; }
 		};
-		class const_iterator :public std::iterator<std::input_iterator_tag, T>
+		class iterator:public base_iter<iterator>, public std::iterator<std::forward_iterator_tag, T>
 		{
-			const node<T>* const Head;
-			const node<T>* P;
 		public:
-			const_iterator(const list<T>& other) :Head(other.head), P(other.head->next){}
-			const_iterator(const node<T>*const H, const node<T>* p) :Head(H), P(p){}
-			const_iterator& operator++()	{ P = P->next; return *this; }
-			const_iterator operator++(int)	{ const_iterator ans(P); P = P->next; return ans; }
-			const T& operator*()const		{ return P->data; }
-			const T* operator->()const		{ return &(P->data); }
-			bool isEnd()const				{ return P == NULL; }
-			void reset()					{ P = Head->next; }
-			bool operator==(const const_iterator& other)const{ return P == other.P; }
+			iterator(list<T>& other):base_iter<iterator>(other){}
+			iterator(node<T>* H, node<T>* p):base_iter<iterator>(H,p){}
 		};
-		class back_inserter :public std::iterator<std::forward_iterator_tag, T>
+		class const_iterator:public base_iter<const_iterator>, public std::iterator<std::input_iterator_tag, T>
+		{
+		public:
+			const_iterator(list<T>& other):base_iter<const_iterator>(other){}
+			const_iterator(node<T>* H, node<T>* p) :base_iter<const_iterator>(H, p) {}
+			const T& operator*()	{ return P->data; }
+			const T* operator->()	{ return &(P->data); }
+		};
+		class back_inserter:public base_iter<back_inserter>,public std::iterator<std::forward_iterator_tag,T>
 		{
 			list<T>& me;
-			node<T>* P;
 		public:
-			back_inserter(list<T>& other) :me(other), P(other.head->next){}
-			back_inserter(list<T>& other, node<T>* p) :me(other), P(p){}
-			back_inserter& operator=(const T&x)
+			back_inserter(list<T>& other) :base_iter<back_inserter>(other),me(other) {}
+			back_inserter(list<T>& other,node<T>* p) :base_iter<back_inserter>(other.head,p),me(other){}
+			back_inserter& operator=(const T& x)
 			{
 				me.push_back(x);
 				return *this;
 			}
-			back_inserter& operator++()		{ P = P->next; return*this; }
-			back_inserter operator++(int)	{ back_inserter ans(P); P = P->next; return ans; }
-			T& operator*()const				{ return P->data; }
-			T* operator->()const			{ return &(P->data); }
-			bool isEnd()const				{ return P == nullptr; }
-			void reset()					{ P = me.head->next; }
-			bool operator==(const back_inserter& other)const { return P == other.P; }
 		};
-		class front_inserter :public std::iterator<std::forward_iterator_tag, T>
+		class front_inserter:public base_iter<front_inserter>,public std::iterator<std::forward_iterator_tag,T>
 		{
 			list<T>& me;
-			node<T>* P;
 		public:
-			front_inserter(list<T>& other) :me(other), P(other.head->next){}
-			front_inserter(list<T>& other, node<T>* p) :me(other), P(p){}
-			front_inserter& operator=(const T&x)
+			front_inserter(list<T>& other) :base_iter<front_inserter>(other),me(other) {}
+			front_inserter(list<T>& other,node<T>* p) :base_iter<front_inserter>(other.head,p),me(other){}
+			front_inserter& operator=(const T& x)
 			{
-				me.push_front(x);//跟上面的惟一差别。
+				me.push_front(x);
 				return *this;
 			}
-			front_inserter& operator++()	{ P = P->next; return*this; }
-			front_inserter operator++(int)	{ front_inserter ans(P); P = P->next; return ans; }
-			T& operator*()const				{ return P->data; }
-			T* operator->()const			{ return &(P->data); }
-			bool isEnd()const				{ return P == nullptr; }
-			void reset()					{ P = me.head->next; }
-			bool operator==(const front_inserter& other)const { return P == other.P; }
 		};
 		iterator find(T const &x);
 		iterator begin(){ return iterator(head, head->next); }

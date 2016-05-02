@@ -97,7 +97,7 @@ namespace ME
 	}
 
 	TEMP
-		typename list<T>::iterator list<T>::find(T const &x)
+		typename list<T>::list_iterator list<T>::find(T const &x)
 	{
 		node<T>* temp = head->next;
 		while (temp != NULL)
@@ -105,7 +105,7 @@ namespace ME
 			if (temp->data == x)
 				break;
 		}
-		return iterator(head,temp);//找不到的时候就是NULL
+		return list_iterator(head,temp);//找不到的时候就是NULL
 	}
 
 	TEMP
