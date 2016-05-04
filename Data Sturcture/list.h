@@ -26,6 +26,24 @@ namespace ME
 		node<T>* head, *last;
 		unsigned int length;
 		void check_last();
+		
+		template <class derive_iter>
+		class base_iter
+		{
+		protected:
+			node<T>* Head;
+			node<T>* P;
+		public:
+			base_iter(list<T>& other):Head(other.head),P(other.head->next){}
+			base_iter(node<T>* H, node<T>* p) :Head(H), P(p){}
+			derive_iter& operator++()	{ P = P->next; return static_cast<derive_iter&>(*this); }
+			derive_iter operator++(int) { derive_iter ans(*this); P = P->next; return ans; }
+			T& operator*()				{ return P->data; }
+			T* operator->()const		{ return &(P->data); }
+			bool isEnd()const			{ return P == nullptr; }
+			void reset()				{ P = Head->next; }
+			bool operator==(const derive_iter& other)const { return P == other.P; }
+		};
 	public:
 		typedef T value_type;
 		list(T const a[] = NULL, unsigned int n = 0);
@@ -54,23 +72,6 @@ namespace ME
 			}
 			return out << std::endl;
 		}
-		template <class derive_iter>
-		class base_iter
-		{
-		protected:
-			node<T>* Head;
-			node<T>* P;
-		public:
-			base_iter(list<T>& other):Head(other.head),P(other.head->next){}
-			base_iter(node<T>* H, node<T>* p) :Head(H), P(p){}
-			derive_iter& operator++()	{ P = P->next; return static_cast<derive_iter&>(*this); }
-			derive_iter operator++(int) { derive_iter ans(*this); P = P->next; return ans; }
-			T& operator*()				{ return P->data; }
-			T* operator->()const		{ return &(P->data); }
-			bool isEnd()const			{ return P == nullptr; }
-			void reset()				{ P = Head->next; }
-			bool operator==(const derive_iter& other)const { return P == other.P; }
-		};
 		class iterator:
 			public base_iter<iterator>, 
 			public std::iterator<std::forward_iterator_tag, T>
@@ -132,33 +133,7 @@ namespace ME
 	{
 		bnode<T>* head,*last;
 		unsigned int length;
-	public:
-		typedef T value_type;
-		blist(const T* a = nullptr, unsigned int n = 0);
-		blist(const blist<T>& other);
-		blist(const list<T>& other);
-		~blist();
-		blist<T>& operator=(const blist<T>& other);
-		const unsigned int &Length()const{ return length; }
-		void push_back(const T& x)
-		{
-			last->post = new bnode<T>(x, last);
-			last = last->post;
-			length++;
-		}
-		void push_front(const T& x);
-		void DelNode(const T &x);
-		void erase(const T& x);
-		friend std::ostream& operator<<(std::ostream& out, const blist<T>& other)
-		{
-			bnode<T>* temp = other.head->post;
-			while (temp)
-			{
-				out << temp->data << " ";
-				temp = temp->post;
-			}
-			return out << std::endl;
-		}
+
 		template <class deri_iter>
 		class base_iter
 		{
@@ -178,6 +153,34 @@ namespace ME
 			void reset()			{ P = Head->post; }
 			bool operator==(const deri_iter& other)const{ return P == other.P; }
 		};
+	public:
+		typedef T value_type;
+		blist(const T* a = nullptr, unsigned int n = 0);
+		blist(const blist<T>& other);
+		blist(const list<T>& other);
+		~blist();
+		blist<T>& operator=(const blist<T>& other);
+		const unsigned int &Length()const{ return length; }
+		void push_back(const T& x)
+		{
+			last->post = new bnode<T>(x, last);
+			last = last->post;
+			length++;
+		}
+		void push_front(const T& x);
+		void DelNode(const T &x);
+		void erase(const T& x);
+
+		friend std::ostream& operator<<(std::ostream& out, const blist<T>& other)
+		{
+			bnode<T>* temp = other.head->post;
+			while (temp)
+			{
+				out << temp->data << " ";
+				temp = temp->post;
+			}
+			return out << std::endl;
+		}
 		class iterator:public base_iter<iterator>,public std::iterator<std::bidirectional_iterator_tag, T>
 		{
 		public:
