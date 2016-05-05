@@ -280,6 +280,11 @@ namespace UnitTest
 			re(i, SizeOfTest)
 				if (a[i] != one[i])
 					debug("ÅÅÐò³ö´í");
+			const ME::array<int> two(one);
+			int i = 0;
+			for (auto one:two)
+				if (one != a[i++])
+					debug("¸´ÖÆ³ö´í");
 		}
 	};
 }

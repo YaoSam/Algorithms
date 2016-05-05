@@ -15,57 +15,56 @@ namespace ME
 		void expend();
 	public:
 		//friend class array<T>::iterator;
-		class iterator :public std::iterator<std::random_access_iterator_tag, T>
+		template<class deri_iter>
+		class base_iter
 		{
-			const T *root, *end;
+		protected:
+			T *root, *end;
 			T* P;
 		public:
-			//下面5句与继承iterator等价。为了trait服务。
+			base_iter(T* r, T *p, T* e) :root(r), P(p), end(e){}
+			base_iter(array& Array) :root(Array.data), P(Array.data), end(Array.data + Array.top + 1){}
+			void goFirst()						{ P = root; }
+			bool isEnd()const					{ return P == end; }
+			bool CheckRange()					{ return P >= root&&P < end; }
+			T& operator*()const { return (*P); }
+			T* operator->()const { return P; }
+			deri_iter& operator++()		{ ++P; return static_cast<deri_iter&>(*this); }
+			deri_iter& operator--()		{ --P; return static_cast<deri_iter&>(*this); }
+			deri_iter operator++(int)	{ return deri_iter(root, P++, end); }
+			deri_iter operator--(int)	{ return deri_iter(root, P--, end); }
+			deri_iter operator+(const int movement)const{ return deri_iter(root, P + movement, end); }
+			deri_iter operator-(const int movement)const{ return deri_iter(root, P - movement, end); }
+			deri_iter& operator+=(const int movement)	{ P += movement; return static_cast<deri_iter&>(*this); }
+			deri_iter& operator-=(const int movement)	{ P -= movement; return static_cast<deri_iter&>(*this); }
+			int operator-(const deri_iter& other)const	{ return P - other.P; }
+			bool operator==(const deri_iter& other)const{ return P == other.P; }
+			bool operator>(const deri_iter& other)const	{ return P > other.P; }
+		};
+		class iterator:public base_iter<iterator>, public std::iterator<std::random_access_iterator_tag,T>
+		{
+		public:
+			//下面5句与继承base_iter等价。为了trait服务。
 			//typedef std::random_access_iterator_tag iterator_category;
 			//typedef T value_type;
 			//typedef typename std::allocator<T>::difference_type difference_type;
 			//typedef typename std::allocator<T>::const_pointer pointer;
 			//typedef typename std::allocator<T>::const_reference reference;
-			iterator(const T* r = nullptr, T *p = nullptr, const T* e = nullptr) :root(r), P(p), end(e){}
-			iterator(array& Array) :root(Array.data), P(Array.data), end(Array.data + Array.top + 1){}
-			void goFirst()						{ P = root; }
-			bool isEnd()const					{ return P == end; }
-			bool CheckRange()					{ return P >= root&&P < end; }
-			T& operator*()const { return (*P); }
-			iterator& operator++()		{ ++P; return *this; }
-			iterator& operator--()		{ --P; return *this; }
-			iterator operator++(int)		{ return iterator(root, P++, end); }
-			iterator operator--(int)		{ return iterator(root, P--, end); }
-			iterator operator+(const int & movement)const	{ return iterator(root, P + movement, end); }
-			iterator operator-(const int & movement)const	{ return iterator(root, P - movement, end); }
-			iterator& operator+=(const int & movement)	{ P += movement; return *this; }
-			iterator& operator-=(const int & movement)	{ P -= movement; return *this; }
-			int operator-(const iterator& other)const		{ return P - other.P; }
-			bool operator==(const iterator& other)const	{ return P == other.P; }
-			bool operator>(const iterator& other)const	{ return P > other.P; }
+			iterator(T* r, T *p, T* e) :base_iter<iterator>(r, p, e){}
+			iterator(array& Array) :base_iter<iterator>(Array){}
 		};
-		class const_iterator :public std::iterator<std::input_iterator_tag, const T>
+		class const_iterator :public base_iter<const_iterator>, public std::iterator<std::input_iterator_tag,T>
 		{
-			T const * root, *end;//不允许改变指针。
-			const T* P;//不允许改变值。
 		public:
-			const_iterator(T* const r = nullptr, const T *p = nullptr, T*const e = nullptr) :root(r), P(p), end(e){}
-			const_iterator(const array& Array) :root(Array.data), P(Array.data), end(Array.data + Array.top + 1){}
-			void goFirst()						{ P = root; }
-			bool isEnd()const					{ return P == end; }
-			bool CheckRange()					{ return P >= root&&P < end; }
-			const T& operator*()const			{ return (*P); }
-			const_iterator& operator++()		{ ++P; return *this; }
-			const_iterator& operator--()		{ --P; return *this; }
-			const_iterator operator++(int)		{ return const_iterator(root, P++, end); }
-			const_iterator operator--(int)		{ return const_iterator(root, P--, end); }
-			const_iterator operator+(const int & movement)const	{ return const_iterator(root, P + movement, end); }
-			const_iterator operator-(const int & movement)const	{ return const_iterator(root, P - movement, end); }
-			const_iterator& operator+=(const int & movement)	{ P += movement; return *this; }
-			const_iterator& operator-=(const int & movement)	{ P -= movement; return *this; }
-			int operator-(const const_iterator& other)const		{ return P - other.P; }
-			bool operator==(const const_iterator& other)const	{ return P == other.P; }
-			bool operator>(const const_iterator& other)const	{ return P > other.P; }
+			const_iterator(const T* r, const T *p, const T*e) :
+				base_iter<const_iterator>
+				(	const_cast<T*>(r),
+					const_cast<T*>(p),
+					const_cast<T*>(e))
+			{}
+			const_iterator(const array& Array) :base_iter<const_iterator>(const_cast<array&>(Array)){}
+			const T& operator*()const  { return (*P); }
+			const T* operator->()const { return P; }
 		};
 		array(unsigned int n) :
 			size(n), top(-1)
@@ -103,9 +102,9 @@ namespace ME
 		iterator begin()		{ return iterator(*this); }
 		const_iterator begin()const { return const_iterator(*this); }
 		const_iterator cbegin()const{ return const_iterator(*this); }
-		iterator end()			{ return iterator(nullptr, data + top + 1); }
-		const_iterator end()const{ return const_iterator(nullptr, data + top + 1); }
-		const_iterator cend()const	{ return const_iterator(nullptr, data + top + 1); }
+		iterator end()				{ return iterator(data, data + top + 1, data + top + 1); }
+		const_iterator end()const	{ return const_iterator(data, data + top + 1, data + top + 1); }
+		const_iterator cend()const	{ return const_iterator(data, data + top + 1, data + top + 1); }
 		friend std::ostream& operator<<(std::ostream& out, const array<T>& other)
 		{
 			re(i, other.top + 1)
