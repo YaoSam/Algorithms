@@ -46,7 +46,7 @@ namespace ME
 		};
 		class const_iterator :public std::iterator<std::input_iterator_tag, const T>
 		{
-			T const * root, *end;//不允许改变指针。
+			T const * root, *end;
 			const T* P;//不允许改变值。
 		public:
 			const_iterator(T* const r = nullptr, const T *p = nullptr, T*const e = nullptr) :root(r), P(p), end(e){}
@@ -112,6 +112,7 @@ namespace ME
 				out << other.data[i] << " ";
 			return out << std::endl;
 		}
+		TEMP friend void swap(array<T>& a, array<T>& b);
 	};
 
 	TEMP

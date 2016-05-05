@@ -48,7 +48,7 @@ namespace ME
 		T pop();
 		T const& Top()const { return Data[Current]; }
 		bool isEmpty()const { return Current < 0; }
-		TEMP friend void Swap(Heap<T>* a, Heap<T>* b);
+		TEMP friend void swap(Heap<T>& a, Heap<T>& b);
 	};
 	//////////////////////////////////////////////////////////////////////////
 	TEMP

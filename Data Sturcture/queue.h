@@ -23,6 +23,6 @@ namespace ME{
 		T pop();
 		void clear(){ front = rear = 0; }
 		bool isEmpty()const{ return front == rear; }
-		TEMP friend void Swap(queue<T> &a, queue<T>& b);
+		TEMP friend void swap(queue<T> &a, queue<T>& b);
 	};
 }

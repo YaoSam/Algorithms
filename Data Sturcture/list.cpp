@@ -127,12 +127,6 @@ namespace ME
 		}
 	}
 
-	TEMP void Swap(list<T>& a, list<T>&b)
-	{
-		Swap(a.head, b.head);
-		Swap(a.length, b.length);
-	}
-
 	TEMP
 		void list<T>::erase(T const & x)
 	{
@@ -302,14 +296,6 @@ namespace ME
 			}
 			temp = temp2;
 		}
-	}
-
-	TEMP 
-		void Swap(blist<T>& a, blist<T>&b)
-	{
-		Swap(a.head, b.head);
-		Swap(a.length, b.length);
-		Swap(a.last, b.last);
 	}
 
 }

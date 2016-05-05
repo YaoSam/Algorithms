@@ -35,6 +35,6 @@ namespace ME{
 				out << other.data[i] << " ";
 			return out << std::endl;
 		}
-		TEMP friend void Swap(stack<T> &a, stack<T> &b);
+		TEMP friend void swap(stack<T> &a, stack<T> &b);
 	};
 }

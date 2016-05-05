@@ -70,12 +70,4 @@ namespace ME{
 			throw "Subscript out of range£¬faile stack.push()";
 		return data[n];
 	}
-
-	TEMP void Swap(stack<T> &a, stack<T> &b)
-	{
-		Swap(a.top, b.top);
-		Swap(a.size, b.size);
-		Swap(a.data, b.data);
-		return;
-	}
 }

@@ -10,8 +10,6 @@ namespace ME
 	TEMP struct bnode;
 	TEMP class list;
 	TEMP class blist;
-	TEMP void Swap(list<T>& a, list<T>&b);
-	TEMP void Swap(blist<T>& a, blist<T>&b);
 	TEMP
 	struct node
 	{
@@ -61,7 +59,7 @@ namespace ME
 		}
 		void delNode(T const &x);//删除一个x的点
 		void erase(T const & x);//删除所有为x的点。
-		TEMP friend void Swap(list<T>& a, list<T>&b);
+		TEMP friend void swap(list<T>& a, list<T>&b);
 		friend std::ostream& operator<<(std::ostream& out, list<T> const & other)
 		{
 			node<T>* temp = other.head->next;
@@ -118,7 +116,6 @@ namespace ME
 		const_iterator begin()const	{ return const_iterator(head, head->next); }
 		const_iterator end()const	{ return const_iterator(head, nullptr); }
 	};
-	
 
 	TEMP
 	struct bnode
@@ -203,6 +200,6 @@ namespace ME
 		iterator end()				{ return iterator(head,nullptr); }
 		const_iterator end()const	{ return const_iterator(head, nullptr); }
 		const_iterator cend()		{ return const_iterator(head, head); }
-		friend void Swap(blist<T>& a, blist<T>& b);
+		friend void swap(blist<T>& a, blist<T>& b);
 	};
 }

@@ -183,8 +183,8 @@ namespace UnitTest
 				re(i, SizeOfTest)
 					one.push(rand() % SizeOfTest);
 				two = one;
-				Swap(one, two);
-				Swap(one, two);
+				ME::swap(one, two);
+				ME::swap(one, two);
 				re(i, SizeOfTest)
 					a[i] = one.pop();
 				re(i, SizeOfTest)
@@ -210,8 +210,8 @@ namespace UnitTest
 					while (!b.isEmpty())
 						a.push(b.pop());
 				}
-				Swap(a, b);
-				Swap(a, b);
+				ME::swap(a, b);
+				ME::swap(a, b);
 				re(i, SizeOfTest)
 					if (a.pop() != c.pop())
 						debug("对不上了");
@@ -237,8 +237,8 @@ namespace UnitTest
 					one.push_front(a[i]);
 				list<int> two = one;
 				one = two;
-				Swap(one, two);
-				Swap(one, two);
+				swap(one, two);
+				swap(one, two);
 			}
 			catch (const char * err){ debug(err); }
 		}
@@ -252,8 +252,8 @@ namespace UnitTest
 				MinHeap<int> one(abc, SizeOfTest);
 				MinHeap<int> two = one;
 				one = two;
-				Swap(&one, &two);
-				Swap(&two, &one);
+				swap(one, two);
+				swap(two, one);
 				memcpy(bcd, abc, SizeOfTest*sizeof(int));
 				ME::heapSort(abc, SizeOfTest);
 				sort(bcd, bcd + SizeOfTest);

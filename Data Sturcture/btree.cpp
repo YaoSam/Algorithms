@@ -234,9 +234,9 @@ namespace ME{
 		return NULL;
 	}
 
-	TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
+	TEMP void Swap(NormalTree<T>& a, NormalTree<T>& b)
 	{
-		Swap(a->root, b->root);
+		Swap(a.root, b.root);
 	}
 
 
