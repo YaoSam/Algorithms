@@ -18,13 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\数据结构汇总\Data Structure\Data Sturcture\heap.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\数据结构汇总\Data Structure\Data Sturcture\stack.cpp">
+    <ClCompile Include="..\Data Sturcture\heap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -40,10 +37,7 @@
     <ClInclude Include="map.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\数据结构汇总\Data Structure\Data Sturcture\heap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\数据结构汇总\Data Structure\Data Sturcture\Stack.h">
+    <ClInclude Include="..\Data Sturcture\heap.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

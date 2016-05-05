@@ -1,5 +1,6 @@
 #include "map.h"
 #include "..\Data Sturcture\queue.cpp"
+#include <algorithm>
 Vector location::end(1, 1), location::begin;
 
 std::ostream& operator<<(std::ostream& out, const Vector &other)
@@ -24,7 +25,7 @@ location location::walk(int x)const
 	if (x > 8 || x < 0)throw "Error";
 	location ans(*this);
 	ans.my_distance_++;
-	ans.path[my_distance_] = my_location_;
+	//ans.path[my_distance_] = my_location_;
 	//ans.my_distance_ += map[my_location_.y][my_location_.x];//该点的速度。
 	if (first_walk == 9)ans.first_walk = x;
 	ans.my_location_ += direction[x];
@@ -56,7 +57,7 @@ void Input()//地图从1，1到width,height
 	memset(map, 0, sizeof(map));
 	re(i, height)
 		re(j, width)
-		std::cin >> map[i+1][j+1];
+		scanf_s("%d", &map[i + 1][j + 1]);
 }
 void Output()
 {
@@ -64,10 +65,7 @@ void Output()
 	re(i, height)
 	{
 		re(j, width)
-			if (map[i + 1][j+1]<10)
-				std::cout <<" "<< map[i + 1][j + 1] << " ";
-			else
-				std::cout << map[i + 1][j + 1] << " ";
+			printf_s("%2d", map[i + 1][j + 1]);
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
@@ -86,23 +84,22 @@ Vector search()
 				Heap.push(temp.walk(i));
 		temp = Heap.pop();
 	}
-	re(i, height)
-	{
-		re(j, width)
-			if (visit[i + 1][j + 1]<10)
-				std::cout << " " << visit[i + 1][j + 1] << " ";
-			else
-				std::cout << visit[i + 1][j + 1] << " ";
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-	int tempmap[100][100];
-	memcpy(tempmap, map, sizeof(map));
-	re(i, temp.my_distance_)
-		map[temp.path[i].y][temp.path[i].x] = i;
-	Output();
-	memcpy(map, tempmap, sizeof(map));
-	std::cout << count << std::endl;
+	int temp_width = width;
+	printf("%d\n", visit[height - 1][width - 1]);
+	std::for_each(visit, visit + height, [temp_width](auto a) {
+		std::for_each(a, a + width, [](auto num){
+			printf_s("%2d", num);
+		});
+		printf_s("\n");
+	});
+	//std::cout << std::endl;
+	//int tempmap[1000][1000];
+	//memcpy(tempmap, map, sizeof(map));
+	//re(i, temp.my_distance_)
+	//	map[temp.path[i].y][temp.path[i].x] = i;
+	//Output();
+	//memcpy(map, tempmap, sizeof(map));
+	//std::cout << count << std::endl;
 	return temp.First();
 }
 
@@ -122,17 +119,25 @@ Vector search2()
 				Queue.push(temp.walk(i));
 		temp = Queue.pop();
 	}
-	re(i, height)
-	{
-		re(j, width)
-			if (visit[i + 1][j + 1]<10)
-				std::cout << " " << visit[i + 1][j + 1] << " ";
-			else
-				std::cout << visit[i + 1][j + 1] << " ";
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-	Output();
-	std::cout << count << std::endl;
+	printf("%d\n", visit[height - 1][width - 1]);
+	int temp_width = width;
+	std::for_each(visit, visit + height, [temp_width](auto a) {
+		std::for_each(a, a + width, [](auto num) {
+			printf_s("%2d", num);
+		});
+		printf_s("\n");
+	});
+	//re(i, height)
+	//{
+	//	re(j, width)
+	//		if (visit[i + 1][j + 1]<10)
+	//			std::cout << " " << visit[i + 1][j + 1] << " ";
+	//		else
+	//			std::cout << visit[i + 1][j + 1] << " ";
+	//	std::cout << std::endl;
+	//}
+	//std::cout << std::endl;
+	//Output();
+	//std::cout << count << std::endl;
 	return Vector(0, 0);
 }

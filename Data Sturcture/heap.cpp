@@ -29,10 +29,10 @@ namespace ME
 
 	TEMP void Heap<T>::expend()
 	{
-		size *= 2;
-		T* temp = m_Allocator.allocate(size);
+		T* temp = m_Allocator.allocate(size*2);
 		std::uninitialized_copy_n(Data, Current + 1, temp);
 		m_Allocator.deallocate(Data, size);
+		size *= 2;
 		Data = temp;
 	}
 
