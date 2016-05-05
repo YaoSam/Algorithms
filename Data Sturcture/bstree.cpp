@@ -90,6 +90,37 @@ namespace ME{
 		}
 		return NULL;
 	}
+
+	TEMP
+		Mid<T> bstree<T>::Find(const T& x) const
+	{
+		Mid<T> ans;
+		ans.NormalTree::m_iterator::m_root = root;
+		ans.NormalTree::m_iterator::pCurrent = root;
+		const  treeNode<T>* P = ans.NormalTree::m_iterator::pCurrent;
+		while(P)
+		{
+			if (P->data == x)
+			{
+				ans.NormalTree::m_iterator::pCurrent = P;
+				break;
+			}
+			if (x < P->data)
+			{
+				if(P->left)ans.Stack.push(P);
+				P = P->left;
+			}
+			else
+			{
+				if(P->right)
+					ans.StackRight.push(P);
+				P = P->right;
+			}
+		}
+		return ans;
+	}
+
+
 	TEMP
 		void bstree<T>::DelNode(T const &x)
 	{

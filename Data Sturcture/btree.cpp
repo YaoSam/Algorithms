@@ -234,6 +234,16 @@ namespace ME{
 		return NULL;
 	}
 
+	TEMP
+		Mid<T> NormalTree<T>::Find(T const& x) const
+	{
+		Mid<T> ans(*this);
+		while (!ans.isEnd() && *ans != x)
+			++ans;
+		return ans;
+	}
+
+
 	TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
 	{
 		Swap(a->root, b->root);
@@ -264,13 +274,13 @@ namespace ME{
 	}
 
 	TEMP
-		NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
+		NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>& tree) :m_iterator(tree.Root(), tree.Root())
 	{
 		goFirst();
 	}
 
 	TEMP
-		auto& NormalTree<T>::Mid_iterator::operator++()
+		Mid<T>& NormalTree<T>::Mid_iterator::operator++()
 	{
 		if (pCurrent->Right() != NULL)
 		{
@@ -295,7 +305,7 @@ namespace ME{
 	}
 
 	TEMP
-		auto& NormalTree<T>::Mid_iterator:: operator--()
+		Mid<T>& NormalTree<T>::Mid_iterator:: operator--()
 	{
 		if (pCurrent->Left()!=NULL)
 		{
@@ -353,7 +363,7 @@ namespace ME{
 	}
 
 	TEMP
-		NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
+		NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>& tree) :m_iterator(tree.Root(), tree.Root())
 	{
 		goFirst();
 	}

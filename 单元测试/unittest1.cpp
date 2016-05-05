@@ -29,7 +29,7 @@ namespace UnitTest
 				AVLtree<int> two(one);//测试复制构造
 				one = two;//测试赋值函数
 				Qsort(a, 0, SizeOfTest - 1);
-				Mid<int> iterM(&one);
+				Mid<int> iterM(one);
 				re(i, SizeOfTest)
 				{
 					if (*iterM != a[i])
@@ -58,7 +58,7 @@ namespace UnitTest
 					a[i] = rand() % (SizeOfTest / 2);
 				bstree<int> one(a, SizeOfTest);
 				Qsort(a, 0, SizeOfTest - 1);
-				Mid<int> iterM(&one);
+				Mid<int> iterM(one);
 				re(i, SizeOfTest)
 				{
 					if (*iterM != a[i])
@@ -110,7 +110,7 @@ namespace UnitTest
 				int num[100] = { 35, 25, 15, 15, 10 };
 				int check[100] = { 100, 40, 60, 15, 25, 25, 35, 10, 15 };
 				HuffmanTree<int> one(num, 5);
-				Level<int> iterL(&one);
+				Level<int> iterL(one);
 				re(i, 9)
 				{
 					if (*iterL != check[i])
@@ -126,7 +126,7 @@ namespace UnitTest
 				if (Count != 2 * SizeOfTest - 1)
 					debug("所有的点数目不对");
 				Count = 0;
-				Pre<int> iterP(&two);
+				Pre<int> iterP(two);
 				while (!iterP.isEnd())
 				{
 					if (iterP()->Height() == 1)
@@ -152,7 +152,7 @@ namespace UnitTest
 				a[i] = rand() % SizeOfTest;
 			AVLtree<int> one(a, SizeOfTest);
 			Qsort(a, 0, SizeOfTest - 1);
-			Mid<int> iterM(&one);
+			Mid<int> iterM(one);
 			int current_i = 0;
 			re(i,100)
 			{
@@ -166,6 +166,22 @@ namespace UnitTest
 					--iterM;
 				if (a[current_i] != *(iterM))
 					debug("不一致");
+			}
+		}
+		TEST_METHOD(bstree_Find)
+		{
+			srand(int(time(NULL)));
+			int a[100];
+			unsigned int SizeOfTest = 100;
+			re(i, SizeOfTest)
+				a[i] = rand() % SizeOfTest;
+			bstree<int> one(a, SizeOfTest);
+			sort(a, a + SizeOfTest);
+			for (auto i : a)
+			{
+				auto iter = one.Find(i);
+				if (*iter != i)
+					debug("找不到！");
 			}
 		}
 	};
