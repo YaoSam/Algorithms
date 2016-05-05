@@ -7,6 +7,7 @@
 #include "normal2.cpp"
 #include <algorithm>
 #include <math.h>
+#include "swap.cpp"
 using namespace std;
 using namespace ME;
 void TestOfArray()
@@ -96,7 +97,9 @@ void TestOfList()
 	re(i, SizeOfTest)
 		one.push_front(rand() % 1000);
 	cout << one;
-	const list<int> two = one;
+	list<int> two = one;
+	ME::swap(one, two);
+	ME::swap(one, two);
 	list < int > ::back_inserter iter(one);
 	//iter.reset();
 	//re(i, one.Length()-1)++iter;
@@ -134,8 +137,8 @@ void TestOfBstree()
 		a[i] = rand() % 100000;
 	bstree<int> one(a, SizeOfTest);
 	bstree<int> two;
-	Swap(&one, &two);
-	Swap(&two, &one);
+	ME::swap(one, two);
+	Swap(two, one);
 	one.pre();
 	one.mid();
 	one.post();
@@ -273,10 +276,10 @@ void Test()
 		//TestOfStack();
 		//cout << "²âÊÔ¶ÓÁÐ" << endl;
 		//TestOfQueue();
-		//cout << "²âÊÔÁ´±í" << endl;
-		//TestOfList();
-		//cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
-		//TestOfBstree();
+		cout << "²âÊÔÁ´±í" << endl;
+		TestOfList();
+		cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
+		TestOfBstree();
 		cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
 		TestOfAVLTree();
 		//cout << "\n²âÊÔµü´úÆ÷" << endl;
