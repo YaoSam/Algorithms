@@ -96,22 +96,12 @@ namespace ME{
 
 	TEMP unsigned int NormalTree<T>::NodeNum()const
 	{
-		stack<const treeNode<T>*> Stack;
-		const treeNode<T>* temp = root;
 		unsigned int ans = 0;
-		while (temp != NULL || !Stack.isEmpty())
+		Pre<T> iter(*this);
+		while(!iter.isEnd())
 		{
-			while (temp != NULL)
-			{
-				ans++;//Êä³ö²¿·Ö
-				Stack.push(temp);
-				temp = temp->left;
-			}
-			if (!Stack.isEmpty())
-			{
-				temp = Stack.pop();
-				temp = temp->right;
-			}
+			++iter;
+			ans++;
 		}
 		return ans;
 	}
@@ -234,9 +224,19 @@ namespace ME{
 		return NULL;
 	}
 
-	TEMP void Swap(NormalTree<T>& a, NormalTree<T>& b)
+	TEMP
+		Mid<T> NormalTree<T>::Find(T const& x) const
 	{
-		Swap(a.root, b.root);
+		Mid<T> ans(*this);
+		while (!ans.isEnd() && *ans != x)
+			++ans;
+		return ans;
+	}
+
+
+	TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
+	{
+		Swap(a->root, b->root);
 	}
 
 
@@ -264,13 +264,13 @@ namespace ME{
 	}
 
 	TEMP
-		NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
+		NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>& tree) :m_iterator(tree.Root(), tree.Root())
 	{
 		goFirst();
 	}
 
 	TEMP
-		auto& NormalTree<T>::Mid_iterator::operator++()
+		Mid<T>& NormalTree<T>::Mid_iterator::operator++()
 	{
 		if (pCurrent->Right() != NULL)
 		{
@@ -295,7 +295,7 @@ namespace ME{
 	}
 
 	TEMP
-		auto& NormalTree<T>::Mid_iterator:: operator--()
+		Mid<T>& NormalTree<T>::Mid_iterator:: operator--()
 	{
 		if (pCurrent->Left()!=NULL)
 		{
@@ -316,7 +316,6 @@ namespace ME{
 		}
 		return *this;
 	}
-
 
 	TEMP
 		Level<T>& NormalTree<T>::Level_iterator::operator++()
@@ -353,7 +352,7 @@ namespace ME{
 	}
 
 	TEMP
-		NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root())
+		NormalTree<T>::Post_iterator::Post_iterator(const NormalTree<T>& tree) :m_iterator(tree.Root(), tree.Root())
 	{
 		goFirst();
 	}

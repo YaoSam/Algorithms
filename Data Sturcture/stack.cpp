@@ -22,7 +22,7 @@ namespace ME{
 	{
 		//re(i, other.top+1) //暂时先不考虑动态分配内存的玩意了。
 		//data[i] = other.data[i];
-		memcpy(data, other.data, sizeof(T)*other.top);
+		memcpy(data, other.data, sizeof(T)*(other.top+1));
 	}
 
 	TEMP

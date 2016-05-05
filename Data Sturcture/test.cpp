@@ -7,7 +7,6 @@
 #include "normal2.cpp"
 #include <algorithm>
 #include <math.h>
-#include "swap.cpp"
 using namespace std;
 using namespace ME;
 void TestOfArray()
@@ -97,9 +96,7 @@ void TestOfList()
 	re(i, SizeOfTest)
 		one.push_front(rand() % 1000);
 	cout << one;
-	list<int> two = one;
-	ME::swap(one, two);
-	ME::swap(one, two);
+	const list<int> two = one;
 	list < int > ::back_inserter iter(one);
 	//iter.reset();
 	//re(i, one.Length()-1)++iter;
@@ -137,8 +134,8 @@ void TestOfBstree()
 		a[i] = rand() % 100000;
 	bstree<int> one(a, SizeOfTest);
 	bstree<int> two;
-	ME::swap(one, two);
-	Swap(two, one);
+	Swap(&one, &two);
+	Swap(&two, &one);
 	one.pre();
 	one.mid();
 	one.post();
@@ -148,8 +145,8 @@ void TestOfBstree()
 	//one.mid();
 	re(i, SizeOfTest)
 	{
-		treeNode<int>* temp = one.find(a[i]);
-		if (temp == NULL)
+		auto temp = one.Find(a[i]);
+		if (temp.isEnd())
 			cout << "ÎÞ·¨ÕÒµ½£¡" << endl;
 	}
 	cout << one.height() << endl;
@@ -181,8 +178,8 @@ void TestOfAVLTree()
 	//one.print();
 	re(i, SizeOfTest)
 	{
-		treeNode<int>* temp = one.find(a[i]);
-		if (temp == NULL)
+		auto temp = one.Find(a[i]);
+		if (temp.isEnd())
 			cout << "ÎÞ·¨ÕÒµ½£¡" << endl;
 	}
 	cout << "Ê÷¸ß¶È£º" << one.H() << endl;
@@ -224,7 +221,7 @@ void TestOfIterator()
 	re(i, SizeOfTest)
 		cout << a[i] << " ";
 	cout << endl;
-	Mid<int> iter(&one);
+	Mid<int> iter(one);
 	//bool flag;
 	//while (cin>>flag)
 	//{
@@ -267,6 +264,39 @@ void TestOfHeap()
 	}
 }
 
+void TestOfBstreeFind()
+{
+	srand(int(time(NULL)));
+	int a[100];
+	unsigned int SizeOfTest = 100;
+	re(i, SizeOfTest)
+		a[i] = rand() % SizeOfTest;
+	bstree<int> one(a, SizeOfTest);
+	sort(a, a + SizeOfTest);
+	auto iter = one.Find(a[SizeOfTest / 2]);
+	auto iter2 = iter;
+	re(i, SizeOfTest/2)
+		cout << a[SizeOfTest/2-i] << " ";
+	cout << endl;
+	while(!iter.isEnd()&&!iter.isBegin())
+	{
+		cout << *iter<<" ";
+		--iter;
+	}
+	cout << endl;
+	for (auto i : a)
+		cout << i << " ";
+	cout << endl;
+	while (!iter.isEnd())
+	{
+		cout << *iter << " ";
+		++iter;
+	}
+	cout << endl;
+
+}
+
+
 void Test()
 {
 	try{
@@ -276,16 +306,17 @@ void Test()
 		//TestOfStack();
 		//cout << "²âÊÔ¶ÓÁÐ" << endl;
 		//TestOfQueue();
-		cout << "²âÊÔÁ´±í" << endl;
-		TestOfList();
-		cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
-		TestOfBstree();
-		cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
-		TestOfAVLTree();
+		//cout << "²âÊÔÁ´±í" << endl;
+		//TestOfList();
+		//cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
+		//TestOfBstree();
+		TestOfBstreeFind();
+		//cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
+		//TestOfAVLTree();
 		//cout << "\n²âÊÔµü´úÆ÷" << endl;
 		//TestOfIterator();
-		cout << "\n²âÊÔ¶Ñ" << endl;
-		TestOfHeap();
+		//cout << "\n²âÊÔ¶Ñ" << endl;
+		//TestOfHeap();
 
 	}
 	catch (const char *a){

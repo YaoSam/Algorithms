@@ -63,7 +63,7 @@ namespace ME
 		class m_iterator :public std::iterator < std::input_iterator_tag, T >
 		{
 		protected:
-			const treeNode<T>* pCurrent, *const m_root;
+			const treeNode<T>* pCurrent, *m_root;
 		public:
 			m_iterator(treeNode<T>* P, treeNode<T>* R) :pCurrent(P), m_root(R){}
 			virtual ~m_iterator(){}
@@ -82,7 +82,7 @@ namespace ME
 			using m_iterator::m_root;
 		public:
 			Pre_iterator() :m_iterator(nullptr, nullptr){};
-			Pre_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
+			Pre_iterator(const NormalTree<T>& tree) :m_iterator(tree.Root(), tree.Root()){}
 			void goFirst()override{ pCurrent = m_root; Stack.clear(); }
 			Pre_iterator& operator++();
 			static Pre_iterator end()//返回终点的迭代器。
@@ -99,11 +99,13 @@ namespace ME
 			using m_iterator::m_root;
 		public:
 			Mid_iterator() :m_iterator(nullptr, nullptr){};
-			Mid_iterator(const NormalTree<T>* tree);
+			Mid_iterator(const NormalTree<T>& tree);
 			void goFirst()override;
-			auto& operator++();
-			auto& operator--();
+			bool isBegin()const { return StackRight.isEmpty()&&pCurrent->Left()==nullptr; }
+			Mid_iterator& operator++();
+			Mid_iterator& operator--();
 			bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
+			TEMP friend class bstree;
 		};
 
 		class Post_iterator :public m_iterator
@@ -113,7 +115,7 @@ namespace ME
 			using m_iterator::m_root;
 		public:
 			Post_iterator() :m_iterator(nullptr, nullptr){};
-			Post_iterator(const NormalTree<T>* const tree);
+			Post_iterator(const NormalTree<T>& tree);
 			void goFirst()override;
 			Post_iterator& operator++();
 			bool operator==(const Post_iterator& other)const { return pCurrent == other.pCurrent; }
@@ -125,7 +127,7 @@ namespace ME
 			using m_iterator::m_root;
 		public:
 			Level_iterator() :m_iterator(nullptr, nullptr){}
-			Level_iterator(const NormalTree<T>* const tree) :m_iterator(tree->Root(), tree->Root()){}
+			Level_iterator(const NormalTree<T>& tree) :m_iterator(tree.Root(), tree.Root()){}
 			void goFirst()override
 			{
 				pCurrent = m_root;
@@ -138,6 +140,7 @@ namespace ME
 			}
 			bool operator==(const Level_iterator& other)const { return pCurrent == other.pCurrent; }
 		};
+		virtual treeNode<T>* find(T const & x)const;
 	public:
 		NormalTree(T const & x, unsigned int h = 1) :root(new treeNode<T>(x, h)){}
 		NormalTree(treeNode<T>* r = NULL) :root(r){}
@@ -150,7 +153,7 @@ namespace ME
 		void mid()const;
 		void post()const;
 		virtual void print()const;
-		virtual treeNode<T>* find(T const & x)const;
+		virtual Mid_iterator Find(T const & x)const;
 		virtual void insert(T const & x) = 0;
 		treeNode<T>* Root()const{ return root; }
 		TEMP friend void swap(NormalTree<T>& a, NormalTree<T>& b);
