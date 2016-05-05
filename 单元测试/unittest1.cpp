@@ -21,8 +21,8 @@ namespace UnitTest
 			try
 			{
 				srand(int(time(NULL)));
-				int a[10000];
-				unsigned int SizeOfTest = 1000;
+				int a[5000];
+				unsigned int SizeOfTest = 5000;
 				re(i, SizeOfTest)
 					a[i] = rand() % SizeOfTest;
 				AVLtree<int> one(a, SizeOfTest);

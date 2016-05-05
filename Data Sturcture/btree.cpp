@@ -96,22 +96,12 @@ namespace ME{
 
 	TEMP unsigned int NormalTree<T>::NodeNum()const
 	{
-		stack<const treeNode<T>*> Stack;
-		const treeNode<T>* temp = root;
 		unsigned int ans = 0;
-		while (temp != NULL || !Stack.isEmpty())
+		Pre<T> iter(*this);
+		while(!iter.isEnd())
 		{
-			while (temp != NULL)
-			{
-				ans++;//Êä³ö²¿·Ö
-				Stack.push(temp);
-				temp = temp->left;
-			}
-			if (!Stack.isEmpty())
-			{
-				temp = Stack.pop();
-				temp = temp->right;
-			}
+			++iter;
+			ans++;
 		}
 		return ans;
 	}
@@ -326,7 +316,6 @@ namespace ME{
 		}
 		return *this;
 	}
-
 
 	TEMP
 		Level<T>& NormalTree<T>::Level_iterator::operator++()
