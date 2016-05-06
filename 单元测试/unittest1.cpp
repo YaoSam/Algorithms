@@ -6,13 +6,13 @@ using namespace std;
 using namespace ME;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-void debug(const char * errorInfo)
+namespace UnitTest
+{
+	void debug(const char * errorInfo)
 {
 	Logger::WriteMessage(errorInfo);
 	Assert::Fail();
 }
-namespace UnitTest
-{
 	TEST_CLASS(Bstree)
 	{
 	public:
@@ -108,7 +108,7 @@ namespace UnitTest
 			catch (const char* a) { debug(a); }
 		}
 	};
-	TEST_CLASS(UnitTest_Tree)
+	TEST_CLASS(AVLTree)
 	{
 	public:
 		TEST_METHOD(Test_AVLtree)
@@ -131,17 +131,40 @@ namespace UnitTest
 						debug("不一致");
 					++iterM;
 				}
-				re(i, SizeOfTest - 5)
-				{
-					one.DelNode(a[i]);
-					if (one.NodeNum() != SizeOfTest - i - 1)
-						debug("删除后节点不对");
-					//if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
-					//	debug("高度不对");
-				}
 			}
 			catch (const char *err){ debug(err); }
 		}
+		TEST_METHOD(avltree_delete_node)
+		{
+			srand(int(time(NULL)));
+			int a[5000],b[5000];
+			unsigned int SizeOfTest = 500;
+			re(i, SizeOfTest)
+				a[i] = rand() % SizeOfTest;
+			AVLtree<int> one(a, SizeOfTest);
+			re(i, SizeOfTest)
+			{
+				one.DelNode(a[SizeOfTest - i - 1]);
+				memcpy(b, a, sizeof(a));
+				sort(b, b + SizeOfTest - i - 1);
+				if (one.NodeNum() != SizeOfTest - i - 1)
+					debug("删除后节点不对");
+				Mid<int> iter(one);
+				if (!equal(one.begin(), one.end(), b))
+				{
+					char ans[10];
+					sprintf(ans, "%d", i);
+					Logger::WriteMessage(ans);
+					debug("顺序不对");
+				}
+				//if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
+				//	debug("高度不对");
+			}
+		}
+	};
+	TEST_CLASS(UnitTest_Tree)
+	{
+	public:
 		TEST_METHOD(Test_DiscreteSegTree)
 		{
 			try
