@@ -94,7 +94,6 @@ namespace ME
 		class Mid_iterator :public m_iterator
 		{
 			stack<const treeNode<T>*> Stack;
-			stack<const treeNode<T>*> StackRight;
 			using m_iterator::pCurrent;
 			using m_iterator::m_root;
 		public:

@@ -7,7 +7,6 @@ namespace ME{
 			other->CheckHeight();
 			other = other->parent;
 		}
-		return;
 	}
 	TEMP
 		void bstree<T>::insert(T const &x)
@@ -83,7 +82,7 @@ namespace ME{
 		{
 			if (temp->data == x)
 				return temp;
-			else if (x < temp->data)
+			if (x < temp->data)
 				temp = temp->left;
 			else
 				temp = temp->right;
@@ -106,16 +105,10 @@ namespace ME{
 				break;
 			}
 			if (x < P->data)
-			{
-				if(P->left)ans.Stack.push(P);
 				P = P->left;
-			}
 			else
-			{
-				if(P->right)
-					ans.StackRight.push(P);
 				P = P->right;
-			}
+			ans.Stack.push(P->parent);
 		}
 		return ans;
 	}

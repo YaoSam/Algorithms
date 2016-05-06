@@ -274,7 +274,7 @@ namespace ME{
 	{
 		if (pCurrent->Right() != NULL)
 		{
-			StackRight.push(pCurrent);
+			Stack.push(pCurrent);
 			pCurrent = pCurrent->Right();
 			while (pCurrent->Left() != NULL)//接着一直往左走
 			{
@@ -284,12 +284,14 @@ namespace ME{
 		}
 		else if (Stack.isEmpty())
 			pCurrent = NULL;
-		else
+		else while (!Stack.isEmpty())
 		{
+			if (pCurrent == Stack.topData()->Left())
+			{
+				pCurrent = Stack.pop();
+				break;
+			}
 			pCurrent = Stack.pop();
-			while (!StackRight.isEmpty()
-				&&pCurrent->Height() > StackRight.topData()->Height())//将多余的right删除掉。
-				StackRight.pop();
 		}
 		return *this;
 	}
@@ -303,16 +305,18 @@ namespace ME{
 			pCurrent = pCurrent->Left();
 			while (pCurrent->Right()!=NULL)
 			{
-				StackRight.push(pCurrent);
+				Stack.push(pCurrent);
 				pCurrent = pCurrent->Right();
 			}
 		}
-		else if (!StackRight.isEmpty())
+		else while (!Stack.isEmpty())
 		{
-			pCurrent = StackRight.pop();
-			while (!Stack.isEmpty() &&
-				pCurrent->Height() > Stack.topData()->Height())
-				Stack.pop();
+			if (pCurrent == Stack.topData()->Right())
+			{
+				pCurrent = Stack.pop();
+				break;
+			}
+			pCurrent = Stack.pop();
 		}
 		return *this;
 	}
