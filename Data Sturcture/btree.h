@@ -96,11 +96,12 @@ namespace ME
 			stack<const treeNode<T>*> Stack;
 			using m_iterator::pCurrent;
 			using m_iterator::m_root;
+			const treeNode<T>* begin_flag;
 		public:
-			Mid_iterator() :m_iterator(nullptr, nullptr){};
+			Mid_iterator() :m_iterator(nullptr, nullptr),begin_flag(nullptr){};
 			Mid_iterator(const NormalTree<T>& tree);
 			void goFirst()override;
-			bool isBegin()const { return StackRight.isEmpty()&&pCurrent->Left()==nullptr; }
+			bool isBegin()const { return pCurrent == begin_flag; }
 			Mid_iterator& operator++();
 			Mid_iterator& operator--();
 			bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }

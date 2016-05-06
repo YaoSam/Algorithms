@@ -113,7 +113,6 @@ namespace ME{
 		return ans;
 	}
 
-
 	TEMP
 		void bstree<T>::DelNode(T const &x)
 	{

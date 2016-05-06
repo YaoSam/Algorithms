@@ -233,13 +233,6 @@ namespace ME{
 		return ans;
 	}
 
-
-	TEMP void Swap(NormalTree<T>* a, NormalTree<T>* b)
-	{
-		Swap(a->root, b->root);
-	}
-
-
 	//////////////////////////////////////////////////////////////////////////
 	TEMP
 		Pre<T>& NormalTree<T>::Pre_iterator::operator++()
@@ -256,6 +249,7 @@ namespace ME{
 	{
 		pCurrent = m_root;
 		Stack.clear();
+		if (pCurrent == nullptr)return;;
 		while (pCurrent->Left() != NULL)
 		{
 			Stack.push(pCurrent);
@@ -267,12 +261,14 @@ namespace ME{
 		NormalTree<T>::Mid_iterator::Mid_iterator(const NormalTree<T>& tree) :m_iterator(tree.Root(), tree.Root())
 	{
 		goFirst();
+		begin_flag = pCurrent;
 	}
 
 	TEMP
 		Mid<T>& NormalTree<T>::Mid_iterator::operator++()
 	{
-		if (pCurrent->Right() != NULL)
+		bool flag = 0;
+		if (pCurrent->Right() != NULL)//最接近的书在下面
 		{
 			Stack.push(pCurrent);
 			pCurrent = pCurrent->Right();
@@ -281,18 +277,18 @@ namespace ME{
 				Stack.push(pCurrent);
 				pCurrent = pCurrent->Left();
 			}
+			return *this;
 		}
-		else if (Stack.isEmpty())
-			pCurrent = NULL;
-		else while (!Stack.isEmpty())
+		while (!Stack.isEmpty())//否则，最接近的数载stack里。
 		{
 			if (pCurrent == Stack.topData()->Left())
 			{
 				pCurrent = Stack.pop();
-				break;
+				return *this;
 			}
 			pCurrent = Stack.pop();
 		}
+		pCurrent = nullptr;//到了尽头。
 		return *this;
 	}
 

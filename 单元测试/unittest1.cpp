@@ -13,6 +13,101 @@ void debug(const char * errorInfo)
 }
 namespace UnitTest
 {
+	TEST_CLASS(Bstree)
+	{
+	public:
+		TEST_METHOD(Test_BStree)
+		{
+			try
+			{
+				srand(int(time(NULL)));
+				int a[10000];
+				unsigned int SizeOfTest = 2000;
+				re(i, SizeOfTest)
+					a[i] = rand() % (SizeOfTest / 2);
+				bstree<int> one(a, SizeOfTest);
+				Qsort(a, 0, SizeOfTest - 1);
+				Mid<int> iterM(one);
+				re(i, SizeOfTest)
+				{
+					if (*iterM != a[i])
+						debug("不一致\n");
+					++iterM;
+				}
+			}
+			catch (const char *err){ debug(err); }
+		}
+		TEST_METHOD(BiDirectionIterator)
+		{
+			srand(int(time(NULL)));
+			int a[10000];
+			unsigned int SizeOfTest = 1000;
+			re(i, SizeOfTest)
+				a[i] = rand() % SizeOfTest;
+			AVLtree<int> one(a, SizeOfTest);
+			Qsort(a, 0, SizeOfTest - 1);
+			Mid<int> iterM(one);
+			int current_i = 0;
+			re(i,100)
+			{
+				int j = rand() % (SizeOfTest - current_i);
+				current_i += j;
+				re(k, j)
+					++iterM;
+				j = rand() % (current_i);
+				current_i -= j;
+				re(k, j)
+					--iterM;
+				if (a[current_i] != *(iterM))
+					debug("不一致");
+			}
+		}
+		TEST_METHOD(bstree_Find)
+		{
+			srand(int(time(NULL)));
+			int a[100];
+			unsigned int SizeOfTest = 100;
+			re(i, SizeOfTest)
+				a[i] = rand() % SizeOfTest;
+			bstree<int> one(a, SizeOfTest);
+			sort(a, a + SizeOfTest);
+			for (auto i : a)
+			{
+				auto iter = one.Find(i);
+				if (*iter != i)
+					debug("找不到！");
+			}
+		}
+		TEST_METHOD(Delete_Node)
+		{
+			try {
+				srand(int(time(NULL)));
+				int a[1000], b[1000];
+				unsigned int SizeOfTest = 1000;
+				re(i, SizeOfTest)
+					a[i] = rand() % (SizeOfTest / 2);
+				bstree<int> one(a, SizeOfTest);
+				re(i, SizeOfTest)
+				{
+					one.DelNode(a[SizeOfTest - i - 1]);
+					if (SizeOfTest - i - 1 != one.NodeNum())
+						debug("测试删除节点后节点数目出错");
+					memcpy(b, a, sizeof(int)*(SizeOfTest));
+					sort(b, b + SizeOfTest - i - 1);
+					Mid<int> iter(one);
+					if (!equal(one.begin(), one.end(), b))
+					{
+						char ans[10];
+						sprintf(ans, "%d", i);
+						Logger::WriteMessage(ans);
+						debug("顺序不对");
+					}
+
+				}
+			}
+			catch (const char* a) { debug(a); }
+		}
+	};
 	TEST_CLASS(UnitTest_Tree)
 	{
 	public:
@@ -43,33 +138,6 @@ namespace UnitTest
 						debug("删除后节点不对");
 					//if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
 					//	debug("高度不对");
-				}
-			}
-			catch (const char *err){ debug(err); }
-		}
-		TEST_METHOD(Test_BStree)
-		{
-			try
-			{
-				srand(int(time(NULL)));
-				int a[10000];
-				unsigned int SizeOfTest = 200;
-				re(i, SizeOfTest)
-					a[i] = rand() % (SizeOfTest / 2);
-				bstree<int> one(a, SizeOfTest);
-				Qsort(a, 0, SizeOfTest - 1);
-				Mid<int> iterM(one);
-				re(i, SizeOfTest)
-				{
-					if (*iterM != a[i])
-						debug("不一致\n");
-					++iterM;
-				}
-				re(i, SizeOfTest)
-				{
-					one.DelNode(a[i]);
-					if (SizeOfTest - i - 1 != one.NodeNum())
-						debug("测试删除节点后节点数目出错");
 				}
 			}
 			catch (const char *err){ debug(err); }
@@ -142,47 +210,6 @@ namespace UnitTest
 						debug("叶子结点");
 			}
 			catch (const char *err){ debug(err); }
-		}
-		TEST_METHOD(BiDirectionIterator)
-		{
-			srand(int(time(NULL)));
-			int a[10000];
-			unsigned int SizeOfTest = 1000;
-			re(i, SizeOfTest)
-				a[i] = rand() % SizeOfTest;
-			AVLtree<int> one(a, SizeOfTest);
-			Qsort(a, 0, SizeOfTest - 1);
-			Mid<int> iterM(one);
-			int current_i = 0;
-			re(i,100)
-			{
-				int j = rand() % (SizeOfTest - current_i);
-				current_i += j;
-				re(k, j)
-					++iterM;
-				j = rand() % (current_i);
-				current_i -= j;
-				re(k, j)
-					--iterM;
-				if (a[current_i] != *(iterM))
-					debug("不一致");
-			}
-		}
-		TEST_METHOD(bstree_Find)
-		{
-			srand(int(time(NULL)));
-			int a[100];
-			unsigned int SizeOfTest = 100;
-			re(i, SizeOfTest)
-				a[i] = rand() % SizeOfTest;
-			bstree<int> one(a, SizeOfTest);
-			sort(a, a + SizeOfTest);
-			for (auto i : a)
-			{
-				auto iter = one.Find(i);
-				if (*iter != i)
-					debug("找不到！");
-			}
 		}
 	};
 	TEST_CLASS(UnitTest2)
