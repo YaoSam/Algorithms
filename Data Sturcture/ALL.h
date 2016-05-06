@@ -8,6 +8,5 @@
 #include "bbtree.cpp"
 #include "heap.cpp"
 #include "normal.cpp"
-#include "normal2.h"
 #include <algorithm>
 #include <math.h>

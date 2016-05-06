@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "normal2.h"
 #include "normal.cpp"
 #include <iostream>
 #include <iterator>

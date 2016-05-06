@@ -8,6 +8,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest
 {
+	static long long FIB[100];
 	void debug(const char * errorInfo)
 {
 	Logger::WriteMessage(errorInfo);
@@ -110,6 +111,25 @@ namespace UnitTest
 	};
 	TEST_CLASS(AVLTree)
 	{
+		long long Fibonacci(int n)const
+		{
+			if (FIB[n] > 0) return FIB[n];
+			return FIB[n] = (n == 1 || n == 0) ? n : Fibonacci(n - 1) + Fibonacci(n - 2);
+		}
+
+		int minHeight_bbtree(int n)const
+		{
+			int i = 0;
+			for (; n > 0; i++)
+				n -= (1 << i);
+			return i;
+		}
+		int maxHeight_bbtree(int n)const//最大高度为：F(H+2)-1<=n<=F(H+3)-1
+		{
+			int height = 0;
+			while ((Fibonacci(height + 2) - 1) <= n)	height++;
+			return height - 1;
+		}
 	public:
 		TEST_METHOD(Test_AVLtree)
 		{
@@ -142,7 +162,7 @@ namespace UnitTest
 			re(i, SizeOfTest)
 				a[i] = rand() % SizeOfTest;
 			AVLtree<int> one(a, SizeOfTest);
-			re(i, SizeOfTest)
+			re(i, SizeOfTest-3)
 			{
 				one.DelNode(a[SizeOfTest - i - 1]);
 				memcpy(b, a, sizeof(a));
@@ -157,8 +177,8 @@ namespace UnitTest
 					Logger::WriteMessage(ans);
 					debug("顺序不对");
 				}
-				//if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
-				//	debug("高度不对");
+				if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
+					debug("高度不对");
 			}
 		}
 	};

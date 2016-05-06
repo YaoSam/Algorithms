@@ -3,10 +3,9 @@
 #include "ALL.h"
 #include "normal.h"
 #include "normal.cpp"
-#include "normal2.h"
-#include "normal2.cpp"
 #include <algorithm>
 #include <math.h>
+#include "swap.cpp"
 using namespace std;
 using namespace ME;
 void TestOfArray()
@@ -128,14 +127,14 @@ void TestOfList()
 void TestOfBstree()
 {
 	srand(int(time(NULL)));
-	int a[100000];
-	unsigned int SizeOfTest =10000;
+	int a[100];
+	int SizeOfTest =100;
 	re(i, SizeOfTest)
-		a[i] = rand() % 100000;
+		a[i] = i;/* rand() % 100000;*/
 	bstree<int> one(a, SizeOfTest);
 	bstree<int> two;
-	Swap(&one, &two);
-	Swap(&two, &one);
+	ME::swap(one, two);
+	ME::swap(two, one);
 	one.pre();
 	one.mid();
 	one.post();
@@ -150,13 +149,14 @@ void TestOfBstree()
 			cout << "无法找到！" << endl;
 	}
 	cout << one.height() << endl;
-	re(i, SizeOfTest)
-		one.insert(a[i]);
-	re(i, SizeOfTest)
+	//re(i, SizeOfTest)
+	//	one.insert(a[i]);
+	sort(a, a + SizeOfTest);
+	re(i, SizeOfTest-1)
 	{
-		//cout << a[i] << endl;
-		one.DelNode(a[i]);
-		//cout << one.NodeNum() << " ";
+		one.DelNode(a[SizeOfTest - i - 1]);
+		if (!equal(one.begin(), one.end(), a))
+			cout << "错了" << endl;
 	}
 }
 
@@ -183,10 +183,7 @@ void TestOfAVLTree()
 			cout << "无法找到！" << endl;
 	}
 	cout << "树高度：" << one.H() << endl;
-	cout << "最大高度：" << maxHeight_bbtree(SizeOfTest) << endl;
-	cout << "最低高度：" << minHeight_bbtree(SizeOfTest) << endl;
 	cout << "节点数：" << one.NodeNum() << endl;
-	cout << "当前高度的最少节点：" << Fibonacci(one.height()+2)-1 << endl;
 	cout << endl;
 	//re(i, SizeOfTest)
 	//	one.insert(rand() % 10000);
@@ -308,9 +305,9 @@ void Test()
 		//TestOfQueue();
 		//cout << "测试链表" << endl;
 		//TestOfList();
-		//cout << "\n测试排序二叉树" << endl;
-		//TestOfBstree();
-		TestOfBstreeFind();
+		cout << "\n测试排序二叉树" << endl;
+		TestOfBstree();
+		//TestOfBstreeFind();
 		//cout << "\n测试平衡二叉树" << endl;
 		//TestOfAVLTree();
 		//cout << "\n测试迭代器" << endl;
