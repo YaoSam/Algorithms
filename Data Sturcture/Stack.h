@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <time.h>
+#include <memory>
 #undef TEMP
 #define TEMP template <class T>
 #define re(i,n) for(unsigned int i=0;i<n;i++)
@@ -14,13 +14,14 @@ namespace ME{
 	class stack//不能用于动态分配内存的元素。
 	{
 		int top, size;
+		std::allocator<T> m_allocator;
 		T *data;
-		void applyMem();
+		void expend();
 	public:
-		stack() :top(-1), size(OriginSize), data(new T[size]){}
+		stack() :top(-1), size(OriginSize), data(m_allocator.allocate(size)){}
 		stack(const stack<T>&other);
 		stack<T>& operator=(const stack<T>& other);
-		~stack(){ delete[] data; }
+		~stack(){ m_allocator.deallocate(data,size); }
 		void push(T const & x);
 		T pop();
 		void clear(){ top = -1; }

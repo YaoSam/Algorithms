@@ -2,7 +2,7 @@
 #include "Stack.h"
 namespace ME{
 	TEMP
-		void stack<T>::applyMem()
+		void stack<T>::expend()
 	{
 		size *= 2;
 		T *temp = new T[size];
@@ -11,18 +11,18 @@ namespace ME{
 		memcpy(temp, data, sizeof(T)*(top + 1));
 		delete[] data;
 		data = temp;
-		return;
 	}
 
 	TEMP
 		stack<T>::stack(const stack<T>&other) :
 		top(other.top),
 		size(other.size),
-		data(new T[other.size])
+		data(m_allocator.allocate(size))
 	{
 		//re(i, other.top+1) //暂时先不考虑动态分配内存的玩意了。
 		//data[i] = other.data[i];
-		memcpy(data, other.data, sizeof(T)*(other.top+1));
+		//memcpy(data, other.data, sizeof(T)*(other.top+1));
+		std::uninitialized_copy_n(other.data, other.top + 1, data);
 	}
 
 	TEMP
@@ -32,10 +32,12 @@ namespace ME{
 		delete[] data;
 		top = other.top;
 		size = other.size;
-		data = new T[other.size];
+		//data = new T[other.size];
+		data = m_allocator.allocate(size);
 		//re(i, other.top+1)
 		//data[i] = other.data[i];
-		memcpy(data, other.data, sizeof(T)*(other.top + 1));
+		//memcpy(data, other.data, sizeof(T)*(other.top + 1));
+		std::uninitialized_copy_n(other.data, top + 1, data);
 		return *this;
 	}
 
@@ -51,7 +53,7 @@ namespace ME{
 		void stack<T>::push(T const & x)
 	{
 		if (top == size - 1)
-			applyMem();
+			expend();
 		data[++top] = x;
 	}
 
