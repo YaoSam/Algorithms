@@ -21,7 +21,6 @@ namespace ME{
 	{
 		//re(i, other.top+1) //暂时先不考虑动态分配内存的玩意了。
 		//data[i] = other.data[i];
-		//memcpy(data, other.data, sizeof(T)*(other.top+1));
 		std::uninitialized_copy_n(other.data, other.top + 1, data);
 	}
 
@@ -32,11 +31,9 @@ namespace ME{
 		delete[] data;
 		top = other.top;
 		size = other.size;
-		//data = new T[other.size];
 		data = m_allocator.allocate(size);
 		//re(i, other.top+1)
 		//data[i] = other.data[i];
-		//memcpy(data, other.data, sizeof(T)*(other.top + 1));
 		std::uninitialized_copy_n(other.data, top + 1, data);
 		return *this;
 	}
