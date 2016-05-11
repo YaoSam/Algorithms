@@ -159,26 +159,34 @@ namespace UnitTest
 			srand(int(time(NULL)));
 			int a[5000],b[5000];
 			unsigned int SizeOfTest = 500;
-			re(i, SizeOfTest)
-				a[i] = rand() % SizeOfTest;
-			AVLtree<int> one(a, SizeOfTest);
-			re(i, SizeOfTest-3)
+			re(test_turn, 10)
 			{
-				one.DelNode(a[SizeOfTest - i - 1]);
-				memcpy(b, a, sizeof(a));
-				sort(b, b + SizeOfTest - i - 1);
-				if (one.NodeNum() != SizeOfTest - i - 1)
-					debug("删除后节点不对");
-				Mid<int> iter(one);
-				if (!equal(one.begin(), one.end(), b))
+				re(i, SizeOfTest)
+					a[i] = rand() % SizeOfTest;
+				AVLtree<int> one(a, SizeOfTest);
+				re(i, SizeOfTest - 3)
 				{
-					char ans[10];
-					sprintf(ans, "%d", i);
-					Logger::WriteMessage(ans);
-					debug("顺序不对");
+					one.DelNode(a[SizeOfTest - i - 1]);
+					memcpy(b, a, sizeof(a));
+					sort(b, b + SizeOfTest - i - 1);
+					if (one.NodeNum() != SizeOfTest - i - 1)
+						debug("删除后节点不对");
+					Mid<int> iter(one);
+					if (!equal(one.begin(), one.end(), b))
+					{
+						char ans[10];
+						sprintf(ans, "%d", i);
+						Logger::WriteMessage(ans);
+						debug("顺序不对");
+					}
+					if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
+					{
+						char ans[10];
+						sprintf(ans, "%d\n", i);
+						Logger::WriteMessage(ans);
+						debug("高度不对");
+					}
 				}
-				if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
-					debug("高度不对");
 			}
 		}
 	};
