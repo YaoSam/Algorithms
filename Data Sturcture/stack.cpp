@@ -37,36 +37,12 @@ namespace ME{
 		std::uninitialized_copy_n(other.data, top + 1, data);
 		return *this;
 	}
-
-	TEMP
-		T stack<T>::pop()
-	{
-		if (top < 0)
-			throw "Empty stack£¬failed stack.pop()";
-		return data[top--];
-	}
-
 	TEMP
 		void stack<T>::push(T const & x)
 	{
 		if (top == size - 1)
 			expend();
-		data[++top] = x;
-	}
-
-	TEMP
-		T stack<T>::topData()const
-	{
-		if (top < 0)
-			throw "Empty stack£¬failed stack.topData()";
-		return data[top];
-	}
-
-	TEMP
-		const T& stack<T>::operator[](unsigned int n)const
-	{
-		if (n > top)
-			throw "Subscript out of range£¬faile stack.push()";
-		return data[n];
+		m_allocator.construct(data + (++top), x);
+		//data[++top] = x;
 	}
 }
