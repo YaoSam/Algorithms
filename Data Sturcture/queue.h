@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <time.h>
+#include <memory>
 #undef TEMP
 #define TEMP template <class T>
 #define re(i,n) for(unsigned int i=0;i<n;i++)
@@ -12,13 +12,14 @@ namespace ME{
 	class queue//不能用动态分配内存的元素
 	{
 		unsigned int front, rear, size;//front都指向数据，rear指向位置。
+		std::allocator<T> m_allocator;
 		T *data;
-		void ApplyMem();
+		void expend();
 	public:
-		queue() :front(0), rear(0), size(OriginQueueSize), data(new T[size]){}
+		queue() :front(0), rear(0), size(OriginQueueSize), data(m_allocator.allocate(size)){}
 		queue(const queue<T>&other);
 		queue<T>& operator=(const queue<T>&other);
-		~queue(){ delete[] data; }
+		~queue() { m_allocator.deallocate(data, size); }
 		void push(T const &x);
 		T pop();
 		void clear(){ front = rear = 0; }

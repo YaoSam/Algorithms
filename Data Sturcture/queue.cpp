@@ -2,19 +2,20 @@
 #include "queue.h"
 namespace ME{
 	TEMP
-		void queue<T>::ApplyMem()
+		void queue<T>::expend()
 	{
-		T* temp = new T[size * 2];
+		T* temp = m_allocator.allocate(size * 2);
 		//这里交换位置使得数据顺序。
 		if (front > rear)
 		{
-			memcpy(temp + front, data + front, (size - front)*sizeof(T));
-			memcpy(temp + size, data, (rear)*sizeof(T));//因为此时一般是满的，所以不用考虑太多。
+			std::uninitialized_copy_n(data + front, size - front, temp + front);
+			std::uninitialized_copy_n(data, rear, temp + size);
 			rear += size;
 		}
-		else memcpy(temp + front, data + front, (rear - front)*sizeof(T));
+		else
+			std::uninitialized_copy_n(data + front, rear - front, temp + front);
+		m_allocator.deallocate(data, size);
 		size *= 2;
-		delete[] data;
 		data = temp;
 	}
 
@@ -22,29 +23,30 @@ namespace ME{
 		queue<T>::queue(const queue<T>&other) :
 		front(other.front),
 		rear(other.rear),
-		size(other.size)
+		size(other.size),
+		data(m_allocator.allocate(size))
 	{
-		data = new T[other.size];
-		memcpy(data, other.data, sizeof(T)*size);
+		std::uninitialized_copy_n(other.data, size, data);
 	}
 
 	TEMP
 		queue<T>& queue<T>::operator=(const queue<T>&other)
 	{
-		if (this = &other)return *this;
+		if (this == &other)return *this;
+		m_allocator.deallocate(data, size);
 		front = other.front;
 		rear = other.rear;
 		size = other.size;
-		data = new T[other.size];
-		memcpy(data, other.data, sizeof(T)*size);
+		data = m_allocator.allocate(size);
+		std::uninitialized_copy_n(other.data, size, data);
 		return *this;
 	}
 	TEMP
 		void queue<T>::push(T const &x)
 	{
 		if ((rear + 1) % size == front)//只能牺牲一个位置了。
-			ApplyMem();
-		data[rear] = x;
+			expend();
+		m_allocator.construct(data + rear, x);
 		rear = (rear + 1) % size;
 	}
 
