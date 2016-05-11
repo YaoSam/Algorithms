@@ -67,7 +67,7 @@ namespace ME{
 					RotateLL(node);
 				else
 					RotateLR(node);
-				break;
+				//break;
 
 			}
 			else if (differ(node) == -2)
@@ -76,7 +76,7 @@ namespace ME{
 					RotateRR(node);
 				else
 					RotateRL(node);
-				break;
+				//break;
 			}
 			else
 				node = node->parent;
