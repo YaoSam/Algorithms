@@ -4,28 +4,30 @@ namespace ME
 {
 	TEMP void array<T>::expend()
 	{
-		T *temp = new T[size * 2];
-		memcpy(temp, data, sizeof(T)*(top + 1));
+		T *temp = m_allocator.allocate(size * 2);
+		std::uninitialized_copy_n(data, top + 1, temp);
+		m_allocator.deallocate(data, size);
 		size *= 2;
-		delete[] data;
 		data = temp;
 	}
 	TEMP array<T>::array(const array<T>& other) :
-		size(other.size), top(other.top)
+		size(other.size),
+		top(other.top),
+		data(m_allocator.allocate(size))
 	{
-		data = new T[size];
-		memcpy(data, other.data, sizeof(T)*(top + 1));
+		std::uninitialized_copy_n(other.data, top+1, data);
 	}
 	TEMP array<T>& array<T>::operator=(const array<T>& other)
 	{
+		if (this == &other)return *this;
 		if (size < other.size)
 		{
-			delete[] data;
+			m_allocator.deallocate(data, size);
 			size = other.size;
-			data = new T[size];
+			m_allocator.allocate(data, size);
 		}
 		top = other.top;
-		memcpy(data, other.data, sizeof(T)*(top + 1));
+		std::uninitialized_copy_n(other.data, top + 1, data);
 		return *this;
 	}
 

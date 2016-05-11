@@ -2,18 +2,20 @@
 #include "normal.cpp"
 #include <iostream>
 #include <iterator>
+#include <memory>
 namespace ME
 {
 	const int OriginalSize = 10;
 	TEMP
 	class array
 	{
-		T *data;
+		//变量的顺序很重要……
 		int size;
 		int top;
+		std::allocator<T> m_allocator;
+		T *data;
 		void expend();
 	public:
-		//friend class array<T>::iterator;
 		class iterator :public std::iterator<std::random_access_iterator_tag, T>
 		{
 			const T *root, *end;
@@ -67,32 +69,31 @@ namespace ME
 			bool operator>(const const_iterator& other)const	{ return P > other.P; }
 		};
 		array(unsigned int n) :
-			size(n), top(-1)
-		{
-			data = new T[size];//天知道为什么要写在下面。
-		}
+			size(n),
+			top(-1),
+			data(m_allocator.allocate(size))
+		{}
 		array() :
-			size(OriginalSize), top(-1)
-		{
-			data = new T[size];
-		}
+			size(OriginalSize),
+			top(-1),
+			data(m_allocator.allocate(size))
+		{}
 		array(T const *D, unsigned int n) :
-			top(int(n) - 1), size(n)
+			top(int(n) - 1),
+			size(n),
+			data(m_allocator.allocate(n))
 		{
-			data = new T[size];
-			memcpy(data, D, sizeof(T)*n);
+			std::uninitialized_copy_n(D, n, data);
 		}
 		array(const array<T>& other);
 		array<T>& operator=(const array<T>& other);
-		~array(){ delete[] data; }
+		~array() {m_allocator.deallocate(data, size); }
 		const T& operator[](unsigned int n)const
 		{
-			if (n >= size)throw "OUT OF SIZE!";
 			return data[n];
 		}
 		T& operator[](unsigned int n)
 		{
-			if (n >= size)throw "OUT OF SIZE!";
 			if (int(n) > top)top = n;
 			return data[n];
 		}
