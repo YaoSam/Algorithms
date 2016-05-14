@@ -267,7 +267,6 @@ namespace ME{
 	TEMP
 		Mid<T>& NormalTree<T>::Mid_iterator::operator++()
 	{
-		bool flag = 0;
 		if (pCurrent->Right() != NULL)//最接近的书在下面
 		{
 			Stack.push(pCurrent);

@@ -9,13 +9,13 @@
 namespace ME
 {
 	TEMP
-		void swap(NormalTree<T>& a, NormalTree<T>& b)
+		inline void swap(NormalTree<T>& a, NormalTree<T>& b)
 	{
 		Swap(a.root, b.root);
 	}
 
 	TEMP
-		void swap(Heap<T> &a, Heap<T> &b)
+		inline void swap(Heap<T> &a, Heap<T> &b)
 	{
 		Swap(a.Current, b.Current);
 		Swap(a.size, b.size);
@@ -24,7 +24,7 @@ namespace ME
 	}
 
 	TEMP
-		void swap(list<T>& a, list<T>&b)
+		inline void swap(list<T>& a, list<T>&b)
 	{
 		Swap(a.head, b.head);
 		Swap(a.last, b.last);
@@ -32,7 +32,7 @@ namespace ME
 	}
 
 	TEMP
-		void swap(blist<T>& a, blist<T>&b)
+		inline void swap(blist<T>& a, blist<T>&b)
 	{
 		Swap(a.head, b.head);
 		Swap(a.last, b.last);
@@ -40,7 +40,7 @@ namespace ME
 	}
 
 	TEMP
-		void swap(array<T>& a, array<T>& b)
+		inline void swap(array<T>& a, array<T>& b)
 	{
 		Swap(a.size, b.size);
 		Swap(a.top, b.top);
@@ -48,7 +48,7 @@ namespace ME
 	}
 
 	TEMP 
-		void swap(queue<T> &a, queue<T>& b)
+		inline void swap(queue<T> &a, queue<T>& b)
 	{
 		Swap(a.front, b.front);
 		Swap(a.rear, b.rear);
@@ -57,7 +57,7 @@ namespace ME
 	}
 
 	TEMP
-		void swap(stack<T> &a, stack<T> &b)
+		inline void swap(stack<T> &a, stack<T> &b)
 	{
 		Swap(a.size, b.size);
 		Swap(a.top, b.top);

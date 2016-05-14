@@ -12,7 +12,7 @@ namespace ME{
 	}
 
 
-	TEMP inline T Max(T const &a, T const &b)
+	TEMP inline const T& Max(T const &a, T const &b)
 	{
 		return a > b ? a : b;
 	}

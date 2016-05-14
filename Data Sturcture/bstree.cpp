@@ -11,7 +11,7 @@ namespace ME{
 	TEMP
 		void bstree<T>::insert(T const &x)
 	{
-		treeNode<T>* target = root, *P = NULL;
+		treeNode<T>* target = root;
 		if (target == NULL)
 		{
 			root = new treeNode<T>(x, 1);
