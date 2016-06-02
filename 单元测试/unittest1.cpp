@@ -171,7 +171,6 @@ namespace UnitTest
 					sort(b, b + SizeOfTest - i - 1);
 					if (one.NodeNum() != SizeOfTest - i - 1)
 						debug("删除后节点不对");
-					Mid<int> iter(one);
 					if (!equal(one.begin(), one.end(), b))
 					{
 						char ans[10];
