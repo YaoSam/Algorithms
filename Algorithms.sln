@@ -70,6 +70,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "旅行商问题", "旅行�
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "LogisticRegression", "LogisticRegression\LogisticRegression.pyproj", "{04C7C8E5-BB8A-4DD2-888D-8DAD601D8056}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "矩阵乘积", "矩阵乘积\矩阵乘积.vcxproj", "{C01662BC-8931-4494-9658-5640C1BA6397}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -334,6 +336,20 @@ Global
 		{04C7C8E5-BB8A-4DD2-888D-8DAD601D8056}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{04C7C8E5-BB8A-4DD2-888D-8DAD601D8056}.Release|Win32.ActiveCfg = Release|Any CPU
 		{04C7C8E5-BB8A-4DD2-888D-8DAD601D8056}.Release|x64.ActiveCfg = Release|Any CPU
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Debug|Win32.Build.0 = Debug|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Debug|x64.ActiveCfg = Debug|x64
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Debug|x64.Build.0 = Debug|x64
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Release|Win32.ActiveCfg = Release|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Release|Win32.Build.0 = Release|Win32
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Release|x64.ActiveCfg = Release|x64
+		{C01662BC-8931-4494-9658-5640C1BA6397}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -361,5 +377,6 @@ Global
 		{FB034794-8589-48FB-9AE4-438FD75E93BB} = {8CC97603-A65F-4EF8-8694-CB4041B46A3A}
 		{58B972D5-9620-4CBF-8ED6-152D838CA229} = {7E6F8C02-CB39-4476-828C-3C459CDDA318}
 		{04C7C8E5-BB8A-4DD2-888D-8DAD601D8056} = {63E150D2-C49D-4D3B-AFEF-1E779E9D6F14}
+		{C01662BC-8931-4494-9658-5640C1BA6397} = {8CC97603-A65F-4EF8-8694-CB4041B46A3A}
 	EndGlobalSection
 EndGlobal
