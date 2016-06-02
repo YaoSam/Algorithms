@@ -62,26 +62,24 @@ public:
 
 int solve(matrix arr[],int n)
 {
-	vector<vector<matrix>> ans;
-	ans.push_back(vector<matrix>());
-	ans.push_back(vector<matrix>());
+	vector<vector<matrix>> ans(n+1,vector<matrix>());
 	re(i, n)
 		ans[1].push_back(arr[i]);
+	//for (auto &i : ans[1])
+		//cout << i << " ";
+	//cout << endl;
 	for (unsigned i = 2; i <= n; i++)//第i层。求连续i个矩阵相乘的最小子序列。
 	{
-		ans.push_back(vector<matrix>());
-		re(j, n - i+1)//每层一共有n-i个矩阵
+		re(j, n - i + 1)//每层一共有n-i个矩阵
 		{
-			matrix a, min(0, 0, INT32_MAX);
+			matrix min(0, 0, INT32_MAX);
 			re(k, i - 1)//在第k个位置插空。一共有i-1个空。
-			{
 				if (min.count() > ans[k + 1][j] + ans[i - k - 1][j + k + 1])
 					min = ans[k + 1][j] * ans[i - k - 1][j + k + 1];
-				cout << ans[k + 1][j] * ans[i - k - 1][j + k + 1] << " ";
-			}
-			cout << min<<endl;
+			//cout << min<<" ";
 			ans[i].push_back(min);
 		}
+		//cout << endl;
 	}
 	return ans[n][0].count();
 }
