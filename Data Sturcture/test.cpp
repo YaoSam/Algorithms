@@ -309,8 +309,8 @@ void Test()
 		cout << "\n²âÊÔÅÅÐò¶þ²æÊ÷" << endl;
 		TestOfBstree();
 		//TestOfBstreeFind();
-		//cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
-		//TestOfAVLTree();
+		cout << "\n²âÊÔÆ½ºâ¶þ²æÊ÷" << endl;
+		TestOfAVLTree();
 		//cout << "\n²âÊÔµü´úÆ÷" << endl;
 		//TestOfIterator();
 		//cout << "\n²âÊÔ¶Ñ" << endl;

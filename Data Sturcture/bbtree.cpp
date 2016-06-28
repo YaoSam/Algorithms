@@ -4,18 +4,20 @@ namespace ME{
 	TEMP
 		void AVLtree<T>::RotateLL(treeNode<T>* node)
 	{
-		treeNode<T>* Root = node->left, *P = node->parent;
-		if (node->parent == NULL)
-			root = Root;
-		if (P != NULL)
+		treeNode<T>* Root = node->left;
+		if (node->parent == NULL)//没有父节点。将Root变为树的根。
 		{
-			if (P->left == node)
-				P->leftlink(Root);
-			else
-				P->rightlink(Root);
+			root = Root;
+			Root->parent = NULL;
 		}
-		else Root->parent = NULL;
-		node->leftlink(Root->right);
+		else//有父节点，调节父亲节点的链接。
+		{
+			if (node->parent->left == node)
+				node->parent->leftlink(Root);
+			else
+				node->parent->rightlink(Root);
+		}
+		node->leftlink(Root->right);//调节子节点的链接
 		Root->rightlink(node);
 		node->CheckHeight();
 		Root->CheckHeight();
@@ -26,15 +28,17 @@ namespace ME{
 	{
 		treeNode<T>* Root = node->right, *P = node->parent;
 		if (node->parent == NULL)
-			root = Root;
-		if (P != NULL)
 		{
-			if (P->left == node)
-				P->leftlink(Root);
-			else
-				P->rightlink(Root);
+			root = Root;
+			Root->parent = NULL;
 		}
-		else Root->parent = NULL;
+		else 
+		{
+			if (node->parent->left == node)
+				node->parent->leftlink(Root);
+			else
+				node->parent->rightlink(Root);
+		}
 		node->rightlink(Root->left);
 		Root->leftlink(node);
 		node->CheckHeight();
