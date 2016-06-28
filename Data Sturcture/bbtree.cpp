@@ -26,7 +26,7 @@ namespace ME{
 	TEMP
 		void AVLtree<T>::RotateRR(treeNode<T>* node)
 	{
-		treeNode<T>* Root = node->right, *P = node->parent;
+		treeNode<T>* Root = node->right;
 		if (node->parent == NULL)
 		{
 			root = Root;

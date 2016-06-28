@@ -77,21 +77,48 @@ namespace ME{
 	}
 
 	//////////////////////////////////////////////////////////////////////////
+	TEMP void NormalTree<T>::del(treeNode<T>* myRoot)
+	{
+		if(myRoot)
+		{
+			del(myRoot->left);
+			del(myRoot->right);
+			NodePool.push(myRoot);
+			//delete myRoot;
+		}
+	}
+
+	TEMP void NormalTree<T>::copy(treeNode<T>*& myRoot, const treeNode<T>* const& otherRoot,treeNode<T>* p=NULL)
+	{
+		if(otherRoot)
+		{
+			*(myRoot = NodePool.pop())=treeNode<T>(otherRoot->data, otherRoot->height,p);
+			//myRoot = new treeNode<T>(otherRoot->data, otherRoot->height);
+			copy(myRoot->left, otherRoot->left,myRoot);
+			copy(myRoot->right, otherRoot->right,myRoot);
+		}
+	}
+
+
 
 	TEMP NormalTree<T>& NormalTree<T>::operator=(NormalTree<T> const & other)
 	{
 		if (this == &other)return *this;
-		root->Del(root);
-		root->Copy(root, other.root);
+		del(root);
+		copy(root, other.root);
+		//root->Del(root);
+		//root->Copy(root, other.root);
 		return *this;
 	}
-	TEMP  NormalTree<T>::NormalTree(const NormalTree<T> & other)
+	TEMP  NormalTree<T>::NormalTree(const NormalTree<T> & other):root(NULL)
 	{
-		root->Copy(root, other.root);
+		copy(root, other.root);
+		//root->Copy(root, other.root);
 	}
 	TEMP NormalTree<T>::~NormalTree()
 	{
-		root->Del(root);
+		del(root);
+		//root->Del(root);
 	}
 
 	TEMP unsigned int NormalTree<T>::NodeNum()const

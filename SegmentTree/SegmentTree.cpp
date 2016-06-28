@@ -12,7 +12,8 @@ namespace ME{
 	}
 	void SegmentTree::create(int a, int b, treeNode<Segment>* & node)
 	{
-		node = new treeNode<Segment>(Segment(a, b));
+		*(node=NodePool.pop())= treeNode<Segment>(Segment(a, b));
+		//node = new treeNode<Segment>(Segment(a, b));
 		if (a + 1 < b)
 		{
 			create(a, (a + b) / 2, node->left);
@@ -130,7 +131,8 @@ namespace ME{
 			while (i + j < 2 * n&&num[i] == num[i + j]) j++;//a[i]!=a[i+j]
 			i += j - 1;
 		}
-		root = new treeNode<Segment>(Segment(0, Count));
+		*(root=NodePool.pop())= treeNode<Segment>(Segment(0, Count));
+		//root = new treeNode<Segment>(Segment(0, Count));
 		create(0, Count, root);
 		Hash = new int[Count];
 		re(i, Count)

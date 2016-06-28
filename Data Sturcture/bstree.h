@@ -5,6 +5,7 @@ namespace ME{
 	class bstree :public NormalTree < T >
 	{
 		using Tree<T>::root;
+		//TEMP using Tree<T>::NodePool;
 	protected:
 		treeNode<T>* FindRightNext(const treeNode<T>* a)const;
 		treeNode<T>* FindLeftNext(const treeNode<T>* a)const;

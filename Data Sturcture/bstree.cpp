@@ -14,7 +14,8 @@ namespace ME{
 		treeNode<T>* target = root;
 		if (target == NULL)
 		{
-			root = new treeNode<T>(x, 1);
+			//root = new treeNode<T>(x, 1);
+			*(root = NodePool.pop())= treeNode<T>(x, 1);
 			return;
 		}
 		while (1)
@@ -24,7 +25,8 @@ namespace ME{
 				if (target->left)target = target->left;
 				else
 				{
-					target->left = new treeNode<T>(x, 1, target);
+					*(target->left = NodePool.pop())=treeNode<T>(x, 1, target);
+					//target->left = new treeNode<T>(x, 1, target);
 					break;
 				}
 			}
@@ -33,7 +35,9 @@ namespace ME{
 				if (target->right)target = target->right;
 				else
 				{
-					target->right = new treeNode<T>(x, 1, target);
+
+					*(target->right = NodePool.pop()) = treeNode<T>(x, 1, target);
+					//target->right = new treeNode<T>(x, 1, target);
 					break;
 				}
 			}
@@ -127,7 +131,8 @@ namespace ME{
 				P->leftlink(Next->left);
 			else
 				P->rightlink(Next->left);
-			delete Next;
+			NodePool.push(Next);
+			//delete Next;
 			Maintain(P, x);
 		}
 		else
@@ -141,7 +146,8 @@ namespace ME{
 					P->rightlink(Next->right);
 				else
 					P->leftlink(Next->right);
-				delete Next;
+				NodePool.push(Next);
+				//delete Next;
 				Maintain(P, x);
 			}
 			else//P就是叶子节点
@@ -157,7 +163,8 @@ namespace ME{
 				}
 				else
 					root = NULL;
-				delete target;
+				NodePool.push(target);
+				//delete target;
 			}
 		}
 	}

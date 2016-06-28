@@ -4,6 +4,7 @@
 #include "queue.cpp"
 #include "normal.cpp"
 #include <iterator>
+#include <bitset>
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 #undef NULL
 #define NULL nullptr
@@ -56,10 +57,48 @@ namespace ME
 		unsigned int Height()const{ return height; }
 	};
 	TEMP
+		class MemoryPool
+	{
+	protected:
+		treeNode<T>* Pool;
+		bool* flag;
+		int pointer;
+		unsigned size;
+	public:
+		MemoryPool(unsigned int MaxNumber=100000):
+			Pool(new treeNode<T>[MaxNumber]),
+			flag(new bool[MaxNumber]),
+			pointer(0),
+			size(MaxNumber)
+		{
+			memset(flag, 0, sizeof(bool)*size);
+		}
+		treeNode<T>* pop()
+		{
+			re(i,size)
+			{
+				if(flag[(pointer+i)%size]==0)
+				{
+					treeNode<T>* ans = Pool + (pointer + i) % size;
+					flag[(pointer + i) % size] = true;
+					pointer = (pointer + i + 1) % size;
+					return ans;
+				}
+			}
+			throw "Pool FULL!";
+		}
+		void push(treeNode<T>*& P) { flag[P - Pool] = 0; P = NULL; }
+		~MemoryPool() { delete[]Pool, delete[] flag; }
+	};
+
+	TEMP
 	class NormalTree//这东西用来继承吧！
 	{
 	protected:
 		treeNode<T>* root;
+		MemoryPool<T> static NodePool;
+		void del(treeNode<T>* myRoot);
+		void copy(treeNode<T>*& myRoot,const treeNode<T>* const& otherRoot,treeNode<T>* P=NULL);
 		class m_iterator :public std::iterator < std::input_iterator_tag, T >
 		{
 		protected:
@@ -107,7 +146,6 @@ namespace ME
 			bool operator==(const Mid_iterator& other)const { return pCurrent == other.pCurrent; }
 			TEMP friend class bstree;
 		};
-
 		class Post_iterator :public m_iterator
 		{
 			stack<const treeNode<T>*> Stack;
@@ -141,8 +179,11 @@ namespace ME
 			bool operator==(const Level_iterator& other)const { return pCurrent == other.pCurrent; }
 		};
 		virtual treeNode<T>* find(T const & x)const;
-	public:
-		NormalTree(T const & x, unsigned int h = 1) :root(new treeNode<T>(x, h)){}
+		NormalTree(T const & x, unsigned int h = 1) :
+			root(NodePool.pop()/*new treeNode<T>(x, h)*/)
+		{
+			*root = treeNode<T>(x, h);
+		}
 		NormalTree(treeNode<T>* r = NULL) :root(r){}
 		NormalTree(NormalTree<T> const & other);
 		NormalTree<T>& operator=(NormalTree<T> const & other);
@@ -158,7 +199,7 @@ namespace ME
 		treeNode<T>* Root()const{ return root; }
 		TEMP friend void swap(NormalTree<T>& a, NormalTree<T>& b);
 	};
-
+	TEMP MemoryPool<T> NormalTree<T>::NodePool;
 	TEMP using Tree = NormalTree < T > ;
 	TEMP using Pre = typename Tree<T>::Pre_iterator;
 	TEMP using Mid = typename Tree<T>::Mid_iterator;

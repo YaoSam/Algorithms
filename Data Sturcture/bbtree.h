@@ -6,6 +6,7 @@ namespace ME{
 	class AVLtree :public bstree < T >
 	{
 		using Tree<T>::root;
+		//using Tree<T>::NodePool;
 		int differ(treeNode<T>* node)const//计算左边高度-右边。平衡二叉树用。
 		{
 			return int(node->left ? node->left->height : 0) - int(node->right ? node->right->height : 0);
@@ -33,7 +34,7 @@ namespace ME{
 	{
 		A index;
 		B data;
-		SearchNode(A const &index, B const  &data) :index(index), data(data){}
+		SearchNode(A const &index=A(), B const  &data=B()) :index(index), data(data){}
 		bool operator>(const SearchNode<A, B>& other)const{
 			return index > other.index;
 		}

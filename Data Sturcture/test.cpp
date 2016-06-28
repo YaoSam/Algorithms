@@ -171,8 +171,8 @@ void TestOfAVLTree()
 		a[i] = rand() % 10000;
 	Qsort(a, 0, SizeOfTest - 1);
 	AVLtree<int> one(a, SizeOfTest);
-	AVLtree<int> two(one);
-	one = two;
+	//AVLtree<int> two(one);
+	//one = two;
 	//one.pre();
 	//one.mid();
 	//one.post();

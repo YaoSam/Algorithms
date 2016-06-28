@@ -31,6 +31,7 @@ using namespace std;
 #undef re
 #define re(i,n) for(unsigned int i=0;i<n;i++)
 #define DEBUG
+using namespace ME;
 	unsigned int num[1000000];
 void test()
 {
