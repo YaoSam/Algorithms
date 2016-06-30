@@ -28,32 +28,32 @@ namespace ME
 	protected:
 		T data;
 		unsigned int height;
-		treeNode<T>* left, *right, *parent;
-		unsigned int CheckHeight()//更新高度
+		treeNode<T>* left, *right;
+		void CheckHeight()//更新高度
 		{
-			return height = Max((left ? left->height : 0), (right ? right->height : 0)) + 1;
+			height = Max((left ? left->height : 0), (right ? right->height : 0)) + 1;
 		}
-		void leftlink(treeNode<T>* other)
+		bool checkheight()
 		{
-			left = other;
-			if (other)
-				other->parent = this;
-		}
-		void rightlink(treeNode<T>* other)
-		{
-			right = other;
-			if (other)
-				other->parent = this;
+			int Newheight = Max((left ? left->height : 0), (right ? right->height : 0)) + 1;
+			if (height != Newheight)
+			{
+				height = Newheight;
+				return 1;
+			}
+			return 0;
 		}
 		void Copy(treeNode<T>*& root, const treeNode<T>*  otherRoot);//模仿前序遍历实现的复制
 		void Del(treeNode<T>*& root);//模仿后序遍历实现删除。
 	public:
-		treeNode<T>(T const &x = T(), unsigned int h = 1, treeNode<T>*p = NULL, treeNode<T>* l = NULL, treeNode<T>* r = NULL) :
-			data(x), height(h), left(l), right(r), parent(p){}
+		treeNode<T>(T const &x = T(), 
+			unsigned int h = 1,
+			treeNode<T>* l = NULL,
+			treeNode<T>* r = NULL) :
+			data(x), height(h), left(l), right(r){}
 		const T& Data()const{ return data; }
 		treeNode<T>* Left()const{ return left; }
 		treeNode<T>* Right()const{ return right; }
-		treeNode<T>* Parent()const{ return parent; }
 		unsigned int Height()const{ return height; }
 	};
 	TEMP
@@ -98,7 +98,7 @@ namespace ME
 		treeNode<T>* root;
 		MemoryPool<T> static NodePool;
 		void del(treeNode<T>* myRoot);
-		void copy(treeNode<T>*& myRoot,const treeNode<T>* const& otherRoot,treeNode<T>* P=NULL);
+		void copy(treeNode<T>*& myRoot,const treeNode<T>* const& otherRoot);
 		class m_iterator :public std::iterator < std::input_iterator_tag, T >
 		{
 		protected:

@@ -128,10 +128,10 @@ void TestOfList()
 void TestOfBstree()
 {
 	srand(int(time(NULL)));
-	int a[100];
-	int SizeOfTest =100;
+	int a[1000];
+	int SizeOfTest =1000;
 	re(i, SizeOfTest)
-		a[i] = i;/* rand() % 100000;*/
+		a[i] =  rand() % 100000;
 	bstree<int> one(a, SizeOfTest);
 	bstree<int> two;
 	ME::swap(one, two);
@@ -192,10 +192,11 @@ void TestOfAVLTree()
 	//cout << "节点数：" << one.NodeNum() << endl;
 	re(i, SizeOfTest)
 		one.insert(a[i]);
-	re(i, SizeOfTest)
+	re(i, SizeOfTest-10)
 	{
 		one.DelNode(a[i]);
-		//if (one.NodeNum() != SizeOfTest - i - 1)
+		if (one.NodeNum() != SizeOfTest - i - 1)
+			throw"错了";
 			//cout << "错了！" << endl;
 	}
 	//cout << endl;

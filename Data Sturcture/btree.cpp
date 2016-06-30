@@ -54,7 +54,7 @@ namespace ME{
 		{
 			while (temp_other != NULL)//此时一定是向左走的。
 			{
-				temp_this->left = new treeNode<T>(temp_other->data, temp_other->height, temp_this);
+				temp_this->left = new treeNode<T>(temp_other->data, temp_other->height);
 				temp_this = temp_this->left;//跟上temp_other的步伐
 				Stack_this.push(temp_this);
 				Stack_other.push(temp_other);
@@ -66,7 +66,7 @@ namespace ME{
 				temp_this = Stack_this.pop();
 				if (temp_other)
 				{
-					temp_this->right = new treeNode<T>(temp_other->data, temp_other->height, temp_this);
+					temp_this->right = new treeNode<T>(temp_other->data, temp_other->height);
 					temp_this = temp_this->right;
 					Stack_other.push(temp_other);
 					Stack_this.push(temp_this);
@@ -88,14 +88,14 @@ namespace ME{
 		}
 	}
 
-	TEMP void NormalTree<T>::copy(treeNode<T>*& myRoot, const treeNode<T>* const& otherRoot,treeNode<T>* p=NULL)
+	TEMP void NormalTree<T>::copy(treeNode<T>*& myRoot, const treeNode<T>* const& otherRoot)
 	{
 		if(otherRoot)
 		{
-			*(myRoot = NodePool.pop())=treeNode<T>(otherRoot->data, otherRoot->height,p);
+			*(myRoot = NodePool.pop())=treeNode<T>(otherRoot->data, otherRoot->height);
 			//myRoot = new treeNode<T>(otherRoot->data, otherRoot->height);
-			copy(myRoot->left, otherRoot->left,myRoot);
-			copy(myRoot->right, otherRoot->right,myRoot);
+			copy(myRoot->left, otherRoot->left);
+			copy(myRoot->right, otherRoot->right);
 		}
 	}
 
@@ -106,19 +106,15 @@ namespace ME{
 		if (this == &other)return *this;
 		del(root);
 		copy(root, other.root);
-		//root->Del(root);
-		//root->Copy(root, other.root);
 		return *this;
 	}
 	TEMP  NormalTree<T>::NormalTree(const NormalTree<T> & other):root(NULL)
 	{
 		copy(root, other.root);
-		//root->Copy(root, other.root);
 	}
 	TEMP NormalTree<T>::~NormalTree()
 	{
 		del(root);
-		//root->Del(root);
 	}
 
 	TEMP unsigned int NormalTree<T>::NodeNum()const

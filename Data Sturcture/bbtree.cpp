@@ -2,90 +2,85 @@
 #include "bbtree.h"
 namespace ME{
 	TEMP
-		void AVLtree<T>::RotateLL(treeNode<T>* node)
+		void AVLtree<T>::RotateLL(treeNode<T>* node,treeNode<T>* node_parent=NULL)
 	{
 		treeNode<T>* Root = node->left;
-		if (node->parent == NULL)//没有父节点。将Root变为树的根。
-		{
+		if (node_parent==NULL)
 			root = Root;
-			Root->parent = NULL;
-		}
-		else//有父节点，调节父亲节点的链接。
+		else
 		{
-			if (node->parent->left == node)
-				node->parent->leftlink(Root);
+			if (node_parent->left == node)
+				node_parent->left = Root;
 			else
-				node->parent->rightlink(Root);
+				node_parent->right = Root;
 		}
-		node->leftlink(Root->right);//调节子节点的链接
-		Root->rightlink(node);
+		node->left = Root->right;
+		Root->right = node;
 		node->CheckHeight();
 		Root->CheckHeight();
 	}
 
 	TEMP
-		void AVLtree<T>::RotateRR(treeNode<T>* node)
+		void AVLtree<T>::RotateRR(treeNode<T>* node, treeNode<T>* node_parent = NULL)
 	{
 		treeNode<T>* Root = node->right;
-		if (node->parent == NULL)
-		{
+		if (node_parent == NULL)
 			root = Root;
-			Root->parent = NULL;
-		}
-		else 
+		else
 		{
-			if (node->parent->left == node)
-				node->parent->leftlink(Root);
+			if (node_parent->left == node)
+				node_parent->left = Root;
 			else
-				node->parent->rightlink(Root);
+				node_parent->right = Root;
 		}
-		node->rightlink(Root->left);
-		Root->leftlink(node);
+		node->right = Root->left;
+		Root->left = node;
 		node->CheckHeight();
 		Root->CheckHeight();
 	}
 
 	TEMP
-		void AVLtree<T>::RotateLR(treeNode<T>* node)
+		void AVLtree<T>::RotateLR(treeNode<T>* node, treeNode<T>* node_parent = NULL)
 	{
-		RotateRR(node->left);
-		RotateLL(node);
+		RotateRR(node->left,node);
+		RotateLL(node,node_parent);
 	}
 
 	TEMP
-		void AVLtree<T>::RotateRL(treeNode<T>* node)
+		void AVLtree<T>::RotateRL(treeNode<T>* node, treeNode<T>* node_parent = NULL)
 	{
-		RotateLL(node->right);
-		RotateRR(node);
+		RotateLL(node->right,node);
+		RotateRR(node,node_parent);
 	}
-
 	TEMP
-		void AVLtree<T>::Maintain(treeNode<T>* node, T const &x)
+		void AVLtree<T>::Maintain(stack<treeNode<T>*>&  road, T const& x)
 	{
-		while (node)//从下往上检查最小不平衡的二叉树。
+		treeNode<T>* temp=NULL;
+		while(!road.isEmpty())
 		{
-			node->CheckHeight();
-			if (differ(node) == 2)
-			{
-				if (differ(node->left) >= 0)
-					RotateLL(node);
-				else
-					RotateLR(node);
+			temp = road.pop();
+			temp->CheckHeight();
+			//if (!temp->checkheight())
 				//break;
-
-			}
-			else if (differ(node) == -2)
+			if (differ(temp) == 2)
 			{
-				if (differ(node->right) <= 0)
-					RotateRR(node);
+				if (differ(temp->left) >= 0)
+					RotateLL(temp, road.isEmpty() ? NULL : road.topData());
 				else
-					RotateRL(node);
+					RotateLR(temp, road.isEmpty() ? NULL : road.topData());
 				//break;
 			}
-			else
-				node = node->parent;
+			else if (differ(temp) == -2)
+			{
+				if (differ(temp->right) <= 0)
+					RotateRR(temp, road.isEmpty() ? NULL : road.topData());
+				else
+					RotateRL(temp, road.isEmpty() ? NULL : road.topData());
+				//break;
+			}
 		}
 	}
+
 
 	TEMP
 		AVLtree<T>::AVLtree(T const a[] /* = NULL */, unsigned int n /* = 0 */)

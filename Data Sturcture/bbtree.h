@@ -11,11 +11,11 @@ namespace ME{
 		{
 			return int(node->left ? node->left->height : 0) - int(node->right ? node->right->height : 0);
 		}
-		void RotateLL(treeNode<T>* node);
-		void RotateRR(treeNode<T>* node);
-		void RotateLR(treeNode<T>* node);
-		void RotateRL(treeNode<T>* node);
-		void Maintain(treeNode<T>* node, T const &x)override;
+		void RotateLL(treeNode<T>* node, treeNode<T>* node_parent = NULL);
+		void RotateRR(treeNode<T>* node, treeNode<T>* node_parent = NULL);
+		void RotateLR(treeNode<T>* node, treeNode<T>* node_parent = NULL);
+		void RotateRL(treeNode<T>* node, treeNode<T>* node_parent = NULL);
+		void Maintain(stack < treeNode<T>*>& road, T const & x)override;
 		int Height(const treeNode<T>* node)const{//用来Debug的。检查对height的维护
 			return Max(((node->left) ? Height(node->left) : 0), ((node->right) ? Height(node->right) : 0)) + 1;
 		}

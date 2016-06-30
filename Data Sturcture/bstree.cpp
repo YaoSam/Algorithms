@@ -1,32 +1,34 @@
 #include "bstree.h"
 namespace ME{
 	TEMP
-		void bstree<T>::Maintain(treeNode<T>* other, T const& x)
+		void bstree<T>::Maintain(stack<treeNode<T>*> & road, const T & x)
 	{
-		while (other){
-			other->CheckHeight();
-			other = other->parent;
+		while(!road.isEmpty())
+		{
+			if (!road.pop()->checkheight())
+				break;
 		}
 	}
+
 	TEMP
 		void bstree<T>::insert(T const &x)
 	{
 		treeNode<T>* target = root;
+		stack<treeNode<T>*> road;
 		if (target == NULL)
 		{
-			//root = new treeNode<T>(x, 1);
 			*(root = NodePool.pop())= treeNode<T>(x, 1);
 			return;
 		}
 		while (1)
 		{
+			road.push(target);
 			if (x < target->data)
 			{
 				if (target->left)target = target->left;
 				else
 				{
-					*(target->left = NodePool.pop())=treeNode<T>(x, 1, target);
-					//target->left = new treeNode<T>(x, 1, target);
+					*(target->left = NodePool.pop())=treeNode<T>(x, 1);
 					break;
 				}
 			}
@@ -36,13 +38,12 @@ namespace ME{
 				else
 				{
 
-					*(target->right = NodePool.pop()) = treeNode<T>(x, 1, target);
-					//target->right = new treeNode<T>(x, 1, target);
+					*(target->right = NodePool.pop()) = treeNode<T>(x, 1);
 					break;
 				}
 			}
 		}
-		Maintain(target, x);
+		Maintain(road, x);
 	}
 
 	TEMP
@@ -108,11 +109,11 @@ namespace ME{
 				ans.NormalTree::m_iterator::pCurrent = P;
 				break;
 			}
+			ans.Stack.push(P);
 			if (x < P->data)
 				P = P->left;
 			else
 				P = P->right;
-			ans.Stack.push(P->parent);
 		}
 		return ans;
 	}
@@ -120,52 +121,69 @@ namespace ME{
 	TEMP
 		void bstree<T>::DelNode(T const &x)
 	{
-		treeNode<T>* target = find(x);
-		if (target == NULL) return;
-		treeNode<T>* Next = FindLeftNext(target), *P;
-		if (Next != NULL)
+		treeNode<T>* temp=root,*P=NULL;
+		stack <treeNode<T>*> road;
+		queue<treeNode<T>*> second_road;
+		while(temp)
 		{
-			P = Next->parent;
-			Swap(Next->data, target->data);
-			if (P == target)
-				P->leftlink(Next->left);
-			else
-				P->rightlink(Next->left);
-			NodePool.push(Next);
-			//delete Next;
-			Maintain(P, x);
-		}
-		else
-		{
-			Next = FindRightNext(target);
-			if (Next != NULL)
+			if(temp->data==x)//找到了
 			{
-				P = Next->parent;
-				Swap(Next->data, target->data);
-				if (P == target)
-					P->rightlink(Next->right);
-				else
-					P->leftlink(Next->right);
-				NodePool.push(Next);
-				//delete Next;
-				Maintain(P, x);
-			}
-			else//P就是叶子节点
-			{
-				P = target->parent;
-				if (P)
+				//寻找恰好比他小的点。
+				treeNode<T>* next = temp->left,*parent_next=temp;
+				if (next != NULL)
 				{
-					if (P->left == target)
-						P->left = NULL;
+					if (next->right)//往右走了
+					{
+						while (next->right)
+						{
+							second_road.push(next);//记录下next下的路径。
+							parent_next = next;
+							next = next->right;
+						}
+						parent_next->right = next->left;
+						next->left = temp->left;
+					}
+					road.push(next);//该节点替换了temp。放入路径进行调整。
+					while (!second_road.isEmpty())
+						road.push(second_road.pop());
+					next->right = temp->right;
+					if (P)
+					{
+						if (P->left == temp)
+							P->left= next;
+						else
+							P->right = next;
+					}
 					else
-						P->right = NULL;
-					Maintain(P, x);//其实maintain和delete的位置随意。在调整了P之后就可以了。
+					{
+						root = next;
+					}
 				}
-				else
-					root = NULL;
-				NodePool.push(target);
-				//delete target;
+				else//没有往左走
+				{
+					if (P)
+					{
+						if (P->left == temp)
+							P->left = temp->right;
+						else
+							P->right = temp->right;
+					}
+					else
+					{
+						root = temp->right;
+					}
+				}
+				Maintain(road, x);
+				NodePool.push(temp);
+				break;
 			}
+			//查找部分。记录下路径。
+			P = temp;
+			road.push(temp);
+			if (x < temp->data)
+				temp = temp->left;
+			else
+				temp = temp->right;
 		}
 	}
 }

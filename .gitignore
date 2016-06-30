@@ -192,3 +192,4 @@ ModelManifest.xml
 *.pyc
 /Algorithms.VC.db
 /Algorithms.VC.VC.opendb
+/.vscode

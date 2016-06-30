@@ -42,7 +42,7 @@ namespace UnitTest
 		{
 			srand(int(time(NULL)));
 			int a[10000];
-			unsigned int SizeOfTest = 1000;
+			unsigned int SizeOfTest = 10000;
 			re(i, SizeOfTest)
 				a[i] = rand() % SizeOfTest;
 			AVLtree<int> one(a, SizeOfTest);
@@ -66,8 +66,8 @@ namespace UnitTest
 		TEST_METHOD(bstree_Find)
 		{
 			srand(int(time(NULL)));
-			int a[100];
-			unsigned int SizeOfTest = 100;
+			int a[10000];
+			unsigned int SizeOfTest = 10000;
 			re(i, SizeOfTest)
 				a[i] = rand() % SizeOfTest;
 			bstree<int> one(a, SizeOfTest);
@@ -83,16 +83,21 @@ namespace UnitTest
 		{
 			try {
 				srand(int(time(NULL)));
-				int a[1000], b[1000];
-				unsigned int SizeOfTest = 1000;
+				int a[500], b[500];
+				unsigned int SizeOfTest = 500;
 				re(i, SizeOfTest)
-					a[i] = rand() % (SizeOfTest / 2);
+					a[i] = rand() % (100*SizeOfTest);
 				bstree<int> one(a, SizeOfTest);
+				char message[100] = "";
 				re(i, SizeOfTest)
 				{
 					one.DelNode(a[SizeOfTest - i - 1]);
 					if (SizeOfTest - i - 1 != one.NodeNum())
+					{
+						sprintf(message, "%d\n", i);
+						Logger::WriteMessage(message);
 						debug("测试删除节点后节点数目出错");
+					}
 					memcpy(b, a, sizeof(int)*(SizeOfTest));
 					sort(b, b + SizeOfTest - i - 1);
 					Mid<int> iter(one);
@@ -136,21 +141,16 @@ namespace UnitTest
 			try
 			{
 				srand(int(time(NULL)));
-				int a[5000];
-				unsigned int SizeOfTest = 5000;
+				int a[10000];
+				unsigned int SizeOfTest = 10000;
 				re(i, SizeOfTest)
 					a[i] = rand() % SizeOfTest;
 				AVLtree<int> one(a, SizeOfTest);
 				AVLtree<int> two(one);//测试复制构造
 				one = two;//测试赋值函数
 				Qsort(a, 0, SizeOfTest - 1);
-				Mid<int> iterM(one);
-				re(i, SizeOfTest)
-				{
-					if (*iterM != a[i])
-						debug("不一致");
-					++iterM;
-				}
+				if (!equal(one.begin(), one.end(), a))
+					debug("不一致");
 			}
 			catch (const char *err){ debug(err); }
 		}
@@ -178,10 +178,10 @@ namespace UnitTest
 						Logger::WriteMessage(ans);
 						debug("顺序不对");
 					}
-					if ((int)one.height() > maxHeight_bbtree(SizeOfTest - i - 1))
+					if ((int)one.H() > maxHeight_bbtree(SizeOfTest - i - 1))
 					{
 						char ans[10];
-						sprintf(ans, "%d\n", i);
+						sprintf(ans, "%d,高度为：%d，%d\n", i,one.height(),one.H());
 						Logger::WriteMessage(ans);
 						debug("高度不对");
 					}

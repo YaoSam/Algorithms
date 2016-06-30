@@ -5,11 +5,11 @@ namespace ME{
 	class bstree :public NormalTree < T >
 	{
 		using Tree<T>::root;
-		//TEMP using Tree<T>::NodePool;
+		using Tree<T>::NodePool;
 	protected:
 		treeNode<T>* FindRightNext(const treeNode<T>* a)const;
 		treeNode<T>* FindLeftNext(const treeNode<T>* a)const;
-		virtual void Maintain(treeNode<T>* node, T const& x);
+		virtual void Maintain(stack<treeNode<T>*>& road, const T& x);
 		treeNode<T>* find(T const &x)const override;
 	public:
 		void insert(T const & x)override;
