@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithms", "Algorithms.vcxproj", "{531BF705-5FFC-44A9-8897-5A72691FAE12}"
 EndProject
@@ -75,6 +75,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3-2 编辑距离", "3-2 编辑距离\3-2 编辑距离.vcxproj", "{864EB584-EAD6-4EC1-8E59-A7C2F467BE16}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "最短路", "最短路\最短路.vcxproj", "{B6569D9B-0BED-4038-98E1-210F53C80449}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "排序", "排序", "{9ED63FBC-91BD-4B96-AA71-5ED31679C9A7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InsertSort", "InsertSort\InsertSort.vcxproj", "{26362C32-EBEB-450F-A21C-1841194E1AA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -382,6 +386,20 @@ Global
 		{B6569D9B-0BED-4038-98E1-210F53C80449}.Release|Win32.Build.0 = Release|Win32
 		{B6569D9B-0BED-4038-98E1-210F53C80449}.Release|x64.ActiveCfg = Release|x64
 		{B6569D9B-0BED-4038-98E1-210F53C80449}.Release|x64.Build.0 = Release|x64
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Debug|Win32.Build.0 = Debug|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Debug|x64.ActiveCfg = Debug|x64
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Debug|x64.Build.0 = Debug|x64
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Release|Any CPU.ActiveCfg = Release|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Release|Win32.ActiveCfg = Release|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Release|Win32.Build.0 = Release|Win32
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Release|x64.ActiveCfg = Release|x64
+		{26362C32-EBEB-450F-A21C-1841194E1AA2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -412,5 +430,6 @@ Global
 		{C01662BC-8931-4494-9658-5640C1BA6397} = {8CC97603-A65F-4EF8-8694-CB4041B46A3A}
 		{864EB584-EAD6-4EC1-8E59-A7C2F467BE16} = {8CC97603-A65F-4EF8-8694-CB4041B46A3A}
 		{B6569D9B-0BED-4038-98E1-210F53C80449} = {8CC97603-A65F-4EF8-8694-CB4041B46A3A}
+		{26362C32-EBEB-450F-A21C-1841194E1AA2} = {9ED63FBC-91BD-4B96-AA71-5ED31679C9A7}
 	EndGlobalSection
 EndGlobal
